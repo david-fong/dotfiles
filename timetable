@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# author: David Fong
+
+source ./.xterm_format_constants
+date
+

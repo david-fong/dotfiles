@@ -1,0 +1,90 @@
+
+# author: David Fong
+# source this file to add its constants to the parent process.
+# see the end of the file for the functions it exposes.
+
+
+declare -A xts
+declare -A xte
+
+# RESET:
+xts[reset]=0
+
+# BRIGHTNESS:           # END BRIGHTNESS:
+xts[dim]=2              xte[dim]=22
+xts[inverse]=7          xte[inverse]=27
+xts[invisible]=8        xte[invisible]=28
+xts[shadowed]="1:2"     xte[shadowed]=22
+
+# FONT-STYLING:         # END FONT-STYLING:
+xts[bold]=1             xte[bold]=22
+xts[italic]=3           xte[italic]=23
+xts[underline]=4        xte[underline]=24
+xts[underline2]=21      xte[underline2]=24
+xts[underlineDot]="4:4" xte[underlineDot]=24
+xts[underlineWavy]="4:3" xte[underlineWavy]=24
+xts[overline]=53        xte[overline]=55
+xts[strikethrough]=9    xte[strikethrough]=29
+
+# EPILEPY-TRIGGERS:     END EPILEPSY-TRIGGERS:
+xts[blink]=5            xte[blink]=25
+xts[fastblink]=6        xte[fastblink]=25
+
+# FOREGROUND COLORS:    END FOREGROUND COLORS:
+xts[black]=30           xte[black]=39
+xts[white]=37           xte[white]=39
+xts[red]=31             xte[red]=39
+xts[green]=32           xte[green]=39
+xts[blue]=34            xte[blue]=39
+xts[cyan]=36            xte[cyan]=39
+xts[magenta]=35         xte[magenta]=39
+xts[yellow]=33          xte[yellow]=39
+
+# BACKGROUND COLORS:    # END BACKGROUND COLORS:
+xts[blackBg]=40         xte[blackBg]=49
+xts[whiteBg]=47         xte[whiteBg]=49
+xts[redBg]=41           xte[redBg]=49
+xts[greenBg]=42         xte[greenBg]=49
+xts[blueBg]=44          xte[blueBg]=49
+xts[cyanBg]=46          xte[cyanBg]=49
+xts[magentaBg]=45       xte[magentaBg]=49
+xts[yellowBg]=43        xte[yellowBg]=49
+
+# FINALIZE THE DICTIONARIES:
+declare -rA xts=$xts
+declare -rA xte=$xte
+
+
+
+# BEGIN USING FORMAT ARGS IN TERMINAL:
+# #1: either -s (start), or -e (end).
+# $2+: strings that are keys in the xts dictionary.
+termput() {
+   payload=''
+   for key in "${@:2}"
+   do case $1 in
+      "-s"|"--start") payload+="${xts[$key]}" ;;
+      "-e"|"--end"  ) payload+="${xte[$key]}" ;;
+   esac done
+   echo -ne "\033[$payload""m"
+   unset payload
+   return 0
+}
+
+# ASSIGN-TO-STRING FUNCTION:
+# $1:  the variable name where result will be stored.
+# $2:  text to enclose with the following specified formatting.
+# $3+: strings that are keys in the xts dictionary.
+termassign() {
+   printf -v "$1" `termput --start "${@:3}"`"$2"`termput --end "${@:3}"`
+}
+
+# PRINT FUNCTION:
+# $1:  text to enclose with the following specified formatting.
+# $2+: strings that are keys in the xts dictionary.
+termsection() {
+   termput --start "${@:2}"
+   echo -ne "$1"
+   termput --end "${@:2}"
+}
+
