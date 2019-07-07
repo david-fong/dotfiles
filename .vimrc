@@ -6,3 +6,5 @@ set nu
 set rnu
 set mouse=a
 
+set vb t_vb=
+
