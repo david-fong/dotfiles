@@ -46,13 +46,18 @@ numdirents() {
    echo -n "$num"
 }
 yes() {
-   local -ar colors=(red yellow green cyan blue magenta)
+   local -a colors=(red yellow green cyan blue magenta)
    local -i i=0
+   while [[ i -lt "${#colors[@]}" ]]; do
+      colors["$i"]=`ansicode sgr start "${colors[$i]}"`
+      i+=1
+   done; i=0; readonly colors
    local payload="$1"
    readonly payload="${payload:=y\n}"
+   trap 'echo -ne "\033[0m"; trap - SIGINT; return 0' SIGINT
    while : #sleep '0.01'
    do
-      ansicode sgr enclose "$payload" "${colors[$i]}"
+      echo -ne "${colors[$i]}""$payload"
       let i="($i+1)"%"${#colors[@]}"
    done
 }

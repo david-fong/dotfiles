@@ -1,27 +1,83 @@
 
 # author: David Fong
 # used in ./timetable
+# prefer subshell execution rather than sourcing.
 
 
-declare -i course
-declare -i section
+declare -f select_dept
 
-# get course id tokens through user input:
-termassign prompt 'Enter a course ID: ' yellow
-promptCourseID() { read -erp "$prompt" dept course section }
-promptCourseID
 
-# nag the user if the format of <readline> was unexpected:
-while [${#course} -lt 3] || [${#section} -lt 3]
-do
-   termsection '  course and section must be 3-digit numbers.' red
+# $1: abbreviated department name (ex 'cpen').
+# prints an array of 'course;desc' entries to stdout
+select_dept() {
+   [[ -z "$1" ]] && return 1
+   local url='https://courses.students.ubc.ca/cs/courseschedule'
+   readonly url+='?pname=subjarea&tname=subj-department'
+   local raw_html=`curl -s "$url"'&dept='"$1"`
+
+   raw_html="${raw_html#*<tbody>}"
+   raw_html="${raw_html%</tbody>*}"
+   readonly raw_html
+   echo "$raw_html"
+   
+   local prog='BEGIN{RS = "</tr>"};'
+   prog+='{gsub("<[^<>]*>"," ");'
+   prog+='printf "[%2d]=\'", RSi;'
+   prog+='printf "| %4s %-4s |", $1, $2;'
+   prog+='for(i=3; i <=NF; i++) printf " %s", $i;'
+   prog+='printf "\'\n";}'
+   echo "$raw_html" | awk -- "$prog" -
+}
+
+
+timetable_init_course() {
+   local -u dept
+   local -i course
+   local -i section
+   
+   # Get course id tokens through user input:
+   promptCourseID() {
+      local -r prompt=`ansicode sgr enclose 'Enter a course ID: ' yellow`
+      read -erp "$prompt" dept course section
+   }
+   local promptCourseID
    promptCourseID
-done
+   
+   # Nag the user if the format of <readline> was unexpected:
+   local errorformat='course and section must be 3-digit numbers.'
+   while [[ "${#course}" -lt 3 || "${#section}" -lt 3 ]]
+   do
+      ansicode sgr enclose "$errorformat"'\n\n' red
+      promptCourseID
+   done
+   unset -f promptCourseID
+   unset -v errorformat
+   
+   # Fetch UBC's registration page for this course as html:
+   local url='https://courses.students.ubc.ca/cs/courseschedule'
+   url+='?pname=subjarea&tname=subj-section'
+   url+="&dept=$dept""&course=$course&""section=$section"
+   local raw_html=`curl -s "$url"`
+   raw_html="${raw_html#*Save To Worklist</a>}"
+   raw_html="${raw_html%<b>Book Summary*}"
+   readonly raw_html
+   echo "$raw_html"
 
-# fetch UBC's registration page for this course as html:
-url='https://courses.students.ubc.ca/cs/courseschedule'
-url+='?pname=subjarea&tname=subj-section'
-declare -r query "&dept=$dept""&course=$course&""section=$section"
-raw_html=`curl -s "$url""$query"`
+   # Process Course Info:
+   local course_title="${raw_html%%</h5>*}"
+   readonly course_title="${course_title#*<h5>}"
+   ansicode sgr enclose "$course_title"'\n\n' bold blue
+   local course_desc="${raw_html%%</p>*}"
+   readonly course_desc="${course_desc#*<p>}"
+   ansicode sgr enclose "$course_desc" blue
 
+   # Process Section Info:
+   :
+   
+   # delete unneeded variables:
+   unset -v dept course section
+   
+}
+#timetable_init
+#unset -f timetable_init
 

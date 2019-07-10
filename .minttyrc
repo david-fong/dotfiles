@@ -40,20 +40,20 @@ BoldBlack=41,41,41
 White=210,210,210
 BoldWhite=255,255,255
 
-Red=227,71,131
+Red=247,82,135
 Green=131,227,71
-Blue=71,131,227
+Blue=78,129,237
 
-BoldRed=232,101,151
+BoldRed=255,107,155
 BoldGreen=151,232,101
-BoldBlue=101,151,232
+BoldBlue=99,149,255
 
 Cyan=71,227,168
-Magenta=168,71,227
-Yellow=219,200,72
+Magenta=176,71,214
+Yellow=235,208,77
 
 BoldCyan=101,232,182
-BoldMagenta=182,101,232
-BoldYellow=223,207,98
+BoldMagenta=199,86,240
+BoldYellow=255,229,97
 
 
