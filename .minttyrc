@@ -20,8 +20,9 @@ BoldAsColour=yes
 BoldAsFont=-1
 BoldAsRainbowSparkles=true
 
-BellFreq=440
-BellLen=1000000
+BellFreq=880
+BellLen=300
+BellInterval=1200
 
 Transparency=medium
 OpaqueWhenFocused=no
@@ -37,8 +38,8 @@ ZoomMouse=no
 Black=24,24,24
 BoldBlack=41,41,41
 
-White=210,210,210
-BoldWhite=255,255,255
+White=200,200,200
+BoldWhite=235,235,235
 
 Red=247,82,135
 Green=131,227,71
@@ -46,7 +47,7 @@ Blue=78,129,237
 
 BoldRed=255,107,155
 BoldGreen=151,232,101
-BoldBlue=99,149,255
+BoldBlue=95,142,255
 
 Cyan=71,227,168
 Magenta=176,71,214

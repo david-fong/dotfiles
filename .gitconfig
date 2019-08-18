@@ -1,0 +1,11 @@
+[user]
+	name = david-fong
+	email = davidfong19@gmail.com
+[core]
+	editor = vim
+[winUpdater]
+	recentlySeenVersion = 2.22.0.windows.1
+[alias]
+    fall = "!echo; git fetch -v --all && (echo \"\n=== BRANCHES ================================================================================================\"; git branch -avv)"
+    graph = "!echo; git log --graph --oneline -n 49"
+    yes = "!yes"

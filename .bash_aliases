@@ -7,24 +7,42 @@
 # REGULAR USE:
 # ------------------------------------------------------
 alias rm='\rm -I'
-alias cyclelogin='exec "$0" "$@" && clear'
+alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
+alias hd='xxd -e -g4 -c32'
+alias grep='\grep --line-number --color=auto'
+alias search='grep --recursive --ignore-case --byte-offset --include="*.java" --extended-regexp'
+alias cyclelogin='\exec "$0" "$@"; greeting; lsa'
+alias greeting='\echo -e "\033c\n`date`\n"'
 
 alias ls='\ls -CX --color=auto --group-directories-first'
 alias lss='ls --width=70'
 lsa() {
    tput rmam
-   lss "$@" -o --almost-all --human-readable
+   ls "$@" -o --almost-all --human-readable
    tput smam
    return 0
 }
 alias clss='clear; lss'
-alias clsa='clear; lsa'
+alias clsa='greeting; lsa'
 
 alias lst='lsa -tr'
-alias lsg='lsa | grep -i'
 
-alias root='\cd / && clsa'
-alias home='\cd ~; echo -e "\033c\n`date`\n"; lss --hide=[nN][tT][uU][sS]*' 
+alias root='\cd / && (greeting; lsa)'
+alias cdrive='\cd /c && (greeting; lsa)'
+home() {
+   stty -echo
+   greeting
+   gitwd() { git rev-parse --show-toplevel 2>/dev/null; }
+   if [[ -n `gitwd` && `\pwd -W` != `gitwd` ]]; then
+      \cd `gitwd`
+      lsa
+   else
+      \cd ~
+      lss --hide=[nN][tT][uU][sS]*
+   fi
+   unset gitwd
+   stty echo
+}
 alias school='\cd ~/Documents/UBC/YEAR3/SEM1/ && clsa'
 alias e='\cd .. && lss'
 cdd() {
@@ -43,7 +61,7 @@ numdirents() {
    local -i num="${#dirents}"
    dirents=(.*)
    num+="${#dirents}"
-   echo -n "$num"
+   echo -n "$((num-2))"
 }
 yes() {
    local -a colors=(red yellow green cyan blue magenta)
@@ -52,7 +70,7 @@ yes() {
       colors["$i"]=`ansicode sgr start "${colors[$i]}"`
       i+=1
    done; i=0; readonly colors
-   local payload="$1"
+   local payload="$@"
    readonly payload="${payload:=y\n}"
    trap 'echo -ne "\033[0m"; trap - SIGINT; return 0' SIGINT
    while : #sleep '0.01'
@@ -64,5 +82,5 @@ yes() {
 
 
 # disable writes to functions:
-readonly -f lsa cdd numdirents yes
+readonly -f lsa home cdd numdirents yes
 

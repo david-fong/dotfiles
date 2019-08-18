@@ -10,9 +10,9 @@ then
 	. ~/.config/git/git-prompt.sh
 else
 	PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n' # set window title
-	PS1="$PS1"'\[\033[32m\]\u@\h' # green  : user
-	PS1="$PS1"' \[\033[34m\]\@'   # blue   : time
-	PS1="$PS1"' \[\033[33m\]\w'   # yellow : path
+	PS1="$PS1"'\[\033[32m\]\u@\h'            # green  : user
+	PS1="$PS1"' \[\033[1;34m\]\@\[\033[22m'  # blue   : time
+	PS1="$PS1"' \[\033[33m\]\w'              # yellow : path
 	if test -z "$WINELOADERNOEXEC"
 	then
 		GIT_EXEC_PATH="$(git --exec-path 2>/dev/null)"
@@ -23,13 +23,10 @@ else
 		then
 			. "$COMPLETION_PATH/git-completion.bash"
 			. "$COMPLETION_PATH/git-prompt.sh"
-			PS1="$PS1"'\[\033[36m\]'  # change color to cyan
-			PS1="$PS1"'`__git_ps1`'   # bash function
+			PS1="$PS1"'\[\033[36m\]`__git_ps1`' # change color to cyan
 		fi
 	fi
-	PS1="$PS1"'\[\033[0m\]'        # change color
-	PS1="$PS1"'\n'                 # new line
-	PS1="$PS1"'$ '                 # prompt: always $
+	PS1="$PS1"'\[\033[0m\]\n$ '
 fi
 
 MSYS2_PS1="$PS1"               # for detection by MSYS2 SDK's bash.basrc
