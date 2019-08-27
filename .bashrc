@@ -14,12 +14,16 @@ HISTCONTROL=ignoredups:ignorespace
 HISTSIZE=1000
 HISTFILESIZE=1500
 
+declare -rx MY_CURRENT_PERSONAL_PROJECT_HOME=~/"IdeaProjects/ucst"
+export LINES # <- the only way .gitconfig can see environment variables
+export COLUMNS
+
 [ -f ~/.myscripts/ansicode ] && . ~/.myscripts/ansicode
 [ -f ~/.myscripts/heading ] && . ~/.myscripts/heading
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 # also see /etc/profile.d/git-prompt.sh
 
 # go to the user's home directory:
-[ $PWD = '/' ] && home
+[ "$PWD" = '/' ] && home
 stty echo
 

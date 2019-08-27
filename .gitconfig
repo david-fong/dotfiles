@@ -4,8 +4,18 @@
 [core]
 	editor = vim
 [winUpdater]
-	recentlySeenVersion = 2.22.0.windows.1
+    recentlySeenVersion = 2.22.0.windows.1
+[merge]
+    tool = vimdiff
 [alias]
-    fall = "!echo; git fetch -v --all && (echo \"\n=== BRANCHES ================================================================================================\"; git branch -avv)"
-    graph = "!echo; git log --graph --oneline -n 49"
+    fall = "!f() { \
+        echo   \"=== REMOTES ==============================================================================================================\"; \
+        git fetch -v --all; \
+        echo \"\n=== BRANCHES =============================================================================================================\"; \
+        git branch -avv; \
+    }; f"
+    graph = "!f() { \
+        echo; \
+        git log --oneline --graph --all --decorate --color=always -n\"$((LINES-4))\" | head -n\"$((LINES-4))\"; \
+    }; f;"
     yes = "!yes"

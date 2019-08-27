@@ -6,13 +6,26 @@
 # ------------------------------------------------------
 # REGULAR USE:
 # ------------------------------------------------------
-alias rm='\rm -I'
+alias rm='\rm -I --verbose'
+
 alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
 alias hd='xxd -e -g4 -c32'
-alias grep='\grep --line-number --color=auto'
-alias search='grep --recursive --ignore-case --byte-offset --include="*.java" --extended-regexp'
-alias cyclelogin='\exec "$0" "$@"; greeting; lsa'
+alias grep='\grep --line-number --text --extended-regexp --color=auto'
+alias search='grep --recursive --byte-offset --include="*.java"'
+
+alias cyclelogin='\exec "$0" "$@"; flsa'
 alias greeting='\echo -e "\033c\n`date`\n"'
+todo() {
+   local -r todopath=~/".todo"
+   if [[ "$1" = '-e' ]]
+   then
+      cat "$todopath"
+      return
+   else
+      vim "$todopath"
+   fi
+}
+alias todoe='todo -e'
 
 alias ls='\ls -CX --color=auto --group-directories-first'
 alias lss='ls --width=70'
@@ -22,13 +35,12 @@ lsa() {
    tput smam
    return 0
 }
-alias clss='clear; lss'
 alias clsa='greeting; lsa'
 
-alias lst='lsa -tr'
-
-alias root='\cd / && (greeting; lsa)'
-alias cdrive='\cd /c && (greeting; lsa)'
+alias root='\cd / && (clsa)'
+alias cdrive='\cd /c && (clsa)'
+alias sandbox='\cd ~/"Documents/test/GitSandbox" && (clsa)'
+alias project='\cd "$MY_CURRENT_PERSONAL_PROJECT_HOME" && (clsa)'
 home() {
    stty -echo
    greeting
@@ -43,8 +55,12 @@ home() {
    unset gitwd
    stty echo
 }
-alias school='\cd ~/Documents/UBC/YEAR3/SEM1/ && clsa'
-alias e='\cd .. && lss'
+alias school='\cd ~/Documents/UBC/YEAR3/SEM1/ && (clsa)'
+alias e='\cd .. && (clsa)'
+alias ee='\cd ../.. && (clsa)'
+alias eee='\cd ../../.. && (clsa)'
+alias eeee='\cd ../../../.. && (clsa)'
+alias eeeee='\cd ../../../../.. && (clsa)'
 cdd() {
    cd "$@" && ls
 }
@@ -82,5 +98,5 @@ yes() {
 
 
 # disable writes to functions:
-readonly -f lsa home cdd numdirents yes
+readonly -f todo lsa home cdd numdirents yes
 
