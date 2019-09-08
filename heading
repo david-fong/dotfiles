@@ -1,0 +1,17 @@
+
+# author: David Fong
+
+# $1: string for heading text
+heading() {
+   local payload="$1"
+   [ "$payload" ] && payload=' '"$payload"' '
+   local line=''
+   local -ri payloadlen="${#payload}"
+   printf -v line '%*s' "$((COLUMNS-payloadlen-3))"
+   line="${line// /=}"
+   echo -ne '==='"$payload"
+   printf '%s\n' "$line"
+}
+readonly -f heading
+export -f heading
+

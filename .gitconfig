@@ -13,9 +13,12 @@
         git fetch -v --all; \
         echo \"\n=== BRANCHES =============================================================================================================\"; \
         git branch -avv; \
-    }; f"
+    }; f;"
     graph = "!f() { \
         echo; \
-        git log --oneline --graph --all --decorate --color=always -n\"$((LINES-4))\" | head -n\"$((LINES-4))\"; \
+        tput rmam; \
+        git log --oneline --graph --all --decorate --color=always -n\"$((LINES-1-PSLINES))\" | head -n\"$((LINES-1-PSLINES))\"; \
+        tput smam; \
     }; f;"
     yes = "!yes"
+    heading = "!heading hi"

@@ -2,26 +2,31 @@
 # exit if not running interactively:
 [ -z PS1 ] && return
 
-# Not related, but here in case I forget what I did:
+# Not related, but written here in case I forget what I did:
 # Computer\HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer\NoUninstallFromStart
 
 stty -echo
-readonly PS1
 clear
+readonly PS1
+declare -rxi PSLINES=`echo -e "$PS1" | wc --lines`
 
 shopt -s histappend
 HISTCONTROL=ignoredups:ignorespace
 HISTSIZE=1000
 HISTFILESIZE=1500
 
-declare -rx MY_CURRENT_PERSONAL_PROJECT_HOME=~/"IdeaProjects/ucst"
-export LINES # <- the only way .gitconfig can see environment variables
-export COLUMNS
+declare -rx PERSONAL_PROJECT_HOME=~/"IdeaProjects/ucst"
+export LINES COLUMNS # <- the only way .gitconfig can see environment variables
 
-[ -f ~/.myscripts/ansicode ] && . ~/.myscripts/ansicode
-[ -f ~/.myscripts/heading ] && . ~/.myscripts/heading
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/'.myscripts/ansicode' ] && source ~/'.myscripts/ansicode'
+[ -f ~/'.myscripts/heading' ] && source ~/'.myscripts/heading'
+[ -f ~/'.bash_aliases' ] && source ~/'.bash_aliases'
+[ -f ~/'.bash_aliases_local' ] && source ~/'.bash_aliases_local'
 # also see /etc/profile.d/git-prompt.sh
+# note: can open control panel with windows + pause/break
+
+# startup the ssh agent:
+[ "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
 
 # go to the user's home directory:
 [ "$PWD" = '/' ] && home

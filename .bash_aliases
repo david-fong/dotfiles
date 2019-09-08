@@ -6,15 +6,23 @@
 # ------------------------------------------------------
 # REGULAR USE:
 # ------------------------------------------------------
-alias rm='\rm -I --verbose'
+alias als='vim '~/'.bash_aliases'
+alias greeting='\echo -e "\033c\n`date`\n"'
+alias cyclelogin='\exec "$0" "$@"; clsa'
 
-alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
+alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
 alias grep='\grep --line-number --text --extended-regexp --color=auto'
 alias search='grep --recursive --byte-offset --include="*.java"'
+alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
+manifest() {
+   local -ra choices=`find -type f -name "*.jar"`
+   [[ "${#choices}" -le 0 ]] && return 1
+   select jarchoice in ${choices[@]}; do
+      [[ "$jarchoice" ]] && unzip -qc "$jarchoice" META-INF/MANIFEST.MF
+   done
+}
 
-alias cyclelogin='\exec "$0" "$@"; flsa'
-alias greeting='\echo -e "\033c\n`date`\n"'
 todo() {
    local -r todopath=~/".todo"
    if [[ "$1" = '-e' ]]
@@ -27,6 +35,7 @@ todo() {
 }
 alias todoe='todo -e'
 
+# LISTING DIRECTORY CONTENTS:
 alias ls='\ls -CX --color=auto --group-directories-first'
 alias lss='ls --width=70'
 lsa() {
@@ -37,10 +46,11 @@ lsa() {
 }
 alias clsa='greeting; lsa'
 
+
+# BOOKMARKED DIRECTORIES & DIRECTORY NAVIGATION:
 alias root='\cd / && (clsa)'
 alias cdrive='\cd /c && (clsa)'
-alias sandbox='\cd ~/"Documents/test/GitSandbox" && (clsa)'
-alias project='\cd "$MY_CURRENT_PERSONAL_PROJECT_HOME" && (clsa)'
+[ "$PERSONAL_PROJECT_HOME" ] && alias project='\cd "$PERSONAL_PROJECT_HOME" && (clsa)'
 home() {
    stty -echo
    greeting
@@ -55,7 +65,6 @@ home() {
    unset gitwd
    stty echo
 }
-alias school='\cd ~/Documents/UBC/YEAR3/SEM1/ && (clsa)'
 alias e='\cd .. && (clsa)'
 alias ee='\cd ../.. && (clsa)'
 alias eee='\cd ../../.. && (clsa)'
@@ -95,7 +104,6 @@ yes() {
       let i="($i+1)"%"${#colors[@]}"
    done
 }
-
 
 # disable writes to functions:
 readonly -f todo lsa home cdd numdirents yes
