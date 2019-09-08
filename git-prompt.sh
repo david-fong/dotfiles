@@ -1,16 +1,10 @@
-if test -f /etc/profile.d/git-sdk.sh
-then
-	TITLEPREFIX=SDK-${MSYSTEM#MINGW}
-else
-	TITLEPREFIX=$MSYSTEM
-fi
-
+# https://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/bash-prompt-escape-sequences.html
 if test -f ~/.config/git/git-prompt.sh
 then
 	. ~/.config/git/git-prompt.sh
 else
-	PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n' # set window title
-	PS1="$PS1"'\[\033[32m\]\u@\h'            # green  : user
+	PS1='\[\033]0;\u@\H : $PWD\007\]\n' # set window title
+	PS1="$PS1"'\[\033[32m\]\u@\H'"'"'$SHLVL'   # green  : user
 	PS1="$PS1"' \[\033[1;34m\]\@\[\033[22m'  # blue   : time
 	PS1="$PS1"' \[\033[33m\]\w'              # yellow : path
 	if test -z "$WINELOADERNOEXEC"
@@ -29,7 +23,7 @@ else
 	PS1="$PS1"'\[\033[0m\]\n$ '
 fi
 
-MSYS2_PS1="$PS1"               # for detection by MSYS2 SDK's bash.basrc
+MSYS2_PS1="$PS1" # for detection by MSYS2 SDK's bash.basrc
 
 # Evaluate all user-specific Bash completion scripts (if any)
 if test -z "$WINELOADERNOEXEC"
