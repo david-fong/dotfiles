@@ -1,0 +1,26 @@
+[Configuration]
+FontName=DejaVu Sans Mono 10
+MiscAlwaysShowTabs=FALSE
+MiscBell=FALSE
+MiscBordersDefault=TRUE
+MiscCursorBlinks=FALSE
+MiscCursorShape=TERMINAL_CURSOR_SHAPE_BLOCK
+MiscDefaultGeometry=100x40
+MiscInheritGeometry=FALSE
+MiscMenubarDefault=TRUE
+MiscMouseAutohide=FALSE
+MiscToolbarDefault=FALSE
+MiscConfirmClose=TRUE
+MiscCycleTabs=TRUE
+MiscTabCloseButtons=TRUE
+MiscTabCloseMiddleClick=TRUE
+MiscTabPosition=GTK_POS_TOP
+MiscHighlightUrls=TRUE
+MiscScrollAlternateScreen=TRUE
+CommandLoginShell=TRUE
+ColorPalette=#000000000000;#f7f752528a8a;#8383e3e34747;#ebebd0d04d4d;#4e4e8181eded;#b0b04747d6d6;#4747e3e3a8a8;#c8c8c8c8c8c8;#555557575353;#ffff6b6b9b9b;#9797e8e86565;#fcfce9e94f4f;#5f5f8e8ef1f1;#c7c75656f0f0;#6565e8e8b6b6;#ffffffffffff
+ScrollingBar=TERMINAL_SCROLLBAR_NONE
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+BackgroundDarkness=0.800000
+ColorBackground=#050514142323
+

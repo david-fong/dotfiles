@@ -26,7 +26,7 @@ BellInterval=1200
 
 Transparency=medium
 OpaqueWhenFocused=no
-BackgroundColour=5,20,35
+BackgroundColour=#051423
 ForegroundColour=228,234,237
 
 CursorType=line
@@ -35,26 +35,26 @@ Scrollbar=none
 ZoomMouse=no
 
 
-Black=24,24,24
-BoldBlack=41,41,41
+Black       =#181818
+BoldBlack   =#282828
 
-White=200,200,200
-BoldWhite=235,235,235
+White       =#C0C0C0
+BoldWhite   =#FFFFFF
 
-Red=247,82,135
-Green=131,227,71
-Blue=78,129,237
+Red         =#F7528A
+Green       =#83E347
+Blue        =#4E81ED
 
-BoldRed=255,107,155
-BoldGreen=151,232,101
-BoldBlue=95,142,255
+BoldRed     =#FF6B9B
+BoldGreen   =#97E865
+BoldBlue    =#5F8EF1
 
-Cyan=71,227,168
-Magenta=176,71,214
-Yellow=235,208,77
+Cyan        =#47E3A8
+Magenta     =#B047D6
+Yellow      =#EBD04D
 
-BoldCyan=101,232,182
-BoldMagenta=199,86,240
-BoldYellow=255,229,97
+BoldCyan    =#65E8B6
+BoldMagenta =#C756F0
+BoldYellow  =#FFE500
 
 

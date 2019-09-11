@@ -9,16 +9,18 @@
     tool = vimdiff
 [alias]
     fall = "!f() { \
-        echo   \"=== REMOTES ==============================================================================================================\"; \
+        tput rmam; \
+        heading \"REMOTES\"; \
         git fetch -v --all; \
-        echo \"\n=== BRANCHES =============================================================================================================\"; \
+        echo; \
+        heading \"BRANCHES\"; \
         git branch -avv; \
-    }; f;"
+        tput smam; \
+        }; f;"
     graph = "!f() { \
         echo; \
         tput rmam; \
-        git log --oneline --graph --all --decorate --color=always -n\"$((LINES-1-PSLINES))\" | head -n\"$((LINES-1-PSLINES))\"; \
+        git log --oneline --graph --all --decorate --color=always -n\"$((LINES-1-PSLINES))\" | head -n\"$((LINES-1-PSLINES))\";  \
         tput smam; \
-    }; f;"
-    yes = "!yes"
-    heading = "!heading hi"
+        }; f;"
+
