@@ -6,7 +6,6 @@
 # ------------------------------------------------------
 # REGULAR USE:
 # ------------------------------------------------------
-alias als='vim '~/'.bash_aliases'
 alias greeting='\echo -e "\033c\n`date`\n"'
 alias cyclelogin='\exec "$0" "$@"; clsa'
 
@@ -23,12 +22,22 @@ manifest() {
    done
 }
 
+vim() {
+   local -r STTYOPTS=`stty --save`
+   # temporarily disable the terminal's control+S behaviour:
+   stty stop '' -ixoff
+   # start vim in insert mode:
+   command vim +star "$@"
+   stty "$STTYOPTS"
+}
 todo() {
    local -r todopath=~/".todo"
    if [[ "$1" = '-e' ]]
    then
+      echo; heading "TODO"
+      tput rmam
       cat "$todopath"
-      return
+      tput smam
    else
       vim "$todopath"
    fi
@@ -37,7 +46,6 @@ alias todoe='todo -e'
 
 # LISTING DIRECTORY CONTENTS:
 alias ls='\ls -CX --color=auto --group-directories-first'
-alias lss='ls --width=70'
 lsa() {
    tput rmam
    ls "$@" -o --almost-all --human-readable
@@ -54,25 +62,18 @@ alias cdrive='\cd /c && (clsa)'
 home() {
    stty -echo
    greeting
-   gitwd() { git rev-parse --show-toplevel 2>/dev/null; }
-   if [[ -n `gitwd` && `\pwd -W` != `gitwd` ]]; then
-      \cd `gitwd`
-      lsa
-   else
-      \cd ~
-      lss --hide=[nN][tT][uU][sS]*
-   fi
+   \cd ~
+   ls --width=70 --hide=[nN][tT][uU][sS]*
    unset gitwd
    stty echo
 }
+alias githome='\cd `git rev-parse --show-toplevel 2>/dev/null` && (clsa)'
 alias e='\cd .. && (clsa)'
 alias ee='\cd ../.. && (clsa)'
 alias eee='\cd ../../.. && (clsa)'
 alias eeee='\cd ../../../.. && (clsa)'
 alias eeeee='\cd ../../../../.. && (clsa)'
-cdd() {
-   cd "$@" && ls
-}
+
 
 
 # ------------------------------------------------------
@@ -105,6 +106,8 @@ yes() {
    done
 }
 
-# disable writes to functions:
-readonly -f todo lsa home cdd numdirents yes
+
+# make functions unmodifiable:
+readonly -f manifest vim todo lsa home numdirents yes
+export      manifest vim todo lsa home numdirents yes
 
