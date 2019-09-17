@@ -4,6 +4,7 @@
 
 # Not related, but written here in case I forget what I did:
 # Computer\HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer\NoUninstallFromStart
+# right-click recycle bin and check the "prompt before moving to recycle-bin" box
 
 stty -echo
 clear
@@ -27,6 +28,9 @@ alias bashrc='vim ~/.bashrc'
 alias vimrc='vim ~/.vimrc'
 alias als='vim ~/.bash_aliases'
 alias alsl='vim ~/.bash_aliases_local'
+
+export EDITOR='vim'
+export CSCOPE_EDITOR='vim'
 
 # also see /etc/profile.d/git-prompt.sh
 # random note: can open control panel with windows + pause/break

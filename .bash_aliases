@@ -26,8 +26,7 @@ vim() {
    local -r STTYOPTS=`stty --save`
    # temporarily disable the terminal's control+S behaviour:
    stty stop '' -ixoff
-   # start vim in insert mode:
-   command vim +star "$@"
+   command vim "$@" #'+star' start vim in insert mode:
    stty "$STTYOPTS"
 }
 todo() {
@@ -37,6 +36,7 @@ todo() {
       echo; heading "TODO"
       tput rmam
       cat "$todopath"
+      heading
       tput smam
    else
       vim "$todopath"
@@ -56,9 +56,9 @@ alias clsa='greeting; lsa'
 
 
 # BOOKMARKED DIRECTORIES & DIRECTORY NAVIGATION:
-alias root='\cd / && (clsa)'
-alias cdrive='\cd /c && (clsa)'
-[ "$PERSONAL_PROJECT_HOME" ] && alias project='\cd "$PERSONAL_PROJECT_HOME" && (clsa)'
+alias root='\cd / && clsa'
+alias cdrive='\cd /c && clsa'
+[ "$PERSONAL_PROJECT_HOME" ] && alias project='\cd "$PERSONAL_PROJECT_HOME" && clsa'
 home() {
    stty -echo
    greeting
@@ -67,12 +67,12 @@ home() {
    unset gitwd
    stty echo
 }
-alias githome='\cd `git rev-parse --show-toplevel 2>/dev/null` && (clsa)'
-alias e='\cd .. && (clsa)'
-alias ee='\cd ../.. && (clsa)'
-alias eee='\cd ../../.. && (clsa)'
-alias eeee='\cd ../../../.. && (clsa)'
-alias eeeee='\cd ../../../../.. && (clsa)'
+alias githome='\cd `git rev-parse --show-toplevel 2>/dev/null` && clsa'
+alias e='\cd .. && clsa'
+alias ee='\cd ../.. && clsa'
+alias eee='\cd ../../.. && clsa'
+alias eeee='\cd ../../../.. && clsa'
+alias eeeee='\cd ../../../../.. && clsa'
 
 
 

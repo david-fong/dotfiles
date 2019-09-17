@@ -1,5 +1,4 @@
 
-
 Term=xterm
 AllowBlinking=yes
 FontSmoothing=none
@@ -17,7 +16,7 @@ FontWeight=400
 
 FontIsBold=no
 BoldAsColour=yes
-BoldAsFont=-1
+BoldAsFont=no
 BoldAsRainbowSparkles=true
 
 BellFreq=880
@@ -29,7 +28,7 @@ OpaqueWhenFocused=no
 BackgroundColour=#051423
 ForegroundColour=228,234,237
 
-CursorType=line
+CursorType=Underscore
 CursorColour=255,255,255
 Scrollbar=none
 ZoomMouse=no
@@ -56,5 +55,4 @@ Yellow      =#EBD04D
 BoldCyan    =#65E8B6
 BoldMagenta =#C756F0
 BoldYellow  =#FFE500
-
 

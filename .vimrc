@@ -18,8 +18,12 @@ set rnu
 if exists('+breakindent')
     set breakindent
 endif
-let &showbreak = '↳ '
+"↳ 
+let &showbreak = '> '
 set mouse=a
+
+let &statusline = '%f%h%m%r [%{&ff}] (%{strftime("%H:%M %d/%m/%Y",getftime(expand("%:p")))})%=%l,%c%V %P'
+set laststatus=2
 
 "no seizures, please T^T
 set vb t_vb=
