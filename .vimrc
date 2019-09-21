@@ -22,7 +22,7 @@ endif
 let &showbreak = '> '
 set mouse=a
 
-let &statusline = '%f%h%m%r [%{&ff}] (%{strftime("%H:%M %d/%m/%Y",getftime(expand("%:p")))})%=%l,%c%V %P'
+let &statusline = '%f%h%m%r %y[%{&ff}] (%{strftime("%H:%M %d/%m/%Y",getftime(expand("%:p")))})%=%l,%c%V %P'
 set laststatus=2
 
 "no seizures, please T^T

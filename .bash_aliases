@@ -22,6 +22,7 @@ manifest() {
    done
 }
 
+alias cim='vim' # typing is hard.
 vim() {
    local -r STTYOPTS=`stty --save`
    # temporarily disable the terminal's control+S behaviour:
@@ -48,6 +49,7 @@ alias todoe='todo -e'
 alias ls='\ls -CX --color=auto --group-directories-first'
 lsa() {
    tput rmam
+   echo
    ls "$@" -o --almost-all --human-readable
    tput smam
    return 0
