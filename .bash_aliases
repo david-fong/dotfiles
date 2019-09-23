@@ -11,6 +11,7 @@ alias cyclelogin='\exec "$0" "$@"; clsa'
 
 alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
+alias jobs='jobs -l'
 alias grep='\grep --line-number --text --extended-regexp --color=auto'
 alias search='grep --recursive --byte-offset --include="*.java"'
 alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
@@ -82,7 +83,7 @@ alias eeeee='\cd ../../../../.. && clsa'
 # JUST FOR KICKS:
 # ------------------------------------------------------
 alias ohno='\cat /dev/random'
-alias pasta='\cat /dev/clipboard'
+alias paste='\cat /dev/clipboard'
 alias soundcheck='\echo -ne "\a"'
 numdirents() {
    local -a dirents=(*)
