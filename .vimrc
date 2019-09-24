@@ -1,4 +1,7 @@
 
+set encoding=utf-8
+scriptencoding utf-8
+
 set autoindent
 set tabstop=4
 set shiftwidth=4
@@ -37,8 +40,10 @@ hi LineNr ctermfg=gray
 if exists('+linebreak')
     set linebreak
     set showbreak=>>>\ "
-    set breakindent
-    set breakindentopt=shift:2
+    if exists('+breakindent')
+        set breakindent
+        set breakindentopt=shift:2
+    endif
     noremap <UP> g<UP>
     noremap <DOWN> g<DOWN>
 endif
@@ -46,7 +51,11 @@ endif
 
 
 " whitespace indicators: ------------------------
-set listchars=tab:▸\ ,trail:·
+if has("patch-7.4.710")
+    set listchars=tab:▸\ ,trail:·
+else
+    set listchars=tab:>\ ,trail:-
+endif
 set list
 
 
