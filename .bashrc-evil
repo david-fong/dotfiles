@@ -1,8 +1,0 @@
-
-stty erase ' ' # delete with space-key
-stty eof 0x7f  # close terminal with backspace-key
-
-enable -n enable cd echo
-
-# kill -s KILL $$
-
