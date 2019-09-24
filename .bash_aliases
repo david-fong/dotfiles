@@ -50,7 +50,6 @@ alias todoe='todo -e'
 alias ls='\ls -CX --color=auto --group-directories-first'
 lsa() {
    tput rmam
-   echo
    ls "$@" -o --almost-all --human-readable
    tput smam
    return 0
@@ -61,6 +60,7 @@ alias clsa='greeting; lsa'
 # BOOKMARKED DIRECTORIES & DIRECTORY NAVIGATION:
 alias root='\cd / && clsa'
 alias cdrive='\cd /c && clsa'
+declare -rx PERSONAL_PROJECT_HOME=~/"IdeaProjects/ucst"
 [ "$PERSONAL_PROJECT_HOME" ] && alias project='\cd "$PERSONAL_PROJECT_HOME" && clsa'
 home() {
    stty -echo
@@ -108,9 +108,20 @@ yes() {
       let i="($i+1)"%"${#colors[@]}"
    done
 }
+# $1: string for heading text
+heading() {
+   local payload="$1"
+   [ "$payload" ] && payload=' '"$payload"' '
+   local line=''
+   local -ri payloadlen="${#payload}"
+   printf -v line '%*s' "$((COLUMNS-payloadlen-3))"
+   line="${line// /=}"
+   echo -ne '==='"$payload"
+   printf '%s\n' "$line"
+}
 
 
 # make functions unmodifiable:
-readonly -f manifest vim todo lsa home numdirents yes
-export      manifest vim todo lsa home numdirents yes
+readonly -f manifest vim todo lsa home numdirents yes heading
+export      manifest vim todo lsa home numdirents yes heading
 

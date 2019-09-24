@@ -5,10 +5,9 @@
 # Not related, but written here in case I forget what I did:
 # Computer\HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer\NoUninstallFromStart
 # right-click recycle bin and check the "prompt before moving to recycle-bin" box
+# random note: can open control panel with windows + pause/break
 
 stty -echo
-clear
-declare -rxi PSLINES=`echo -e "$PS1" | wc --lines`
 
 shopt -s globstar
 
@@ -17,11 +16,9 @@ HISTCONTROL=ignoredups:ignorespace
 HISTSIZE=1000
 HISTFILESIZE=1500
 
-declare -rx PERSONAL_PROJECT_HOME=~/"IdeaProjects/ucst"
-export LINES COLUMNS # <- the only way .gitconfig can see environment variables
+export LINES COLUMNS # <- for .gitconfig
 
 [ -f ~/'.myscripts/ansicode' ] && source ~/'.myscripts/ansicode'
-[ -f ~/'.myscripts/heading' ] && source ~/'.myscripts/heading'
 [ -f ~/'.bash_aliases' ] && source ~/'.bash_aliases'
 [ -f ~/'.bash_aliases_local' ] && source ~/'.bash_aliases_local'
 alias bashrc='vim ~/.bashrc'
@@ -32,14 +29,20 @@ alias alsl='vim ~/.bash_aliases_local'
 export EDITOR='vim'
 export CSCOPE_EDITOR='vim'
 
-# also see /etc/profile.d/git-prompt.sh
-# random note: can open control panel with windows + pause/break
-
 # startup the ssh agent:
 [ "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
 
 # go to the user's home directory:
-[ "$PWD" = '/' ] && home
+if [ "$PWD" = '/' ]
+then
+   home
+else
+   clsa
+fi
+
 readonly PS1
+declare -rix PROMPT_DIRTRIM=5
+declare -rxi PSLINES=`echo -e "$PS1" | wc --lines`
+
 stty echo
 
