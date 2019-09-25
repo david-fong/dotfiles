@@ -123,5 +123,5 @@ heading() {
 
 # make functions unmodifiable:
 readonly -f manifest vim todo lsa home numdirents yes heading
-export      manifest vim todo lsa home numdirents yes heading
+export   -f manifest vim todo lsa home numdirents yes heading
 

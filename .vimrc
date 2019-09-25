@@ -42,7 +42,7 @@ if exists('+linebreak')
     set showbreak=>>>\ "
     if exists('+breakindent')
         set breakindent
-        set breakindentopt=shift:2
+        set breakindentopt=shift:0
     endif
     noremap <UP> g<UP>
     noremap <DOWN> g<DOWN>
@@ -51,6 +51,7 @@ endif
 
 
 " whitespace indicators: ------------------------
+set list
 if has("patch-7.4.710")
     set listchars=tab:▸\ ,trail:·
 else
