@@ -24,6 +24,7 @@ manifest() {
 }
 
 alias cim='vim' # typing is hard.
+alias vimr='vim -R'
 vim() {
    local -r STTYOPTS=`stty --save`
    # temporarily disable the terminal's control+S behaviour:

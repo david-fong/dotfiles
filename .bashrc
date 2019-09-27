@@ -6,6 +6,7 @@
 # Computer\HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer\NoUninstallFromStart
 # right-click recycle bin and check the "prompt before moving to recycle-bin" box
 # random note: can open control panel with windows + pause/break
+# don't turn on "lower screen brightness in battery saving mode". seems to lock screen brightness until next computer restart.
 
 stty -echo
 
@@ -32,6 +33,11 @@ export CSCOPE_EDITOR='vim'
 # startup the ssh agent:
 [ "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
 
+# finalize prompt:
+readonly PS1
+declare -rix PROMPT_DIRTRIM=5
+declare -rxi PSLINES=`echo -e "$PS1" | wc --lines`
+
 # go to the user's home directory:
 if [ "$PWD" = '/' ]
 then
@@ -39,10 +45,6 @@ then
 else
    clsa
 fi
-
-readonly PS1
-declare -rix PROMPT_DIRTRIM=5
-declare -rxi PSLINES=`echo -e "$PS1" | wc --lines`
 
 stty echo
 

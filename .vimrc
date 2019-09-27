@@ -2,14 +2,19 @@
 set encoding=utf-8
 scriptencoding utf-8
 
-set autoindent
+set smartindent
 set tabstop=4
-set shiftwidth=4
+set softtabstop=4
+set shiftwidth=0 "use tabstop value
 set expandtab
+hi CursorLine   cterm=none    ctermfg=none
+hi CursorLineNr cterm=inverse ctermfg=white
 
 set formatoptions=tcroqlj
 set vb t_vb=
 set mouse=a
+set wildmenu
+set showcmd
 
 
 
@@ -39,7 +44,7 @@ hi LineNr ctermfg=gray
 "text wrapping: ---------------------------------
 if exists('+linebreak')
     set linebreak
-    set showbreak=>>>\ "
+    set showbreak=>>>\ "↪↳\ 
     if exists('+breakindent')
         set breakindent
         set breakindentopt=shift:0
@@ -53,9 +58,9 @@ endif
 " whitespace indicators: ------------------------
 set list
 if has("patch-7.4.710")
-    set listchars=tab:▸\ ,trail:·
+    set listchars=tab:▸\ ,trail:·,extends:»,precedes:«
 else
-    set listchars=tab:>\ ,trail:-
+    set listchars=tab:\|\ ,trail:-
 endif
 set list
 
@@ -67,6 +72,25 @@ set statusline+=%=%l,%c%V\ %P\ "
 set laststatus=2
 hi StatusLineNC ctermfg=grey
 hi StatusLineNC ctermbg=darkgrey
+
+
+
+" check for external changes (from u/weisenzahm on reddit)
+" Check for file modifications automatically (current buffer only).
+" Use :NoAutoChecktime to disable it (uses b:autochecktime)
+fun! MyAutoCheckTime()
+  " only check timestamp for normal files
+  if &buftype != '' | return | endif
+  if ! exists('b:autochecktime') || b:autochecktime
+    checktime %
+    let b:autochecktime = 1
+  endif
+endfun
+augroup MyAutoChecktime
+  au!
+  au FocusGained,BufEnter,CursorHold,CursorHoldI * call MyAutoCheckTime()
+augroup END
+command! NoAutoChecktime let b:autochecktime=0
 
 
 
