@@ -17,6 +17,14 @@ set wildmenu
 set showcmd
 
 
+" smoother scrolling:
+map <silent> <ScrollWheelUp> <C-Y>
+map <silent> <ScrollWheelDown> <C-E>
+imap <silent> <ScrollWheelUp> <C-O><C-Y>
+imap <silent> <ScrollWheelDown> <C-O><C-E>
+map <silent> <S-ScrollWheelUp> <C-U>
+map <silent> <S-ScrollWheelDown> <C-D>
+
 
 " save using ctrl+s: ----------------------------
 noremap  <silent> <C-S> :update<CR>
@@ -24,12 +32,14 @@ vnoremap <silent> <C-S> <C-C>:update<CR>gv
 inoremap <silent> <C-S> <C-O>:update<CR>
 
 
-
 " exit using ctrl+x: ----------------------------
 noremap  <silent> <C-X> :q<CR>
 vnoremap <silent> <C-X> :q<CR>
 inoremap <silent> <C-X> <ESC>:q<CR>
 
+
+" pause in normal mode: -------------------------
+inoremap <silent> <C-Z> <ESC><C-Z>
 
 
 " line numbers: ---------------------------------
@@ -40,19 +50,22 @@ hi FoldColumn ctermbg=none
 hi LineNr ctermfg=gray
 
 
-
 "text wrapping: ---------------------------------
 if exists('+linebreak')
+    set nowrap
+    augroup Markdown
+        autocmd!
+        autocmd FileType markdown setlocal wrap
+    augroup END
     set linebreak
-    set showbreak=>>>\ "↪↳\ 
+    set showbreak=>\ "↪↳\ 
     if exists('+breakindent')
         set breakindent
-        set breakindentopt=shift:0
+        set breakindentopt=shift:2
     endif
     noremap <UP> g<UP>
     noremap <DOWN> g<DOWN>
 endif
-
 
 
 " whitespace indicators: ------------------------
@@ -62,8 +75,8 @@ if has("patch-7.4.710")
 else
     set listchars=tab:\|\ ,trail:-
 endif
+"hi SpecialKey ctermfg=grey
 set list
-
 
 
 " statusline ------------------------------------
@@ -74,10 +87,9 @@ hi StatusLineNC ctermfg=grey
 hi StatusLineNC ctermbg=darkgrey
 
 
-
 " check for external changes (from u/weisenzahm on reddit)
-" Check for file modifications automatically (current buffer only).
-" Use :NoAutoChecktime to disable it (uses b:autochecktime)
+" check for file modifications automatically (current buffer only).
+" use :NoAutoChecktime to disable it (uses b:autochecktime)
 fun! MyAutoCheckTime()
   " only check timestamp for normal files
   if &buftype != '' | return | endif
@@ -91,13 +103,6 @@ augroup MyAutoChecktime
   au FocusGained,BufEnter,CursorHold,CursorHoldI * call MyAutoCheckTime()
 augroup END
 command! NoAutoChecktime let b:autochecktime=0
-
-
-
-if &diff
-    map ] ]c
-    map [ [c
-endif
 
 
 
