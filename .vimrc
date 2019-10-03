@@ -16,6 +16,10 @@ set mouse=a
 set wildmenu
 set showcmd
 
+if &diff
+syntax off
+endif
+
 
 " smoother scrolling:
 map <silent> <ScrollWheelUp> <C-Y>
@@ -36,6 +40,12 @@ inoremap <silent> <C-S> <C-O>:update<CR>
 noremap  <silent> <C-X> :q<CR>
 vnoremap <silent> <C-X> :q<CR>
 inoremap <silent> <C-X> <ESC>:q<CR>
+
+
+" close all using ctrl+q: -----------------------
+noremap  <silent> <C-Q> :qa<CR>
+vnoremap <silent> <C-Q> :qa<CR>
+inoremap <silent> <C-Q> <ESC>:qa<CR>
 
 
 " pause in normal mode: -------------------------
@@ -63,8 +73,8 @@ if exists('+linebreak')
         set breakindent
         set breakindentopt=shift:2
     endif
-    noremap <UP> g<UP>
-    noremap <DOWN> g<DOWN>
+    noremap <silent> <UP> g<UP>
+    noremap <silent> <DOWN> g<DOWN>
 endif
 
 

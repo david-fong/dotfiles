@@ -27,13 +27,13 @@ alias cim='vim' # typing is hard.
 alias vimr='vim -R'
 vim() {
    local -r STTYOPTS=`stty --save`
-   # temporarily disable the terminal's control+S behaviour:
-   stty stop '' -ixoff
+   stty stop '' -ixoff # temp disable ctrl+s
+   stty stop '' -ixon  # temp disable ctrl+q
    command vim "$@" #'+star' start vim in insert mode:
    stty "$STTYOPTS"
 }
 todo() {
-   local -r todopath=~/".todo"
+   local -r todopath=~/".todo.md"
    if [[ "$1" = '-e' ]]
    then
       echo; heading "TODO"
@@ -61,8 +61,6 @@ alias clsa='greeting; lsa'
 # BOOKMARKED DIRECTORIES & DIRECTORY NAVIGATION:
 alias root='\cd / && clsa'
 alias cdrive='\cd /c && clsa'
-declare -rx PERSONAL_PROJECT_HOME=~/"IdeaProjects/ucst"
-[ "$PERSONAL_PROJECT_HOME" ] && alias project='\cd "$PERSONAL_PROJECT_HOME" && clsa'
 home() {
    stty -echo
    greeting
@@ -83,7 +81,6 @@ alias eeeee='\cd ../../../../.. && clsa'
 # ------------------------------------------------------
 # JUST FOR KICKS:
 # ------------------------------------------------------
-alias ohno='\cat /dev/random'
 alias paste='\cat /dev/clipboard'
 alias soundcheck='\echo -ne "\a"'
 numdirents() {
