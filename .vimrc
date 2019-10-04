@@ -7,6 +7,8 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=0 "use tabstop value
 set expandtab
+
+set cursorline "'show' the cursor line
 hi CursorLine   cterm=none    ctermfg=none
 hi CursorLineNr cterm=inverse ctermfg=white
 
@@ -60,21 +62,24 @@ hi FoldColumn ctermbg=none
 hi LineNr ctermfg=gray
 
 
-"text wrapping: ---------------------------------
+" text wrapping: --------------------------------
 if exists('+linebreak')
     set nowrap
-    augroup Markdown
+    augroup WrappingOptionsGroup
         autocmd!
-        autocmd FileType markdown setlocal wrap
+        autocmd FileType markdown,text call SetWrappingOptions()
     augroup END
+    fun! SetWrappingOptions()
+        setlocal wrap
+        noremap <silent><buffer> <UP> g<UP>
+        noremap <silent><buffer> <DOWN> g<DOWN>
+    endfunction
     set linebreak
     set showbreak=>\ "↪↳\ 
     if exists('+breakindent')
         set breakindent
         set breakindentopt=shift:2
     endif
-    noremap <silent> <UP> g<UP>
-    noremap <silent> <DOWN> g<DOWN>
 endif
 
 

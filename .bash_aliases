@@ -6,7 +6,7 @@
 # ------------------------------------------------------
 # REGULAR USE:
 # ------------------------------------------------------
-alias greeting='\echo -e "\033c\n`date`\n"'
+alias greeting='\echo -e "\033c\n$(date)\n"'
 alias cyclelogin='\exec "$0" "$@"; clsa'
 
 alias rm='\rm -I --verbose'
@@ -15,8 +15,8 @@ alias jobs='jobs -l'
 alias grep='\grep --line-number --text --extended-regexp --color=auto'
 alias search='grep --recursive --byte-offset --include="*.java"'
 alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
-manifest() {
-   local -ra choices=`find -type f -name "*.jar"`
+function manifest() {
+   local -ra choices="$(find -type f -name "*.jar")"
    [[ "${#choices}" -le 0 ]] && return 1
    select jarchoice in ${choices[@]}; do
       [[ "$jarchoice" ]] && unzip -qc "$jarchoice" META-INF/MANIFEST.MF
@@ -25,14 +25,14 @@ manifest() {
 
 alias cim='vim' # typing is hard.
 alias vimr='vim -R'
-vim() {
-   local -r STTYOPTS=`stty --save`
+function vim() {
+   local -r STTYOPTS="$(stty --save)"
    stty stop '' -ixoff # temp disable ctrl+s
    stty stop '' -ixon  # temp disable ctrl+q
    command vim "$@" #'+star' start vim in insert mode:
    stty "$STTYOPTS"
 }
-todo() {
+function todo() {
    local -r todopath=~/".todo.md"
    if [[ "$1" = '-e' ]]
    then
@@ -49,7 +49,7 @@ alias todoe='todo -e'
 
 # LISTING DIRECTORY CONTENTS:
 alias ls='\ls -CX --color=auto --group-directories-first'
-lsa() {
+function lsa() {
    tput rmam
    ls "$@" -o --almost-all --human-readable
    tput smam
@@ -61,7 +61,7 @@ alias clsa='greeting; lsa'
 # BOOKMARKED DIRECTORIES & DIRECTORY NAVIGATION:
 alias root='\cd / && clsa'
 alias cdrive='\cd /c && clsa'
-home() {
+function home() {
    stty -echo
    greeting
    \cd ~
@@ -69,7 +69,7 @@ home() {
    unset gitwd
    stty echo
 }
-alias githome='\cd `git rev-parse --show-toplevel 2>/dev/null` && clsa'
+alias githome='\cd "$(git rev-parse --show-toplevel 2>/dev/null)" && clsa'
 alias e='\cd .. && clsa'
 alias ee='\cd ../.. && clsa'
 alias eee='\cd ../../.. && clsa'
@@ -83,18 +83,18 @@ alias eeeee='\cd ../../../../.. && clsa'
 # ------------------------------------------------------
 alias paste='\cat /dev/clipboard'
 alias soundcheck='\echo -ne "\a"'
-numdirents() {
+function numdirents() {
    local -a dirents=(*)
    local -i num="${#dirents}"
    dirents=(.*)
    num+="${#dirents}"
    echo -n "$((num-2))"
 }
-yes() {
+function yes() {
    local -a colors=(red yellow green cyan blue magenta)
    local -i i=0
    while [[ i -lt "${#colors[@]}" ]]; do
-      colors["$i"]=`ansicode sgr start "${colors[$i]}"`
+      colors["$i"]="$(ansicode sgr start "${colors[$i]}")"
       i+=1
    done; i=0; readonly colors
    local payload="$@"
@@ -107,7 +107,7 @@ yes() {
    done
 }
 # $1: string for heading text
-heading() {
+function heading() {
    local payload="$1"
    [ "$payload" ] && payload=' '"$payload"' '
    local line=''

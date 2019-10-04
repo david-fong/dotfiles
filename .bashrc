@@ -28,7 +28,7 @@ alias als='vim ~/.bash_aliases'
 alias alsl='vim ~/.bash_aliases_local'
 
 export EDITOR='vim'
-export CSCOPE_EDITOR='vim'
+export CSCOPE_EDITOR='view'
 
 # startup the ssh agent:
 [ "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
@@ -36,7 +36,7 @@ export CSCOPE_EDITOR='vim'
 # finalize prompt:
 readonly PS1
 declare -rix PROMPT_DIRTRIM=5
-declare -rxi PSLINES=`echo -e "$PS1" | wc --lines`
+declare -rxi PSLINES="$(echo -e "$PS1" | wc --lines)"
 
 # go to the user's home directory:
 if [ "$PWD" = '/' ]
