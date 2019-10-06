@@ -39,7 +39,7 @@ declare -rix PROMPT_DIRTRIM=5
 declare -rxi PSLINES="$(echo -e "$PS1" | wc --lines)"
 
 # go to the user's home directory:
-if [ "$PWD" = '/' ]
+if [[ "$PWD" = '/' || "$PWD" = "$HOME" ]]
 then
    home
 else

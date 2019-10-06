@@ -4,18 +4,20 @@ scriptencoding utf-8
 
 set smartindent
 set tabstop=4
-set softtabstop=4
-set shiftwidth=0 "use tabstop value
+set softtabstop=0 "use &tabstop
+set shiftwidth=0  "use &tabstop
+set shiftround    "round when shifting
 set expandtab
-
-set cursorline "'show' the cursor line
-hi CursorLine   cterm=none    ctermfg=none
-hi CursorLineNr cterm=inverse ctermfg=white
 
 set formatoptions=tcroqlj
 set vb t_vb=
 set mouse=a
+set clipboard=unnamed
+
+set title
+set fillchars=vert:\ "
 set wildmenu
+set wildmode=list:longest,longest:full
 set showcmd
 
 if &diff
@@ -23,13 +25,12 @@ syntax off
 endif
 
 
-" smoother scrolling:
-map <silent> <ScrollWheelUp> <C-Y>
-map <silent> <ScrollWheelDown> <C-E>
+" smoother scrolling: ---------------------------
+set sidescroll=1
+map  <silent> <ScrollWheelUp> <C-Y>
+map  <silent> <ScrollWheelDown> <C-E>
 imap <silent> <ScrollWheelUp> <C-O><C-Y>
 imap <silent> <ScrollWheelDown> <C-O><C-E>
-map <silent> <S-ScrollWheelUp> <C-U>
-map <silent> <S-ScrollWheelDown> <C-D>
 
 
 " save using ctrl+s: ----------------------------
@@ -58,8 +59,11 @@ inoremap <silent> <C-Z> <ESC><C-Z>
 set foldcolumn=1
 set numberwidth=1
 set number
-hi FoldColumn ctermbg=none
-hi LineNr ctermfg=gray
+set cursorline "'show' the cursor line
+hi FoldColumn   ctermbg=none
+hi CursorLine   ctermfg=none  cterm=none
+hi CursorLineNr ctermfg=white cterm=bold
+hi LineNr       ctermfg=blue
 
 
 " text wrapping: --------------------------------
@@ -98,8 +102,7 @@ set list
 set statusline=\ [%f]%h%m%r%y[%{&ff}]
 set statusline+=%=%l,%c%V\ %P\ "
 set laststatus=2
-hi StatusLineNC ctermfg=grey
-hi StatusLineNC ctermbg=darkgrey
+hi StatusLineNC ctermfg=grey ctermbg=darkgrey
 
 
 " check for external changes (from u/weisenzahm on reddit)

@@ -6,7 +6,7 @@
 # ------------------------------------------------------
 # REGULAR USE:
 # ------------------------------------------------------
-alias greeting='\echo -e "\033c\n$(date)\n"'
+alias greeting='\echo -e "\033c\n""$(heading "$(date)")""\n"'
 alias cyclelogin='\exec "$0" "$@"; clsa'
 
 alias rm='\rm -I --verbose'
