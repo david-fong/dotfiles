@@ -19,6 +19,8 @@ HISTFILESIZE=1500
 
 export LINES COLUMNS # <- for .gitconfig
 
+
+
 [ -f ~/'.myscripts/ansicode' ] && source ~/'.myscripts/ansicode'
 [ -f ~/'.bash_aliases' ] && source ~/'.bash_aliases'
 [ -f ~/'.bash_aliases_local' ] && source ~/'.bash_aliases_local'
@@ -30,13 +32,21 @@ alias alsl='vim ~/.bash_aliases_local'
 export EDITOR='vim'
 export CSCOPE_EDITOR='view'
 
+
+
 # startup the ssh agent:
 [ "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
 
 # finalize prompt:
 readonly PS1
-declare -rix PROMPT_DIRTRIM=5
+declare -rxi PROMPT_DIRTRIM=5
 declare -rxi PSLINES="$(echo -e "$PS1" | wc --lines)"
+
+# grep colored output styling:
+# https://www.gnu.org/software/grep/manual/grep.html#index-GREP_005fCOLORS-environment-variable
+# TODO declare -rx GREP_COLORS=''
+
+
 
 # go to the user's home directory:
 if [[ "$PWD" = '/' || "$PWD" = "$HOME" ]]

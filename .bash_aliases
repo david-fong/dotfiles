@@ -23,8 +23,12 @@ function manifest() {
    done
 }
 
+
+
 alias cim='vim' # typing is hard.
 alias vimr='vim -R'
+alias vims='vim -S'
+alias swp='find "$@" -type f -name "*.swp"'
 function vim() {
    local -r STTYOPTS="$(stty --save)"
    stty stop '' -ixoff # temp disable ctrl+s
@@ -32,6 +36,9 @@ function vim() {
    command vim "$@" #'+star' start vim in insert mode:
    stty "$STTYOPTS"
 }
+
+
+
 function todo() {
    local -r todopath=~/".todo.md"
    if [[ "$1" = '-e' ]]
@@ -47,15 +54,29 @@ function todo() {
 }
 alias todoe='todo -e'
 
+
+
 # LISTING DIRECTORY CONTENTS:
 alias ls='\ls -CX --color=auto --group-directories-first'
+alias __lsa='ls "$@" -o --almost-all --human-readable'
 function lsa() {
    tput rmam
-   ls "$@" -o --almost-all --human-readable
+   # highlight file extensions using dull blue:
+   local -r OLD_GREP_COLORS="$GREP_COLORS"
+   export GREP_COLORS='ms=2;34'
+   local -x coloropt='--color=never'
+   if [[ -t 1 ]]; then
+      coloropt='--color=always'
+   fi
+   local -r listing="$(__lsa "$coloropt")"
+   \grep -E --color=never "^[^-]" <<< "$listing"
+   \grep -E --color=never "^[-]"  <<< "$listing" | \grep -E "$coloropt" "[.]?[^. ]+$"
+   export GREP_COLORS="$OLD_GREP_COLORS"
    tput smam
    return 0
 }
 alias clsa='greeting; lsa'
+
 
 
 # BOOKMARKED DIRECTORIES & DIRECTORY NAVIGATION:
@@ -117,6 +138,7 @@ function heading() {
    echo -ne '==='"$payload"
    printf '%s\n' "$line"
 }
+
 
 
 # make functions unmodifiable:

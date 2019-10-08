@@ -4,7 +4,7 @@ scriptencoding utf-8
 
 set smartindent
 set tabstop=4
-set softtabstop=0 "use &tabstop
+set softtabstop=4 "use &tabstop
 set shiftwidth=0  "use &tabstop
 set shiftround    "round when shifting
 set expandtab
@@ -27,6 +27,7 @@ endif
 
 " smoother scrolling: ---------------------------
 set sidescroll=1
+set sidescrolloff=10
 map  <silent> <ScrollWheelUp> <C-Y>
 map  <silent> <ScrollWheelDown> <C-E>
 imap <silent> <ScrollWheelUp> <C-O><C-Y>
@@ -61,7 +62,7 @@ set numberwidth=1
 set number
 set cursorline "'show' the cursor line
 hi FoldColumn   ctermbg=none
-hi CursorLine   ctermfg=none  cterm=none
+hi CursorLine   cterm=none
 hi CursorLineNr ctermfg=white cterm=bold
 hi LineNr       ctermfg=blue
 
