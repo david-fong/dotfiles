@@ -9,10 +9,25 @@
 alias greeting='\echo -e "\033c\n""$(heading "$(date)")""\n"'
 alias cyclelogin='\exec "$0" "$@"; clsa'
 
+
+
 alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
 alias jobs='jobs -l'
-alias grep='\grep --line-number --text --extended-regexp --color=auto'
+alias hist='history | tail -17'
+
+
+
+declare -a grepargs=('--line-number' '--text' '--color=auto')
+for exdir in '.git' 'build' 'compile' 'db'; do
+    grepargs+=('--exclude-dir="'"$exdir"'"')
+done
+grepargs+=('--exclude-from="${HOME}/.grepexcludefrom"' '--extended-regexp')
+alias grep='\grep '"${grepargs[@]}"''
+unset grepargs
+
+
+
 alias search='grep --recursive --byte-offset --include="*.java"'
 alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
 function manifest() {
@@ -49,33 +64,40 @@ function todo() {
       heading
       tput smam
    else
-      vim "$todopath"
+      "$EDITOR" "$todopath"
    fi
 }
 alias todoe='todo -e'
 
 
 
-# LISTING DIRECTORY CONTENTS:
 alias ls='\ls -CX --color=auto --group-directories-first'
-alias __lsa='ls "$@" -o --almost-all --human-readable'
+function __lsa() {
+    ls "$@" -o --almost-all --human-readable
+}
 function lsa() {
    tput rmam
-   # highlight file extensions using dull blue:
    local -r OLD_GREP_COLORS="$GREP_COLORS"
-   export GREP_COLORS='ms=2;34'
+   export GREP_COLORS='ms=2;34' # dull blue
    local -x coloropt='--color=never'
    if [[ -t 1 ]]; then
       coloropt='--color=always'
    fi
-   local -r listing="$(__lsa "$coloropt")"
+   local -r listing="$(__lsa "$@" "$coloropt")"
    \grep -E --color=never "^[^-]" <<< "$listing"
-   \grep -E --color=never "^[-]"  <<< "$listing" | \grep -E "$coloropt" "[.]?[^. ]+$"
+   \grep -E --color=never "^[-]"  <<< "$listing" \
+       | \grep -E "$coloropt" "[.]?[^. ]+$"
    export GREP_COLORS="$OLD_GREP_COLORS"
    tput smam
    return 0
 }
 alias clsa='greeting; lsa'
+function lesn() {
+   for extension in "$@"; do
+      echo
+      __lsa | \grep -Ein "\\S*[.]${extension}$" --
+   done
+}
 
 
 
@@ -142,6 +164,6 @@ function heading() {
 
 
 # make functions unmodifiable:
-readonly -f manifest vim todo lsa home numdirents yes heading
-export   -f manifest vim todo lsa home numdirents yes heading
+readonly -f manifest vim todo __lsa lsa lesn home numdirents yes heading
+export   -f manifest vim todo __lsa lsa lesn home numdirents yes heading
 

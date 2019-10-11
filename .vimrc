@@ -2,6 +2,8 @@
 set encoding=utf-8
 scriptencoding utf-8
 
+"autocmd BufRead,BufNewFile *.c,*.h set cindent
+
 set smartindent
 set tabstop=4
 set softtabstop=4 "use &tabstop
@@ -25,7 +27,22 @@ syntax off
 endif
 
 
+" try to start cursorline at top of screen ------
+augroup VimrcGroup
+    autocmd!
+    autocmd BufRead,BufNewFile * call OnOpenFile()
+augroup END
+fun! OnOpenFile()
+    exe "normal z\<CR>$"
+    if &readonly
+        set nomodifiable
+    endif
+endfunction
+noremap <C-]> <C-]>z<CR>
+
+
 " smoother scrolling: ---------------------------
+set scrolloff=5
 set sidescroll=1
 set sidescrolloff=10
 map  <silent> <ScrollWheelUp> <C-Y>
