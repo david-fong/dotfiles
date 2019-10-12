@@ -10,31 +10,49 @@
 # random note: can open control panel with windows + pause/break
 # don't turn on "lower screen brightness in battery saving mode". seems to lock screen brightness until next computer restart.
 
-stty -echo
+# stty -echo
 
+stty stop '' -ixoff # disable ctrl+s ( pause console output)
+stty stop '' -ixon  # disable ctrl+q (resume console output)
 shopt -s globstar
+export FUNCNEST=100
 
 shopt -s histappend
+declare -a histignore=(
+    'fg*' 'hist*' 'clear'
+    'bashrc' 'als' 'alsl' 'gitconfig' 'vimrc'
+    'ls' 'ls\ *' 'lsa' 'lsa\ *' 'clsa' 'lsen\ *'
+    'vims' 'vims\ *' 'todo*'
+    'git\ status' 'git gra' 'git\ graph' 'git\ grpah' 'git\ diff'
+)
+export HISTIGNORE=
+for pattern in "${histignore[@]}"; do
+    HISTIGNORE+="$pattern"':'
+done
+unset histignore
 export HISTCONTROL=ignoredups:ignorespace
-export HISTIGNORE='fg*:hist*:ls:ls\ *:lsa:lsa\ *:clsa:lesn\ *:vims:vims\ *:todo*:clear'
 export HISTSIZE=1000
 export HISTFILESIZE=1500
 
 export LINES COLUMNS # for .gitconfig
 
-[[ -f ~/'.myscripts/ansicode' ]] && source ~/'.myscripts/ansicode'
-[[ -f ~/'.bash_aliases'       ]] && source ~/'.bash_aliases'
-[[ -f ~/'.bash_aliases_local' ]] && source ~/'.bash_aliases_local'
-alias bashrc='"$EDITOR" ~/.bashrc'
-alias  vimrc='"$EDITOR" ~/.vimrc'
-alias    als='"$EDITOR" ~/.bash_aliases'
-alias   alsl='"$EDITOR" ~/.bash_aliases_local'
+[[ -f ~/.myscripts/ansicode ]] && source ~/.myscripts/ansicode
+[[ -f ~/.bash_aliases       ]] && source ~/.bash_aliases
+[[ -f ~/.bash_aliases_local ]] && source ~/.bash_aliases_local
+alias    bashrc='"$EDITOR" ~/.bashrc'
+alias     vimrc='"$EDITOR" ~/.vimrc'
+alias       als='"$EDITOR" ~/.bash_aliases'
+alias      alsl='"$EDITOR" ~/.bash_aliases_local'
+alias gitconfig='"$EDITOR" ~/.gitconfig'
 
 export EDITOR='vim'
 export CSCOPE_EDITOR='view'
 
 # startup the ssh agent:
 [ "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
+
+# less command behaviour:
+declare -rx LESS='-+X --ignore-case --quiet'
 
 # finalize prompt:
 readonly PS1
@@ -51,5 +69,5 @@ declare -rxi PSLINES="$(echo -e "$PS1" | wc --lines)"
 if [[ "$PWD" = '/' || "$PWD" = "$HOME" ]]
 then home; else clsa; fi
 
-stty echo
+# stty echo
 

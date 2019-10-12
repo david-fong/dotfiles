@@ -1,0 +1,9 @@
+
+cscope.in.out
+
+*.o
+
+*.swp
+*.swo
+*.orig
+

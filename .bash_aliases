@@ -9,23 +9,20 @@
 alias greeting='\echo -e "\033c\n""$(heading "$(date)")""\n"'
 alias cyclelogin='\exec "$0" "$@"; clsa'
 
-
-
 alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
 alias jobs='jobs -l'
 alias hist='history | tail -17'
 
 
-
 declare -a grepargs=('--line-number' '--text' '--color=auto')
 for exdir in '.git' 'build' 'compile' 'db'; do
     grepargs+=('--exclude-dir="'"$exdir"'"')
 done
+[[ ! -f ~/.grepexcludefrom ]] && touch ~/.grepexcludefrom
 grepargs+=('--exclude-from="${HOME}/.grepexcludefrom"' '--extended-regexp')
 alias grep='\grep '"${grepargs[@]}"''
 unset grepargs
-
 
 
 alias search='grep --recursive --byte-offset --include="*.java"'
@@ -44,13 +41,6 @@ alias cim='vim' # typing is hard.
 alias vimr='vim -R'
 alias vims='vim -S'
 alias swp='find "$@" -type f -name "*.swp"'
-function vim() {
-   local -r STTYOPTS="$(stty --save)"
-   stty stop '' -ixoff # temp disable ctrl+s
-   stty stop '' -ixon  # temp disable ctrl+q
-   command vim "$@" #'+star' start vim in insert mode:
-   stty "$STTYOPTS"
-}
 
 
 
@@ -92,10 +82,10 @@ function lsa() {
    return 0
 }
 alias clsa='greeting; lsa'
-function lesn() {
+function lsen() {
    for extension in "$@"; do
       echo
-      __lsa | \grep -Ein "\\S*[.]${extension}$" --
+      __lsa | \grep -Ei "\\S*[.]${extension}$" --
    done
 }
 
@@ -164,6 +154,6 @@ function heading() {
 
 
 # make functions unmodifiable:
-readonly -f manifest vim todo __lsa lsa lesn home numdirents yes heading
-export   -f manifest vim todo __lsa lsa lesn home numdirents yes heading
+readonly -f manifest todo __lsa lsa lsen home numdirents yes heading
+export   -f manifest todo __lsa lsa lsen home numdirents yes heading
 

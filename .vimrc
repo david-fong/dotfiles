@@ -33,12 +33,11 @@ augroup VimrcGroup
     autocmd BufRead,BufNewFile * call OnOpenFile()
 augroup END
 fun! OnOpenFile()
-    exe "normal z\<CR>$"
+    exe "normal zz0"
     if &readonly
         set nomodifiable
     endif
 endfunction
-noremap <C-]> <C-]>z<CR>
 
 
 " smoother scrolling: ---------------------------

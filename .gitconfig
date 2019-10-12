@@ -1,12 +1,20 @@
+
 [user]
-	name = david-fong
-	email = davidfong19@gmail.com
+    name = david-fong
+    email = davidfong19@gmail.com
+
 [core]
-	editor = vim
+    pager = less -FR
+
+[push]
+    default = simple
+
 [winUpdater]
     recentlySeenVersion = 2.22.0.windows.1
+
 [merge]
     tool = vimdiff
+
 [alias]
     fall = "!f() { \
         tput rmam; \
@@ -17,10 +25,7 @@
         git branch -avv; \
         tput smam; \
         }; f;"
-    graph = "!f() { \
-        echo; \
-        tput rmam; \
-        git log --oneline --graph --all --decorate --color=always -n\"$((LINES-1-PSLINES))\" | head -n\"$((LINES-1-PSLINES))\";  \
-        tput smam; \
-        }; f;"
+    graph = "log --oneline --graph --all --decorate --color=always"
+    gra = "!echo tput rmam; git graph -n20 | head -n20; tput smam"
+    ls = "!f(){ git ls-tree --full-tree --abbrev=7 -r HEAD | less; }; f;"
 
