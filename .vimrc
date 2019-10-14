@@ -3,6 +3,7 @@ set encoding=utf-8
 scriptencoding utf-8
 
 "autocmd BufRead,BufNewFile *.c,*.h set cindent
+"retab
 
 set smartindent
 set tabstop=4
@@ -32,7 +33,7 @@ augroup VimrcGroup
     autocmd!
     autocmd BufRead,BufNewFile * call OnOpenFile()
 augroup END
-fun! OnOpenFile()
+function! OnOpenFile()
     exe "normal zz0"
     if &readonly
         set nomodifiable
@@ -90,7 +91,7 @@ if exists('+linebreak')
         autocmd!
         autocmd FileType markdown,text call SetWrappingOptions()
     augroup END
-    fun! SetWrappingOptions()
+    function! SetWrappingOptions()
         setlocal wrap
         noremap <silent><buffer> <UP> g<UP>
         noremap <silent><buffer> <DOWN> g<DOWN>
@@ -125,14 +126,14 @@ hi StatusLineNC ctermfg=grey ctermbg=darkgrey
 " check for external changes (from u/weisenzahm on reddit)
 " check for file modifications automatically (current buffer only).
 " use :NoAutoChecktime to disable it (uses b:autochecktime)
-fun! MyAutoCheckTime()
+function! MyAutoCheckTime()
   " only check timestamp for normal files
   if &buftype != '' | return | endif
   if ! exists('b:autochecktime') || b:autochecktime
     checktime %
     let b:autochecktime = 1
   endif
-endfun
+endfunction
 augroup MyAutoChecktime
   au!
   au FocusGained,BufEnter,CursorHold,CursorHoldI * call MyAutoCheckTime()
@@ -152,4 +153,16 @@ augroup Binary
   au BufWritePost *.bin if &bin | %!xxd
   au BufWritePost *.bin set nomod | endif
 augroup END
+
+
+" systemverilog module signal param list --------
+function! VerilogParamFormat()
+    sil! exe "0/^module /;/;$/substitute/(/(/"
+    sil! exe "0/^module /;/;$/substitute/,\\s\\s*/,    /"
+    sil! exe "0/^module /;/;$/substitute/,\\s\\s*/,    /"
+    sil! exe "0/^module /;/;$/substitute/,\\s\\s*/,    /"
+    sil! exe "0/^module /;/;$/substitute/,\\s\\s*/,    /"
+    sil! exe "0/^module /+1;/;$/substitute/^\\s*/    /"
+    sil! exe "0/^module /;/;$/+1substitute/);$/);/"
+endfunction
 

@@ -1,0 +1,39 @@
+
+# modelsim SE gui preferences:
+# * need to set environment variable MODELSIM_TCL to $HOME.
+
+set PrefDefault(fixedFontV2) {GulimChe 8}
+set PrefDefault(footerFont) {Tahoma 8 normal roman}
+set PrefDefault(footerFontV2) {GulimChe 8}
+set PrefDefault(menuFont) {Tahoma 8 normal roman}
+set PrefDefault(menuFontV2) {Tahoma 8}
+set PrefDefault(textFontV2) {GulimChe 8}
+set PrefDefault(treeFont) {Tahoma 8 normal roman}
+set PrefDefault(treeFontV2) {Tahoma 8}
+set PrefDefault(waveFont) {Tahoma 8 normal roman}
+set PrefDefault(waveFontV2) {GulimChe 8}
+set PrefMain(colorizeTranscript) 1
+set PrefMain(promptColor) #000080
+set PrefSource(tabs) 4
+set PrefSource(OpenOnBreak) 0
+set PrefToolbar(newEnabled) 0
+
+
+
+# vish aliases:
+
+alias cod "project compileoutofdate"
+alias rr "restart -f; run -all;"
+alias con "run -continue"
+alias hi ".main_pane.transcript.interior.cs.body.t configure -wrap word; .main_pane.transcript.interior.cs.body.t configure -spacing1 5"
+
+
+
+# tcl options:
+
+option add *opaqueresize 0 widgetDefault
+option add *opaqueResize 0 widgetDefault
+option add *OpaqueResize 0 widgetDefault
+# .main_pane configure -opaqueresize 0
+# /c/intelFPGA_lite/17.1/modelsim_ase/win32aloem/tk8.5/ttk/defaults.tcl
+

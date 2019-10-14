@@ -7,3 +7,5 @@ cscope.in.out
 *.swo
 *.orig
 
+*.dll
+

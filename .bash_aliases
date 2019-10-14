@@ -37,6 +37,7 @@ function manifest() {
 
 
 
+alias gti='git'
 alias cim='vim' # typing is hard.
 alias vimr='vim -R'
 alias vims='vim -S'
@@ -68,15 +69,17 @@ function __lsa() {
 function lsa() {
    tput rmam
    local -r OLD_GREP_COLORS="$GREP_COLORS"
-   export GREP_COLORS='ms=2;34' # dull blue
+   export GREP_COLORS='ms=38;5;246' # dull blue
    local -x coloropt='--color=never'
    if [[ -t 1 ]]; then
       coloropt='--color=always'
    fi
    local -r listing="$(__lsa "$@" "$coloropt")"
-   \grep -E --color=never "^[^-]" <<< "$listing"
-   \grep -E --color=never "^[-]"  <<< "$listing" \
-       | \grep -E "$coloropt" "[.]?[^. ]+$"
+         \grep -E "^[^-]" <<< "$listing"
+`#echo`; \grep -E "^[-]"  <<< "$listing" \
+       | \grep -E --color=never "\\s[.]?[^. ]+$"
+`#echo`; \grep -E "^[-].*\\S+[.][^. ]+$"  <<< "$listing" \
+       | \grep -E "$coloropt" "[.][^. ]+$"
    export GREP_COLORS="$OLD_GREP_COLORS"
    tput smam
    return 0
@@ -97,9 +100,7 @@ alias cdrive='\cd /c && clsa'
 function home() {
    stty -echo
    greeting
-   \cd ~
-   ls --width=70 --hide=[nN][tT][uU][sS]*
-   unset gitwd
+   \cd ~ && time ls --width=70 --hide=[nN][tT][uU][sS]*
    stty echo
 }
 alias githome='\cd "$(git rev-parse --show-toplevel 2>/dev/null)" && clsa'
