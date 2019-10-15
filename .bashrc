@@ -10,6 +10,15 @@
 # random note: can open control panel with windows + pause/break
 # don't turn on "lower screen brightness in battery saving mode". seems to lock screen brightness until next computer restart.
 
+# commands to list things:
+# declare -p:   all variables and function names
+# set:          like above, but show function bodies
+# alias:        show all aliases
+# shopt:        show all shell options
+# hash:         show hashed commands
+
+
+
 # stty -echo
 
 stty stop '' -ixoff # disable ctrl+s ( pause console output)
@@ -36,8 +45,6 @@ export HISTFILESIZE=1500
 
 export LINES COLUMNS # for .gitconfig
 
-# https://www.gnu.org/software/bash/manual/html_node/A-Programmable-Completion-Example.html#A-Programmable-Completion-Example
-[[ -f ~/.myscripts/comp_cd.sh ]] && source ~/.myscripts/comp_cd.sh
 [[ -f ~/.myscripts/ansicode   ]] && source ~/.myscripts/ansicode
 [[ -f ~/.bash_aliases         ]] && source ~/.bash_aliases
 [[ -f ~/.bash_aliases_local   ]] && source ~/.bash_aliases_local
@@ -55,6 +62,11 @@ export CSCOPE_EDITOR='view'
 
 # less command behaviour:
 declare -rx LESS='-+X --ignore-case --quiet --raw-control-chars'
+
+# autocomplete for the cd builtin:
+# expands variables to their values. ignores files.
+shopt -s direxpand
+complete -d -o bashdefault cd
 
 # finalize prompt:
 readonly PS1
