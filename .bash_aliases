@@ -100,7 +100,7 @@ alias cdrive='\cd /c && clsa'
 function home() {
    stty -echo
    greeting
-   \cd ~ && time ls --width=70 --hide=[nN][tT][uU][sS]*
+   \cd ~ && time ls --width=75 --hide=[nN][tT][uU][sS]*
    stty echo
 }
 alias githome='\cd "$(git rev-parse --show-toplevel 2>/dev/null)" && clsa'
@@ -140,6 +140,12 @@ function yes() {
       let i="($i+1)"%"${#colors[@]}"
    done
 }
+declare -rxa COIN_FLIP_STR=('tails' 'heads')
+alias coinflip='echo "${COIN_CLIP_STR["$((RANDOM%2))"]}"'
+alias iamsad='echo -e "\e[34m\nthere, there.\n\nit will be alright.\e[0m\n"'
+
+
+
 # $1: string for heading text
 function heading() {
    local payload="$1"
