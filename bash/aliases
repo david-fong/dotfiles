@@ -6,16 +6,18 @@
 
 
 
-# ------------------------------------------------------
-# REGULAR USE:
-# ------------------------------------------------------
-alias greeting='\echo -e "\033c\n""$(heading "$(date)")""\n"'
+
+
+alias greeting='clear; \echo -e "\n$(heading "$(date)")""\n"'
 alias cyclelogin='\exec "$0" "$@"; clsa'
 
 alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
 alias jobs='jobs -l'
 alias hist='history | less +G'
+
+
+
 
 
 declare -a grepargs=('--line-number' '--text' '--color=auto')
@@ -30,6 +32,7 @@ alias grep='\grep '"${grepargs[@]}"''
 unset grepargs
 
 
+
 alias search='grep -r --byte-offset --include="*.java"'
 alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
 function manifest() {
@@ -42,10 +45,14 @@ function manifest() {
 
 
 
+
+
 alias gti='git'
 alias cim='vim' # typing is hard.
 alias vims='vim -S'
 alias swp='find "$@" -type f -name "*.swp"'
+
+
 
 
 
@@ -63,6 +70,8 @@ function todo() {
     fi
 }
 alias todoe='todo -e'
+
+
 
 
 
@@ -98,6 +107,8 @@ function lsen() {
 
 
 
+
+
 # BOOKMARKED DIRECTORIES & DIRECTORY NAVIGATION:
 alias root='\cd / && clsa'
 function home() {
@@ -117,9 +128,6 @@ alias eeeee='\cd ../../../../.. && clsa'
 
 
 
-# ------------------------------------------------------
-# JUST FOR KICKS:
-# ------------------------------------------------------
 alias paste='\cat /dev/clipboard'
 alias soundcheck='\echo -ne "\a"'
 function numdirents() {
@@ -129,6 +137,9 @@ function numdirents() {
     num+="${#dirents}"
     echo -n "$((num-2))"
 }
+
+
+
 function yes() {
     [[ ! -t 1 ]] && exec \yes
     local -a colors=(red yellow green cyan blue magenta)
@@ -139,13 +150,16 @@ function yes() {
     done; i=0; readonly colors
     local payload="$@"
     readonly payload="${payload:=y\n}"
-    trap 'echo -ne "\033[0m"; trap - SIGINT; return 0' SIGINT
+    trap 'echo -ne "\e[0m"; trap - SIGINT; return 0' SIGINT
     while : #sleep '0.01'
     do
         echo -ne "${colors[$i]}""$payload"
         let i="($i+1)"%"${#colors[@]}"
     done
 }
+
+
+
 declare -rxa COIN_FLIP_STR=('tails' 'heads')
 alias coinflip='echo "${COIN_FLIP_STR["$((RANDOM%2))"]}"'
 alias coin='coinflip'
@@ -159,6 +173,8 @@ function bind() {
         command bind "$@"
     fi
 }
+
+
 
 
 
@@ -176,7 +192,11 @@ function heading() {
 
 
 
+
+
 # make functions unmodifiable:
 readonly -f manifest todo __lsa lsa lsen home numdirents yes heading
 export   -f manifest todo __lsa lsa lsen home numdirents yes heading
+
+
 

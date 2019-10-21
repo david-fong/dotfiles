@@ -64,7 +64,7 @@ declare -rx INPUTRC="${XGD_CONFIG_HOME}/readline/inputrc"
 declare -rx VIM="${XGD_CONFIG_HOME}"
 declare -rx VIMINIT='source ${VIM}/vimfiles/vimrc'
 
-[[ -f ~/.myscripts/ansicode ]] && source ~/.myscripts/ansicode
+[[ -f "${XGD_CONFIG_HOME}/ansicode/ansicode"   ]] && source "${XGD_CONFIG_HOME}/ansicode/ansicode"
 [[ -f "${XGD_CONFIG_HOME}/bash/aliases"        ]] && source "${XGD_CONFIG_HOME}/bash/aliases"
 [[ -f "${XGD_CONFIG_HOME}/bash/aliases__local" ]] && source "${XGD_CONFIG_HOME}/bash/aliases__local"
 alias   inputrc='"$EDITOR" "${XGD_CONFIG_HOME}/readline/inputrc"'

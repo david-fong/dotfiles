@@ -4,9 +4,14 @@
 
 [core]
     pager = less -FR
+    ; "${XGD_CONFIG_HOME}/git/ignore" is the default
+    ;excludeFile = ~/.config/git/ignore
 
 [push]
     default = simple
+
+[pager]
+    ls-tree
 
 [winUpdater]
     recentlySeenVersion = 2.22.0.windows.1
@@ -16,16 +21,11 @@
     tool = vimdiff
 
 [alias]
-    fall = "!f() { \
-        tput rmam; \
-        heading \"REMOTES\"; \
-        git fetch -v --all; \
-        echo; \
-        heading \"BRANCHES\"; \
-        git branch -avv; \
-        tput smam; \
-        }; f;"
+    fall = "!f() { tput rmam; \
+        heading \"REMOTES\"; git fetch -v --all; \
+        echo; heading \"BRANCHES\"; git branch -avv; \
+        tput smam; }; f;"
     graph = "log --oneline --graph --all --decorate --color=always"
     gra = "!echo; tput rmam; git graph -n20 | head -n20; tput smam"
-    ls = "!f(){ git ls-tree --full-tree --abbrev=7 -r HEAD | less; }; f;"
+    ls = "ls-tree --full-tree --abbrev=7 -r HEAD"
 

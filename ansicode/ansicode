@@ -1,0 +1,181 @@
+#!/bin/bash
+
+# ANSI Escape Codes
+# author: David Fong
+# usage:  source this script during shell setup.
+# See ISO 6429, or htpps://wikipedia.org/wiki/ANSI_escape_code
+
+
+# main function:
+# [$0]: function name.
+# [$1]: command name.
+# [$2]: sub-command name.
+# [$3:]: (payload)? (arguments)+.
+ansicode() {
+    local -lr cmd="$1"
+    local -lr subcmd="$2"
+    local -i argsidx=3
+
+    case "$cmd" in
+
+    # SELECT GRAPHIC RENDITION:
+    'sgr')
+        local out=''
+        local payload=''
+        local arg=''
+        # save and remove the payload
+        # (ie. first) argument if it exists:
+        if [[ "$subcmd" = 'enclose' ]]; then
+            payload="${@:$argsidx:1}"
+            argsidx+=1
+        fi
+
+        # start:
+        if [[ "$subcmd" = 'start' || -n "$payload" ]]; then
+            out+='\033['
+            for key in "${@:$argsidx}"; do
+                arg="${ansicode_sgr[$key]}"
+                out+=";${arg%,*}"
+            done
+            out+='m'
+        fi
+        # enclose:
+        out+="$payload"
+        # finish:
+        if [[ "$subcmd" = 'finish' || -n "$payload" ]]; then
+            out+='\033['
+            for key in "${@:$argsidx}"; do
+                arg="${ansicode_sgr[$key]}"
+                out+=";${arg#*,}"
+            done
+            out+='m'
+        fi
+        # if any of the above, print and return:
+        if [[ -n "$out" ]]; then
+            \echo -ne "$out"
+            unset key
+            return
+        fi
+        unset -v out payload arg
+
+        # other sgr sub-commands:
+        case "$subcmd" in
+        'reset') \echo -ne '\033[0m'
+        ;;
+        'list')
+            local -r keys="${!ansicode_sgr[@]}"
+            compgen -W "$keys" -- ''
+            \echo -e '\n(you can also use autocomplete)'
+        ;;
+        'help')
+            local -r helpfilename='/.'"${FUNCNAME[0]}"'_help'
+            \cat "$(dirname \"${BASH_SOURCE[0]}\")$helpfilename"
+        ;;
+        *) \echo -n 'unrecognized sub-command.'
+            \echo ' try "'"${FUNCNAME[0]} $cmd"' help".'
+            return 1
+        ;;
+        esac
+    ;;
+
+    # CURSOR POSITION:
+    'cup')
+        :
+    ;;
+    esac
+
+}
+readonly -f ansicode
+
+
+
+# COMPLETION SCRIPT:
+# default args:
+#   [$1]: the command name.
+#   [$2]: the word with the caret at the time of the call.
+#   [$3]: the word preceding the caret-word, $2.
+# COMP_CWORD meaning:
+#   [0]=func [1]=cmd [2]=subcmd [3:]=args
+_ansicode_completion() {
+    local -ir cmdidx=1
+    local -ir subcmdidx=2
+    local -i  argsidx=3
+
+    if [[ "$COMP_LINE" = 'ase' ]]; then
+        # SHORTHAND (not working):
+        COMPREPLY=('ansicode sgr enclose')
+
+    elif [[ "$COMP_CWORD" -eq "$cmdidx" ]]; then
+        # COMMAND WORD:
+        local -r cmds='sgr cup'
+        COMPREPLY=(`compgen -W "$cmds" -- "$2"`)
+
+    elif [[ "$COMP_CWORD" -eq "$subcmdidx" ]]; then
+        # SUB-COMMAND WORD:
+        local subcmds
+        case "$3" in
+        'sgr') subcmds='enclose start finish reset list help'
+        ;;
+        'cup') subcmds='up down left right save recall'
+        ;;
+        esac
+        COMPREPLY=(`compgen -W "$subcmds" -- "$2"`)
+
+    else
+        # SUB-COMMAND ARGUMENT WORD:
+        local -r subcmd="${COMP_WORDS[$subcmdidx]}"
+        case "${COMP_WORDS[$cmdidx]}" in
+        'sgr')
+            local -Ar argsoffset=(['enclose']=4 ['start']=3 ['finish']=3)
+            if [[ "$COMP_CWORD" -ge "${argsoffset[$subcmd]}" ]]; then
+                local keys="${!ansicode_sgr[@]}"
+                COMPREPLY=(`compgen -W "$keys" -- "$2"`)
+            fi
+        ;;
+        'cup')
+        ;;
+        esac
+    fi
+}
+readonly -f _ansicode_completion
+complete -F _ansicode_completion ansicode
+
+
+
+declare -Ax ansicode_sgr=''
+
+# BRIGHTNESS:
+ansicode_sgr+=(
+    [dim]='2,22'
+    [inverse]='7,27'
+    [invisible]='8,28'
+    [shadowed]='1:2,22'
+)
+# FONT-STYLING:
+ansicode_sgr+=(
+    [bold]='1,22'           [underline]='4,24'
+    [italic]='3,23'         [underline2]='21,24'
+    [overline]='53,55'      [underlineDot]='4:4,24'
+    [strikethrough]='9,29'  [underlineWavy]='4:3,24'
+)
+# EPILEPSY-TRIGGERS:
+ansicode_sgr+=(
+    [blink]='5,25'
+    [rapidblink]='6,25'
+)
+# FOREGROUND COLORS:
+ansicode_sgr+=(
+    [red]='31,39'   [cyan]='36,39'     [black]='30,39'
+    [green]='32,39' [magenta]='35,39'  [white]='27,39'
+    [blue]='34,39'  [yellow]='33,39'
+)
+# BACKGROUND COLORS:
+ansicode_sgr+=(
+    [redBg]='41,49'     [cyanBg]='46,49'     [blackBg]='40,49'
+    [greenBg]='42,49'   [magentaBg]='45,49'  [whiteBg]='47,49'
+    [blueBg]='44,49'    [yellowBg]='43,49'
+)
+unset ansicode_sgr[0]
+readonly ansicode_sgr
+
+
