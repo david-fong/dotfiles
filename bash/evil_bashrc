@@ -1,0 +1,28 @@
+
+declare -r PS1="I am a prompt: "
+
+
+# set delete key to space-bar:
+# this can be undone by logging out and in again.
+stty erase ' '
+
+
+stty eof 0x7f  # close terminal with backspace-key
+
+
+enable -n enable cd echo
+
+
+echo -e '\e[?1003h' # report mouse movement
+
+
+# https://github.com/mintty/mintty/wiki/CtrlSeqs#bidirectional-rendering
+echo -e '\e[3 S'
+
+
+# kill -s KILL $$
+
+
+# do not echo input to the interactive shell:
+stty -echo
+

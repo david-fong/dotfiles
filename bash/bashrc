@@ -1,0 +1,126 @@
+
+# exit if not running interactively:
+[[ "$-" =~ "i" ]] || return
+
+
+
+
+# Not related, but written here in case I forget what I did:
+# Computer\HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer\NoUninstallFromStart
+# right-click recycle bin and check the "prompt before moving to recycle-bin" box
+# random note: can open control panel with windows + pause/break
+# don't turn on "lower screen brightness in battery saving mode".
+#   seems to lock screen brightness until next computer restart.
+
+
+
+
+# commands to list things:
+# declare -p    variables and function names
+# set           like above, but show function bodies
+# alias         aliases
+# shopt         shell options
+# hash          hashed executables from PATH
+# bind -p       readline key-bindings
+# enable        enabled shell builtins
+
+
+
+
+# disable sending and receiving XON/XOFF
+# (only one is actually necessary to do)
+stty stop '' -ixoff
+stty stop '' -ixon
+
+shopt -s globstar
+export FUNCNEST=100
+export LINES COLUMNS # for .gitconfig
+
+
+
+
+shopt -s histappend
+declare -a histignore=(
+    'fg*' 'hist' 'history' 'bind' 'clear'
+    'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig'
+    'ls' 'lsa' 'lsa\ *' 'clsa' 'lsen\ *'
+    'vims' 'vims\ *' 'todo*'
+    'git\ status' 'git gra' 'git\ graph' 'git\ grpah' 'git\ diff*'
+    'soundcheck' 'coinflip' 'yes'
+)
+export HISTIGNORE=
+for pattern in "${histignore[@]}"; do
+    HISTIGNORE+="$pattern"':'
+done
+unset histignore
+export HISTCONTROL=ignoredups:ignorespace
+export HISTSIZE=1024
+export HISTFILESIZE=2048
+
+
+
+
+declare -rx INPUTRC="${XGD_CONFIG_HOME}/readline/inputrc"
+declare -rx VIM="${XGD_CONFIG_HOME}"
+declare -rx VIMINIT='source ${VIM}/vimfiles/vimrc'
+
+[[ -f ~/.myscripts/ansicode ]] && source ~/.myscripts/ansicode
+[[ -f "${XGD_CONFIG_HOME}/bash/aliases"        ]] && source "${XGD_CONFIG_HOME}/bash/aliases"
+[[ -f "${XGD_CONFIG_HOME}/bash/aliases__local" ]] && source "${XGD_CONFIG_HOME}/bash/aliases__local"
+alias   inputrc='"$EDITOR" "${XGD_CONFIG_HOME}/readline/inputrc"'
+alias    bashrc='"$EDITOR" "${XGD_CONFIG_HOME}/bash/bashrc"'
+alias       als='"$EDITOR" "${XGD_CONFIG_HOME}/bash/aliases"'
+alias      alsl='"$EDITOR" "${XGD_CONFIG_HOME}/bash/aliases__local"'
+alias     vimrc='"$EDITOR" "${XGD_CONFIG_HOME}/vimfiles/vimrc"'
+alias gitconfig='"$EDITOR" "${XGD_CONFIG_HOME}/git/config"'
+
+export EDITOR='vim'
+export CSCOPE_EDITOR='view'
+
+
+
+
+# startup the ssh agent:
+[ "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
+
+
+
+
+# less command behaviour:
+# +X : enable startup termcap
+# -q : medium-quiet
+# -R : interpret escape-sequences
+# -J : show status-column
+declare -rx LESS='-+X -qRJ'
+
+# grep colored output styling:
+# https://askubuntu.com/a/1042242
+# TODO declare -rx GREP_COLORS=''
+
+
+
+
+# expand variables to their contained values,
+# and don't suggest files for these commands:
+shopt -s direxpand
+complete -d -o bashdefault cd ls lsa mkdir
+
+# suggest completions for an empty
+# commandline with enabled builtins:
+complete -A enabled -E
+
+
+
+
+# finalize prompt:
+readonly PS1
+declare -rxi PROMPT_DIRTRIM=5
+declare -rxi PSLINES="$(echo -e "$PS1" | wc --lines)"
+
+
+
+
+# go to the user's home directory:
+if [[ "$PWD" = '/' || "$PWD" = "$HOME" ]]
+then home; else clsa; fi
+
