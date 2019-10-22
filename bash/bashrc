@@ -88,10 +88,11 @@ export CSCOPE_EDITOR='view'
 
 # less command behaviour:
 # +X : enable startup termcap
+# -F : print to console if 1 page
 # -q : medium-quiet
 # -R : interpret escape-sequences
 # -J : show status-column
-declare -rx LESS='-+X -qRJ'
+declare -rx LESS='-+X -FqRJ'
 
 # grep colored output styling:
 # https://askubuntu.com/a/1042242

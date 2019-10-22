@@ -164,10 +164,11 @@ augroup END
 " - replace all occurances in each line
 " - 
 function! VerilogParamFormat()
-    sil! ?^[^.]*(?,s/^\([^.]*\)(\(.*\)$/\1(\2/e    " insert newline after '('
-    sil! ?^[^.]*(?,/;/+s/^\(.\+\));$/\1);/eg       " put ');' on new line
-    sil! ?^[^.]*(?,/;/s/,\s*/,\1/eg                " put all signals on single lines
-    sil! ?^[^.]*(?,/;/g/^\s*$/d                      " delete empty lines
-    sil! ?^[^.]*(?+,/;/-s/^\s*/    /eg               " use four leading spaces
+    sil! +?^[^.]*(? ,    s/(/(/e          " insert newline after '('
+    sil! +?^[^.]*(? ;/;/ s/);$/);/eg      " put ');' on new line
+    sil!  ?^[^.]*(? ;/;/ s/,\s*/,\1/eg    " put all signals on single lines
+    sil!  ?^[^.]*(? ;/;/ g/^\s*$/d          " delete empty lines
+    sil!  ?^[^.]*(?+;/;/-s/^\s*/    /eg     " use four leading spaces
+    sil!  ?^[^.]*(? ;/;/ s/input\s*/input  /eg  " use four leading spaces
 endfunction
 
