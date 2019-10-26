@@ -11,6 +11,8 @@
 # random note: can open control panel with windows + pause/break
 # don't turn on "lower screen brightness in battery saving mode".
 #   seems to lock screen brightness until next computer restart.
+# settings > system > multitasking > don't show snap beside options.
+# settings > system > power&sleep  > always network disconnect on sleep.
 
 
 
@@ -44,8 +46,8 @@ declare -a histignore=(
     'fg*' 'hist' 'history' 'bind' 'clear'
     'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig'
     'ls' 'lsa' 'lsa\ *' 'clsa' 'lsen\ *'
-    'vims' 'vims\ *' 'todo*'
-    'git\ status' 'git gra' 'git\ graph' 'git\ grpah' 'git\ diff*'
+    'vims' 'vims\ *' 'todo'
+    'git\ status' 'git gra' 'git\ graph' 'git\ diff*'
     'soundcheck' 'coinflip' 'yes'
 )
 export HISTIGNORE=
@@ -61,7 +63,8 @@ export HISTFILESIZE=2048
 
 
 declare -rx INPUTRC="${XGD_CONFIG_HOME}/readline/inputrc"
-declare -rx VIM="${XGD_CONFIG_HOME}"
+#declare -rx LESSKEY="${XGD_CONFIG_HOME}/less/lesskey" <- this doesn't work :/
+declare -rx     VIM="${XGD_CONFIG_HOME}"
 declare -rx VIMINIT='source ${VIM}/vimfiles/vimrc'
 
 [[ -f "${XGD_CONFIG_HOME}/ansicode/ansicode"   ]] && source "${XGD_CONFIG_HOME}/ansicode/ansicode"
@@ -92,7 +95,10 @@ export CSCOPE_EDITOR='view'
 # -q : medium-quiet
 # -R : interpret escape-sequences
 # -J : show status-column
-declare -rx LESS='-+X -FqRJ'
+# -N : show line numbers
+# -M : use long prompt
+# -x4: use <4> as tabstop
+declare -rx LESS='-+X -FqRJNM -x4'
 
 # grep colored output styling:
 # https://askubuntu.com/a/1042242
@@ -104,7 +110,8 @@ declare -rx LESS='-+X -FqRJ'
 # expand variables to their contained values,
 # and don't suggest files for these commands:
 shopt -s direxpand
-complete -d -o bashdefault cd ls lsa mkdir
+complete -d -o bashdefault -- cd ls lsa mkdir
+complete -ab -A function -X '{_*,}' -- type
 
 # suggest completions for an empty
 # commandline with enabled builtins:

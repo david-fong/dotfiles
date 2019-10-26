@@ -9,7 +9,7 @@
 
 
 alias greeting='clear; \echo -e "\n$(heading "$(date)")""\n"'
-alias cyclelogin='\exec "$0" "$@"; clsa'
+alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
 
 alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
@@ -21,12 +21,9 @@ alias hist='history | less +G'
 
 
 declare -a grepargs=('--line-number' '--text' '--color=auto')
-for exdir in '.git' 'build' 'compile' 'db'; do
-    grepargs+=('--exclude-dir="'"$exdir"'"')
-done
-if [[ ! -f "${XGD_CONFIG_HOME}/grep/excludefrom" ]]; then
-    touch "${XGD_CONFIG_HOME}/grep/excludefrom"
-fi
+grepargs+=('--exclude-dir={.git,build,compile,db}')
+if [[ ! -f "${XGD_CONFIG_HOME}/grep/excludefrom" ]]
+then touch "${XGD_CONFIG_HOME}/grep/excludefrom"; fi
 grepargs+=('--exclude-from="${XGD_CONFIG_HOME}/grep/excludefrom"' '--extended-regexp')
 alias grep='\grep '"${grepargs[@]}"''
 unset grepargs
@@ -117,12 +114,9 @@ function home() {
     \cd "${HOME}" && time ls --width=75 --hide=[nN][tT][uU][sS]*
     stty echo
 }
+alias config='\cd ${XGD_CONFIG_HOME} && clsa'
 alias githome='\cd "$(git rev-parse --show-toplevel 2>/dev/null)" && clsa'
 alias e='\cd .. && clsa'
-alias ee='\cd ../.. && clsa'
-alias eee='\cd ../../.. && clsa'
-alias eeee='\cd ../../../.. && clsa'
-alias eeeee='\cd ../../../../.. && clsa'
 
 
 

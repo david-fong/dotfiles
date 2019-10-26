@@ -11,7 +11,7 @@
 # [$1]: command name.
 # [$2]: sub-command name.
 # [$3:]: (payload)? (arguments)+.
-ansicode() {
+function ansicode() {
     local -lr cmd="$1"
     local -lr subcmd="$2"
     local -i argsidx=3
@@ -68,8 +68,8 @@ ansicode() {
             \echo -e '\n(you can also use autocomplete)'
         ;;
         'help')
-            local -r helpfilename='/.'"${FUNCNAME[0]}"'_help'
-            \cat "$(dirname \"${BASH_SOURCE[0]}\")$helpfilename"
+            local -r helpfilename=".${FUNCNAME[0]}_help"
+            \cat "$(dirname "${BASH_SOURCE[0]}")/$helpfilename"
         ;;
         *) \echo -n 'unrecognized sub-command.'
             \echo ' try "'"${FUNCNAME[0]} $cmd"' help".'

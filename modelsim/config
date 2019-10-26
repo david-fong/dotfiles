@@ -14,6 +14,7 @@ set PrefDefault(waveFont) {Tahoma 8 normal roman}
 set PrefDefault(waveFontV2) {GulimChe 8}
 set PrefMain(colorizeTranscript) 1
 set PrefMain(promptColor) #000080
+set PrefSource(CreateBackupFile) 0
 set PrefSource(tabs) 4
 set PrefSource(OpenOnBreak) 0
 set PrefToolbar(newEnabled) 0

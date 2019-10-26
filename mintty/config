@@ -20,7 +20,7 @@ BoldAsFont=no
 
 BellFreq=880
 BellLen=300
-BellInterval=1200
+BellInterval=900
 
 Transparency=medium
 OpaqueWhenFocused=no
