@@ -6,12 +6,14 @@
 You will notice that I embed a lot of links in this readme- even ones that you may feel are redundant- and that I don't speak from a very technical point of view. this is mostly because I can only speak to the limits of my knowledge and understanding, but also because I write this in hopes to encourage some of my friends to warm up to the idea of working in a terminal. I want to demonstrate that a terminal can be made more liveable, and show my process in discovering how to do that.
 
 <br>
+
 ## :briefcase: How to use it
 As I said, everything is under one directory, which means less clutter, and easier portability. All you need to do to use my environment is to clone and copy this repo to the directory specified by the environment variable [`XGD_CONFIG_HOME`](standards.freedesktop.org/basedir-spec/basedir-spec-latest.html), which by convention is usually `~/.config/`, if set by default.
 
 You should source :/[git/bashrc](git/bashrc) in your `~/.bash_profile` file, or whatever is passed as the `--init-file` argument when invoking bash. You can put a gitconfig-style file in `:/git/config__local` containing your name and email. Similarly, you can put machine-local bash run-config comands in `:/bash/aliases__local`.
 
 <br>
+
 ## :turtle: Why I do this
 I like to poke around and explore things. To me, reading about different parts of the terminal environment is like going on a treasure hunt. And while half the time I don't even know what I'm looking for, I enjoy almost every minute of it. At first, the question that always came up in my mind was "why is *<thing that doesn't follow conventions of modern applications>* this way?". And as I explored and learned about different pieces of the bigger picture, I started to see connections and how the pieces build on top of, or around each other.
 
@@ -20,7 +22,7 @@ For example, I wondered why vim doesn't save buffers using ctrl+s by default. As
 If you're wondering why I don't use WSL, it's because when I started using git-for-windows, I had absolutely no idea what was going on, and it was hard for me to do or find worthwhile pretty much anything I saw. I've come a long way since then, and I may look at switching to WSL in the future, but not until I feel like I'm being limited by MinGW.
 
 <br>
-<br>
+
 ## :balloon: A Bird's Eye View
 
 This is a high level view of what I have learned about terminal-related facilities. I may have accidentally gotten something wrong, so if you notice a mistake or something that can be improved, please shoot me a message or email and correct me!
@@ -36,13 +38,16 @@ program                 | description
 
 <br>
 <br>
+
 ## How it looks when I start bash:
 ![startup](images/startup.PNG)
 
 <br>
+
 ## How my vim looks:
 ![vimrc](images/vimrc.PNG)
 
 <br>
+
 ## My modified "ls -la":
 ![lsa](images/lsa.PNG)
