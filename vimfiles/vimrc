@@ -94,8 +94,10 @@ if exists('+linebreak')
     augroup END
     function! SetWrappingOptions()
         setlocal wrap
-        noremap <silent><buffer> <UP> g<UP>
+        noremap <silent><buffer> <UP>   g<UP>
         noremap <silent><buffer> <DOWN> g<DOWN>
+        noremap <silent><buffer> j      gj
+        noremap <silent><buffer> k      gk
     endfunction
     set linebreak
     set showbreak=>\ "↪↳\ 
