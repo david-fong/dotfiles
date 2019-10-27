@@ -95,10 +95,10 @@ export CSCOPE_EDITOR='view'
 # -q : medium-quiet
 # -R : interpret escape-sequences
 # -J : show status-column
-# -N : show line numbers
+# -N : show line numbers (off)
 # -M : use long prompt
 # -x4: use <4> as tabstop
-declare -rx LESS='-+X -FqRJNM -x4'
+declare -rx LESS='-+X -FqRJM -x4'
 
 # grep colored output styling:
 # https://askubuntu.com/a/1042242
