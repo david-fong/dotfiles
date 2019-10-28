@@ -150,7 +150,10 @@ command! NoAutoChecktime let b:autochecktime=0
 
 " spelling is hard: -----------------------------
 iabbrev teh the
-inoremap {<CR> {<CR>}<ESC>ko
+inoremap {<CR> {<CR>}<ESC>O
+function! FixMyLowerCaseSentances()
+    sil! %s/\([.]\s\+\)\([a-z]\)/\1\u\2/g
+endfunction
 
 
 " for hex editing: ------------------------------
