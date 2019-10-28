@@ -3,14 +3,16 @@
 
 "darcy" is how I like to relax the pronunciation of `.*rc`- the [fileglob pattern](tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm) for typical standalone [run-configuration](wikipedia.org/wiki/Configuration_file) files. Most of the contents of this repo no longer follow that glob pattern ever since I moved everything to fall under one directory, but I decided to keep the name because I like how it sounds.
 
-You will notice that I embed a lot of links in this readme- even ones that you may feel are redundant- and that I don't speak from a very technical point of view. This is mostly because I can only speak to the limits of my knowledge and understanding, but also because I write this in hopes to encourage some of my friends to warm up to the idea of working in a terminal. I want to demonstrate that a terminal can be made more liveable, and share my process of discovering how to do that.
+You will notice that I embed a lot of links in this readme- even ones that you may feel are redundant- and that I don't speak from a very technical point of view. This is mostly because I can only speak to the limits of my knowledge and understanding, but also because I write this in hopes to encourage some of my friends to warm up to the idea of working in a terminal. I want to demonstrate that a terminal can be made more liveable, and to share the steps of the journey I've taken in discovering how to do that.
 
 <br>
 
 ## :briefcase: How to use it
-As I said before, everything is under one directory, which means less clutter, and easier portability. All you need to do to mirror my environment is to clone and copy this repo to the directory specified by the environment variable [`XGD_CONFIG_HOME`](standards.freedesktop.org/basedir-spec/basedir-spec-latest.html), which by convention is usually `~/.config/`, if set by default.
-
-You should source :/[git/bashrc](git/bashrc) in your `~/.bash_profile` file, or whatever is passed as the `--init-file` argument when invoking bash. You can put a gitconfig-style file in `:/git/config__local` containing your name and email. Similarly, you can put machine-local bash run-config comands in `:/bash/aliases__local`.
+As I said before, everything is under one directory, which means less clutter, and easier portability. All you need to do to mirror my environment is to:
+1. Clone and copy the contents of this repo into the directory specified by the environment variable [`XGD_CONFIG_HOME`](standards.freedesktop.org/basedir-spec/basedir-spec-latest.html), which by convention is usually `~/.config/`, if set by default.
+1. Source [`:/git/bashrc`](git/bashrc) in your `~/.bash_profile` file, or whatever is passed as the `--init-file` argument when invoking bash.
+1. You can put a gitconfig-style file in [`:/git/config__local`](git) containing your name and email.
+1. Similarly, you can put machine-local bash run-config comands in [`:/bash/aliases__local`](bash).
 
 <br>
 
