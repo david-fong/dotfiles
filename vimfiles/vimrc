@@ -45,10 +45,10 @@ endfunction
 " smoother scrolling: ---------------------------
 set scrolloff=5
 set sidescroll=1
-set sidescrolloff=10
-map  <silent> <ScrollWheelUp> <C-Y>
+set sidescrolloff=7
+map  <silent> <ScrollWheelUp>   <C-Y>
 map  <silent> <ScrollWheelDown> <C-E>
-imap <silent> <ScrollWheelUp> <C-O><C-Y>
+imap <silent> <ScrollWheelUp>   <C-O><C-Y>
 imap <silent> <ScrollWheelDown> <C-O><C-E>
 
 
@@ -57,21 +57,25 @@ noremap  <silent> <C-S> :update<CR>
 vnoremap <silent> <C-S> <C-C>:update<CR>gv
 inoremap <silent> <C-S> <C-O>:update<CR>
 
-
 " exit using ctrl+x: ----------------------------
 noremap  <silent> <C-X> :q<CR>
 vnoremap <silent> <C-X> :q<CR>
 inoremap <silent> <C-X> <ESC>:q<CR>
-
 
 " close all using ctrl+q: -----------------------
 noremap  <silent> <C-Q> :qa<CR>
 vnoremap <silent> <C-Q> :qa<CR>
 inoremap <silent> <C-Q> <ESC>:qa<CR>
 
-
-" pause in normal mode: -------------------------
+" pause in insert mode: -------------------------
 inoremap <silent> <C-Z> <ESC><C-Z>
+
+
+" normal nav in insert mode: --------------------
+inoremap <silent> <ESC>h <C-O>h
+inoremap <silent> <ESC>j <C-O>j
+inoremap <silent> <ESC>k <C-O>k
+inoremap <silent> <ESC>l <C-O>l
 
 
 " line numbers: ---------------------------------
@@ -79,10 +83,10 @@ set foldcolumn=1
 set numberwidth=1
 set number
 set cursorline "'show' the cursor line
-hi FoldColumn   ctermbg=none
-hi CursorLine   cterm=none
-hi CursorLineNr ctermfg=white cterm=bold
-hi LineNr       ctermfg=blue
+hi FoldColumn       ctermbg=none
+hi CursorLine                       cterm=none
+hi CursorLineNr     ctermfg=white   cterm=bold
+hi LineNr           ctermfg=blue
 
 
 " text wrapping: --------------------------------
@@ -130,12 +134,12 @@ hi StatusLineNC ctermfg=grey ctermbg=darkgrey
 " check for file modifications automatically (current buffer only).
 " use :NoAutoChecktime to disable it (uses b:autochecktime)
 function! MyAutoCheckTime()
-  " only check timestamp for normal files
-  if &buftype != '' | return | endif
-  if ! exists('b:autochecktime') || b:autochecktime
-    checktime %
-    let b:autochecktime = 1
-  endif
+    " only check timestamp for normal files
+    if &buftype != '' | return | endif
+    if ! exists('b:autochecktime') || b:autochecktime
+        checktime %
+        let b:autochecktime = 1
+    endif
 endfunction
 augroup MyAutoChecktime
   au!
@@ -144,17 +148,21 @@ augroup END
 command! NoAutoChecktime let b:autochecktime=0
 
 
+" spelling is hard: -----------------------------
+iabbrev teh the
+inoremap {<CR> {<CR>}<ESC>ko
 
-" for hex editing -------------------------------
+
+" for hex editing: ------------------------------
 augroup Binary
-  au!
-  au BufReadPre  *.bin let &bin=1
-  au BufReadPost *.bin if &bin | %!xxd
-  au BufReadPost *.bin set ft=xxd | endif
-  au BufWritePre *.bin if &bin | %!xxd -r
-  au BufWritePre *.bin endif
-  au BufWritePost *.bin if &bin | %!xxd
-  au BufWritePost *.bin set nomod | endif
+    au!
+    au BufReadPre  *.bin let &bin=1
+    au BufReadPost *.bin if &bin | %!xxd
+    au BufReadPost *.bin set ft=xxd | endif
+    au BufWritePre *.bin if &bin | %!xxd -r
+    au BufWritePre *.bin endif
+    au BufWritePost *.bin if &bin | %!xxd
+    au BufWritePost *.bin set nomod | endif
 augroup END
 
 
