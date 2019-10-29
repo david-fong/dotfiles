@@ -2,10 +2,18 @@
 # http://tiswww.case.edu/php/chet/readline/readline.html#SEC10
 
 
-
+# basic settings
 set bell-style audible
 set completion-query-items 70
 set completion-ignore-case on
+
+# vim-style arrow-keys
+"\eh": "\eOD"
+"\ej": "\eOB"
+"\ek": "\eOA"
+"\el": "\eOC"
+
+
 
 # disable/enable 8bit input
 set input-meta on

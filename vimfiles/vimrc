@@ -82,10 +82,17 @@ inoremap <silent> <ESC>p <C-O>p
 inoremap <silent> <ESC>P <C-O>P
 
 " readline-style bindings: ----------------------
-cnoremap          <C-A> <C-B>
-inoremap <silent> <C-A> <C-O>^
-inoremap <silent> <C-E> <C-O>$
-inoremap <silent> <C-D> <BS>
+cnoremap          <C-A>  <C-B>
+inoremap <silent> <C-A>  <C-O>^
+inoremap <silent> <C-E>  <C-O>$
+inoremap <silent> <ESC>f <C-O>e
+inoremap <silent> <C-D>  <DEL>
+
+" vim-style udlr in command-mode: ---------------
+cnoremap <ESC>h <LEFT>
+cnoremap <ESC>j <DOWN>
+cnoremap <ESC>k <UP>
+cnoremap <ESC>l <RIGHT>
 
 
 " line numbers: ---------------------------------
