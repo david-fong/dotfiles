@@ -5,6 +5,8 @@ FontSmoothing=none
 Locale=en_CA
 Charset=UTF-8
 
+BackspaceSendsBS=yes
+
 Columns=100
 Rows=40
 SessionGeomSync=0

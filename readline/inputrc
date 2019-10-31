@@ -8,10 +8,12 @@ set completion-query-items 70
 set completion-ignore-case on
 
 # vim-style arrow-keys
-"\eh": "\eOD"
-"\ej": "\eOB"
-"\ek": "\eOA"
-"\el": "\eOC"
+"\eh": backward-char
+"\ej": next-history
+"\ek": previous-history
+"\el": forward-char
+"\\": self-insert
+
 
 
 
