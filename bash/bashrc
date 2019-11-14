@@ -45,7 +45,7 @@ shopt -s histappend
 declare -a histignore=(
     'fg*' 'hist' 'history' 'bind' 'clear'
     'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig'
-    'ls' 'lsa' 'lsa\ *' 'clsa' 'lsen\ *'
+    'ls' 'lsa' 'clsa' 'lsen\ *'
     'vims' 'todo'
     'git\ status' 'git gra' 'git\ graph' 'git\ diff*'
     'soundcheck' 'coinflip' 'yes'

@@ -12,6 +12,7 @@ set completion-ignore-case on
 "\ej": next-history
 "\ek": previous-history
 "\el": forward-char
+"\en": accept-line
 "\\": self-insert
 
 

@@ -87,6 +87,8 @@ inoremap <silent> <C-A>  <C-O>^
 inoremap <silent> <C-E>  <C-O>$
 inoremap <silent> <ESC>f <C-O>e
 inoremap <silent> <C-D>  <DEL>
+" below is my own:
+inoremap <silent> <ESC>n <C-O>o
 
 " vim-style udlr in command-mode: ---------------
 cnoremap <ESC>h <LEFT>

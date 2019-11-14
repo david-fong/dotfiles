@@ -9,3 +9,7 @@ cscope.in.out
 
 *.dll
 
+*.ico
+*.png
+*.jpg
+
