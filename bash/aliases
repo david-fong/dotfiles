@@ -15,6 +15,9 @@ alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
 alias jobs='jobs -l'
 alias hist='history | less +G'
+function hash() {
+    command hash "$@" | sort -r
+}
 
 
 
@@ -77,7 +80,6 @@ function __lsa() {
     ls "$@" -o --almost-all --human-readable
 }
 function lsa() {
-    tput rmam
     local -r OLD_GREP_COLORS="$GREP_COLORS"
     export GREP_COLORS='ms=38;5;246' # grey
     local -x coloropt='--color=never'
@@ -91,7 +93,6 @@ function lsa() {
         \grep -E "^[-].*\\S+[.][^. ]+$"  <<< "$listing" \
       | \grep -E "$coloropt" "[.][^. ]+$"
     export GREP_COLORS="$OLD_GREP_COLORS"
-    tput smam
     return 0
 }
 alias clsa='greeting; lsa'
