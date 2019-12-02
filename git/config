@@ -3,7 +3,7 @@
     path = ~/.config/git/config__local
 
 [core]
-    pager = less -FR
+    pager = less -F
     ; "${XGD_CONFIG_HOME}/git/ignore" is the default
     ;excludeFile = ~/.config/git/ignore
 
@@ -28,4 +28,5 @@
     graph = "log --oneline --graph --all --decorate --color=always"
     gra = "!echo; tput rmam; git graph -n20 | head -n20; tput smam"
     ls = "ls-tree --full-tree --abbrev=7 -r HEAD"
+    logg = "log --graph --decorate --stat -M"
 

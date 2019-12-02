@@ -35,6 +35,7 @@ augroup VimrcGroup
     autocmd BufRead,BufNewFile * call OnOpenFile()
 augroup END
 function! OnOpenFile()
+    set hlsearch
     execute "normal zt"
     if &readonly
         set nomodifiable

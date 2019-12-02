@@ -67,6 +67,7 @@ declare -rx INPUTRC="${XGD_CONFIG_HOME}/readline/inputrc"
 declare -rx     VIM="${XGD_CONFIG_HOME}"
 declare -rx VIMINIT='source ${VIM}/vimfiles/vimrc'
 declare -rx PYTHONSTARTUP="${XGD_CONFIG_HOME/\/c/C:}/python/startup.py"
+PYTHONHOME+=":${$XGD_CONFIG_HOME}/python/"
 
 source "${XGD_CONFIG_HOME}/npm/completion"
 
@@ -102,6 +103,10 @@ export CSCOPE_EDITOR='view'
 # -M : use long prompt
 # -x4: use <4> as tabstop
 declare -rx LESS='-+X -FqRJM -x4'
+
+# https://github.com/mintty/mintty/issues/170#issuecomment-108889098
+# disable mouse-scrolling in mintty for the alternate screen
+echo -e '\e[?7786l'
 
 # grep colored output styling:
 # https://askubuntu.com/a/1042242
