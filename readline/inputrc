@@ -15,6 +15,10 @@ set completion-ignore-case on
 "\en": accept-line
 "\\": self-insert
 
+# insert double-quoted variable
+"\e;": "\"\"\e[D${}\e[D"
+"\eu": "cd ..\en"
+
 
 
 

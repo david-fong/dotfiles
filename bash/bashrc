@@ -35,6 +35,7 @@ stty stop '' -ixoff
 stty stop '' -ixon
 
 shopt -s globstar
+shopt -s extglob
 export FUNCNEST=100
 export LINES COLUMNS # for .gitconfig
 
@@ -45,9 +46,9 @@ shopt -s histappend
 declare -a histignore=(
     'fg*' 'hist' 'history' 'bind' 'clear'
     'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig'
-    'ls' 'lsa' 'clsa' 'lsen\ *'
+    'cd\ \.\.' 'ls' 'lsa' 'clsa' 'lsen\ *'
     'vims' 'todo'
-    'git\ status' 'git gra' 'git\ graph' 'git\ diff*'
+    'git\ status' 'git gra' 'git\ graph' 'git\ diff'
     'soundcheck' 'coinflip' 'yes'
 )
 export HISTIGNORE=
@@ -66,8 +67,8 @@ declare -rx INPUTRC="${XGD_CONFIG_HOME}/readline/inputrc"
 #declare -rx LESSKEY="${XGD_CONFIG_HOME}/less/lesskey" <- this doesn't work :/
 declare -rx     VIM="${XGD_CONFIG_HOME}"
 declare -rx VIMINIT='source ${VIM}/vimfiles/vimrc'
-declare -rx PYTHONSTARTUP="${XGD_CONFIG_HOME/\/c/C:}/python/startup.py"
-PYTHONHOME+=":${$XGD_CONFIG_HOME}/python/"
+declare -rx PYTHONSTARTUP="${XGD_CONFIG_HOME}/python/startup.py"
+PYTHONHOME+=":${XGD_CONFIG_HOME}/python/"
 
 source "${XGD_CONFIG_HOME}/npm/completion"
 
@@ -95,14 +96,14 @@ export CSCOPE_EDITOR='view'
 
 # less command behaviour:
 # +X : enable startup termcap
-# -F : print to console if 1 page
+# -F : (not used) print to console if 1 page
 # -q : medium-quiet
 # -R : interpret escape-sequences
 # -J : show status-column
 # -N : show line numbers (off)
 # -M : use long prompt
 # -x4: use <4> as tabstop
-declare -rx LESS='-+X -FqRJM -x4'
+declare -rx LESS='-+X -qRJM -x4'
 
 # https://github.com/mintty/mintty/issues/170#issuecomment-108889098
 # disable mouse-scrolling in mintty for the alternate screen

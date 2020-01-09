@@ -19,12 +19,13 @@ function hash() {
     command hash "$@" | sort -r
 }
 
-
+if [[ "$OCTAVE_HOME" ]]
+then alias octave='"$OCTAVE_HOME"/mingw64/bin/octave-cli --interactive'; fi
 
 
 
 declare -a grepargs=('--line-number' '--text' '--color=auto')
-grepargs+=('--exclude-dir={.git,build,compile,db,node_modules}')
+grepargs+=('--exclude-dir={.git,build,dist,compile,db,node_modules}')
 if [[ ! -f "${XGD_CONFIG_HOME}/grep/excludefrom" ]]
 then touch "${XGD_CONFIG_HOME}/grep/excludefrom"; fi
 grepargs+=('--exclude-from="${XGD_CONFIG_HOME}/grep/excludefrom"' '--extended-regexp')
