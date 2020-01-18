@@ -17,7 +17,7 @@ set completion-ignore-case on
 
 # insert double-quoted variable
 "\e;": "\"\"\e[D${}\e[D"
-"\eu": "cd ..\en"
+"\eu": "cd .. && ls\en"
 
 
 
