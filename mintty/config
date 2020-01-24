@@ -26,7 +26,7 @@ BellInterval=900
 
 Transparency=medium
 OpaqueWhenFocused=no
-CursorType=Underscore
+CursorType=underscore
 Scrollbar=none
 ZoomMouse=no
 

@@ -78,7 +78,7 @@ inoremap <silent> <C-Z> <ESC><C-Z>
     imap <silent> <ESC>k <UP>
     imap <silent> <ESC>l <RIGHT>
 inoremap <silent> <ESC>b <C-O>b
-inoremap <silent> <ESC>e <C-O>e
+inoremap <silent> <ESC>w <C-O>w
 inoremap <silent> <ESC>p <C-O>p
 inoremap <silent> <ESC>P <C-O>P
 
@@ -86,10 +86,8 @@ inoremap <silent> <ESC>P <C-O>P
 cnoremap          <C-A>  <C-B>
 inoremap <silent> <C-A>  <C-O>^
 inoremap <silent> <C-E>  <C-O>$
-inoremap <silent> <ESC>f <C-O>e
+inoremap <silent> <ESC>f <C-O>w
 inoremap <silent> <C-D>  <DEL>
-" below is my own:
-inoremap <silent> <ESC>n <C-O>o
 
 " vim-style udlr in command-mode: ---------------
 cnoremap <ESC>h <LEFT>
