@@ -9,6 +9,7 @@ BackspaceSendsBS=yes
 
 Columns=100
 Rows=40
+Padding=5
 SessionGeomSync=0
 Language=en
 

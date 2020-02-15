@@ -13,6 +13,8 @@
 #   seems to lock screen brightness until next computer restart.
 # settings > system > multitasking > don't show snap beside options.
 # settings > system > power&sleep  > always network disconnect on sleep.
+# Search up how to "force" uninstall things like Microsoft Solitaire Collection.
+# https://www.windowscentral.com/how-disable-password-reveal-button-sign-screen-windows-10
 
 
 
@@ -44,10 +46,11 @@ export LINES COLUMNS # for .gitconfig
 
 shopt -s histappend
 declare -a histignore=(
-    'fg*' 'hist' 'history' 'bind' 'clear'
+    'fg*' 'hist' 'history' 'hash' 'bind' 'clear'
     'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig'
-    'cd\ \.\.' 'ls' 'lsa' 'clsa' 'lsen\ *'
+    'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
     'vims' 'todo'
+    './build' './main'
     'git\ status' 'git gra' 'git\ graph' 'git\ diff'
     'soundcheck' 'coinflip' 'yes'
 )
@@ -89,7 +92,15 @@ export CSCOPE_EDITOR='view'
 
 
 # startup the ssh agent:
-[ "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
+gpg-agent --daemon --enable-ssh-support
+[[ -z "${SSH_AUTH_SOCK}" ]] && eval "$(ssh-agent -s)"
+function ssh-agent() {
+    echo 'warning: an ssh agent has already been started.'
+    echo 'if you wish to use this executable, prefix with the command builtin.'
+    echo 'to kill all ssh-agents, do:'
+    echo '  taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T'
+}
+readonly -f ssh-agent
 
 
 

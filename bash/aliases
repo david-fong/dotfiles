@@ -13,7 +13,7 @@ alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
 
 alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
-alias jobs='jobs -l'
+alias jobs='jobs -l; tasklist | grep agent'
 alias hist='history | less +G'
 function hash() {
     command hash "$@" | sort -r
@@ -112,7 +112,7 @@ function lsen() {
 alias root='\cd / && clsa'
 function home() {
     stty -echo
-    greeting
+    \echo -e "\n$(heading "$(date)")""\n"
     \cd "${HOME}" && time ls --width=75 --hide=[nN][tT][uU][sS]*
     stty echo
 }

@@ -30,3 +30,5 @@
     ls = "ls-tree --full-tree --abbrev=7 -r HEAD"
     logg = "log --graph --decorate --stat --find-renames"
 
+[gui]
+	recentrepo = C:/Users/davdf/Documents/Sudoku-CPP
