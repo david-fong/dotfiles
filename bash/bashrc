@@ -91,8 +91,10 @@ export CSCOPE_EDITOR='view'
 
 
 
-# startup the ssh agent:
-gpg-agent --daemon --enable-ssh-support
+# startup the gpg and ssh agent:
+# make the gpg-agent cache my password for one hour.
+# https://help.github.com/en/github/authenticating-to-github/associating-an-email-with-your-gpg-key
+gpg-agent --default-cache-ttl 3600 --daemon #--enable-ssh-support
 [[ -z "${SSH_AUTH_SOCK}" ]] && eval "$(ssh-agent -s)"
 function ssh-agent() {
     echo 'warning: an ssh agent has already been started.'
