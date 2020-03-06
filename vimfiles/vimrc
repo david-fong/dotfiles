@@ -52,6 +52,10 @@ map  <silent> <ScrollWheelUp>   <C-Y>
 map  <silent> <ScrollWheelDown> <C-E>
 imap <silent> <ScrollWheelUp>   <C-O><C-Y>
 imap <silent> <ScrollWheelDown> <C-O><C-E>
+map  <silent> <C-K> <C-Y>
+map  <silent> <C-J> <C-E>
+imap <silent> <C-K> <C-O><C-Y>
+imap <silent> <C-J> <C-O><C-E>
 
 
 " save using ctrl+s: ----------------------------
