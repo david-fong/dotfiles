@@ -70,7 +70,6 @@ declare -rx INPUTRC="${XGD_CONFIG_HOME}/readline/inputrc"
 #declare -rx LESSKEY="${XGD_CONFIG_HOME}/less/lesskey" <- this doesn't work :/
 declare -rx     VIM="${XGD_CONFIG_HOME}"
 declare -rx VIMINIT='source ${VIM}/vimfiles/vimrc'
-declare -rx TIGRC_USER="${XGD_CONFIG_HOME}/git/tigrc"
 declare -rx PYTHONSTARTUP="${XGD_CONFIG_HOME}/python/startup.py"
 PYTHONHOME+=":${XGD_CONFIG_HOME}/python/"
 
@@ -85,6 +84,7 @@ alias       als='"$EDITOR" "${XGD_CONFIG_HOME}/bash/aliases"'
 alias      alsl='"$EDITOR" "${XGD_CONFIG_HOME}/bash/aliases__local"'
 alias     vimrc='"$EDITOR" "${XGD_CONFIG_HOME}/vimfiles/vimrc"'
 alias gitconfig='"$EDITOR" "${XGD_CONFIG_HOME}/git/config"'
+alias     tigrc='"$EDITOR" "${XGD_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ noma /etc/tigrc | 20 wincmd > | wincmd p"'
 
 export EDITOR='vim'
 export CSCOPE_EDITOR='view'

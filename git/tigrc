@@ -1,6 +1,0 @@
-# https://github.com/jonas/tig/blob/master/tigrc
-# https://jonas.github.io/tig/doc/tigrc.5.html
-# https://manpages.debian.org/testing/tig/tigrc.5.en.html
-
-set author-display = full
-set main-view-date = relative

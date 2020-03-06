@@ -1,0 +1,23 @@
+# https://github.com/jonas/tig/blob/master/tigrc
+# https://jonas.github.io/tig/doc/tigrc.5.html
+# https://manpages.debian.org/testing/tig/tigrc.5.en.html
+
+[tig]
+    mouse = true
+
+    main-view-author-display = full
+    main-view-date-display = relative-compact
+    main-view-id-display = true
+    main-view-commit-title-overflow = true
+
+[tig "bind"]
+    generic = <Ctrl-K> scroll-line-up
+    generic = <Ctrl-J> scroll-line-down
+    generic = S none
+    generic = c none
+    main = S !git switch --detach %(commit)
+    refs = S !git switch %(branch)
+
+[tig "color"]
+    # TODO
+

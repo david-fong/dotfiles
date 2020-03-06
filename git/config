@@ -1,6 +1,7 @@
 
 [include]
-    path = ~/.config/git/config__local
+    path = ./config__local
+    path = ./git_tigrc
 
 [core]
     pager = less -F
@@ -31,4 +32,4 @@
     logg = "log --graph --decorate --stat --find-renames"
 
 [gui]
-	recentrepo = C:/Users/davdf/Documents/Sudoku-CPP
+    recentrepo = C:/Users/davdf/Documents/Sudoku-CPP
