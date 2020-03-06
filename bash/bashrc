@@ -70,6 +70,7 @@ declare -rx INPUTRC="${XGD_CONFIG_HOME}/readline/inputrc"
 #declare -rx LESSKEY="${XGD_CONFIG_HOME}/less/lesskey" <- this doesn't work :/
 declare -rx     VIM="${XGD_CONFIG_HOME}"
 declare -rx VIMINIT='source ${VIM}/vimfiles/vimrc'
+declare -rx TIGRC_USER="${XGD_CONFIG_HOME}/git/tigrc"
 declare -rx PYTHONSTARTUP="${XGD_CONFIG_HOME}/python/startup.py"
 PYTHONHOME+=":${XGD_CONFIG_HOME}/python/"
 
@@ -94,7 +95,8 @@ export CSCOPE_EDITOR='view'
 # startup the gpg and ssh agent:
 # make the gpg-agent cache my password for one hour.
 # https://help.github.com/en/github/authenticating-to-github/associating-an-email-with-your-gpg-key
-gpg-agent --default-cache-ttl 3600 --daemon #--enable-ssh-support
+export GPG_TTY=$(tty)
+eval "(gpg-agent --daemon)"
 [[ -z "${SSH_AUTH_SOCK}" ]] && eval "$(ssh-agent -s)"
 function ssh-agent() {
     echo 'warning: an ssh agent has already been started.'

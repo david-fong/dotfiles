@@ -19,6 +19,7 @@ set incsearch
 set clipboard=unnamed
 
 set title
+set splitright
 set fillchars=vert:\ "
 set wildmenu
 set wildmode=list:longest,longest:full

@@ -67,7 +67,7 @@ function todo() {
         heading
         tput smam
     else
-        "$EDITOR" "$todopath"
+        "$EDITOR" "$todopath" -c 'vnew +set\ noma | wincmd p'
     fi
 }
 alias todoe='todo -e'
