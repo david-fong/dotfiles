@@ -70,6 +70,7 @@ declare -rx INPUTRC="${XGD_CONFIG_HOME}/readline/inputrc"
 #declare -rx LESSKEY="${XGD_CONFIG_HOME}/less/lesskey" <- this doesn't work :/
 declare -rx     VIM="${XGD_CONFIG_HOME}"
 declare -rx VIMINIT='source ${VIM}/vimfiles/vimrc'
+declare -rx TIGRC_USER="${XGD_CONFIG_HOME}/git/tigrc_colorstrings"
 declare -rx PYTHONSTARTUP="${XGD_CONFIG_HOME}/python/startup.py"
 PYTHONHOME+=":${XGD_CONFIG_HOME}/python/"
 

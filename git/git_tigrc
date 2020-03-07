@@ -13,6 +13,7 @@
     main-view-id-display            = true
     main-view-commit-title-overflow = true
     tree-view-date-display          = relative
+    log-view-line-number-display    = yes
 
 [tig "bind"]
     generic = <Ctrl-K> scroll-line-up

@@ -1,0 +1,20 @@
+
+# log view
+color "commit "         yellow  default bold reverse
+color "Refs: "          yellow  default
+color "Author: "        green   default
+color "Date: "          blue    default
+
+# diff view
+color "AuthorDate: "    green   default
+color "Commit: "        cyan    default
+color "CommitDate: "    cyan    default
+color "diff --"         cyan    default bold reverse
+color "old file mode "      default default
+color "new file mode "      default default
+color "deleted file mode "  default default
+color "index "          default default
+color "--- "            red     default
+color "+++ "            green   default
+color "@@"              cyan    default bold underline
+
