@@ -47,7 +47,7 @@ export LINES COLUMNS # for .gitconfig
 shopt -s histappend
 declare -a histignore=(
     'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear'
-    'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig'
+    'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
     'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
     'vims' 'todo'
     './build' './main'

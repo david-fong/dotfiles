@@ -6,6 +6,7 @@
     mouse = true
     main-options = "--all"
 
+    main-view-line-number-display   = yes
     main-view-author-display        = abbreviated
     main-view-date                  = custom
     main-view-date-format           = "%y.%m.%d"
@@ -22,27 +23,39 @@
     refs    = C +git switch %(branch)
 
 [tig "color"]
-    cursor      = black   white   bold
+    cursor      = black   white
     id          = yellow  default dim
     date        = blue    default dim
-
-    mode        = white   default
-    directory   = blue    default bold
     diff-stat   = default default
 
-    main-remote = red     default bold
-    main-tag    = yellow  default bold
-    main-local-tag = yellow default bold
+    title-focus     = default default bold reverse
+    title-blur      = black   white
+    header          = default default bold reverse
+    help-group      = cyan    default underline
 
-    title-focus = default default reverse
-    title-blur  = black   white
-    header      = default default bold reverse
-    help-group  = cyan    default underline
+    main-commit     = default default
+    overflow        = default default dim
+    main-ref        = green   default bold
+    main-tracked    = cyan    default bold reverse
+    main-remote     = red     default bold
+    main-tag        = yellow  default bold
+    main-local-tag  = yellow  default bold
+
+    graph-commit    = default default
+    palette-0       = red     default bold
+    palette-1       = yellow  default # already bright :/
+    palette-2       = green   default bold
+    palette-3       = cyan    default bold
+    palette-4       = blue    default bold
+    palette-5       = magenta default bold
 
     stat-staged     = default default bold
     stat-none       = default default bold
     stat-unstaged   = yellow  default bold
     stat-untracked  = green   default bold
+
+    mode        = white   default
+    directory   = blue    default bold
 
 [tig "color.status"]
     section = cyan default bold underline
