@@ -5,8 +5,11 @@ ListLines Off
 SetBatchLines -1
 SendMode Input
 
+#MenuMaskKey vkFF
++CapsLock::CapsLock
+CapsLock::Ctrl
+
 ; main body
-#MenuMaskKey vk07
 ;#If WinNotActive("Octave")
 <!h::Send {Left}
 <!j::Send {Down}
