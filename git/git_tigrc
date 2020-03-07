@@ -4,20 +4,49 @@
 
 [tig]
     mouse = true
+    main-options = "--all"
 
-    main-view-author-display = full
-    main-view-date-display = relative-compact
-    main-view-id-display = true
+    main-view-author-display        = abbreviated
+    main-view-date                  = custom
+    main-view-date-format           = "%y.%m.%d"
+    main-view-id-display            = true
     main-view-commit-title-overflow = true
+    tree-view-date-display          = relative
 
 [tig "bind"]
     generic = <Ctrl-K> scroll-line-up
     generic = <Ctrl-J> scroll-line-down
     generic = S none
     generic = c none
-    main = S !git switch --detach %(commit)
-    refs = S !git switch %(branch)
+    main    = C +git switch --detach %(commit)
+    refs    = C +git switch %(branch)
 
 [tig "color"]
-    # TODO
+    cursor      = black   white   bold
+    id          = yellow  default dim
+    date        = blue    default dim
+
+    mode        = white   default
+    directory   = blue    default bold
+    diff-stat   = default default
+
+    main-remote = red     default bold
+    main-tag    = yellow  default bold
+    main-local-tag = yellow default bold
+
+    title-focus = default default reverse
+    title-blur  = black   white
+    header      = default default bold reverse
+    help-group  = cyan    default underline
+
+    stat-staged     = default default bold
+    stat-none       = default default bold
+    stat-unstaged   = yellow  default bold
+    stat-untracked  = green   default bold
+
+[tig "color.status"]
+    section = cyan default bold underline
+
+[tig "color.help"]
+    section = cyan default bold reverse
 
