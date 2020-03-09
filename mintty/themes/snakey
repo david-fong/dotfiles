@@ -1,27 +1,27 @@
 
-BackgroundColour=#051423
-ForegroundColour=#E4EAED
-CursorColour=#FFFFFF
+BackgroundColour=#010b14
+ForegroundColour=#d8e2e6
+CursorColour=#ffffff
 
-Black       =#181818
-BoldBlack   =#282828
+Black       =#212121
+BoldBlack   =#000000
 
-White       =#C0C0C0
-BoldWhite   =#F0F0F0
+White       =#d7d7d7
+BoldWhite   =#f7f7f7
 
-Red         =#F7528A
-Green       =#83E347
-Blue        =#4E81ED
+Red         =#f0719a
+Green       =#abeb83
+Blue        =#8fabf7
 
-BoldRed     =#FF6B9B
-BoldGreen   =#97E865
-BoldBlue    =#5F8EF1
+BoldRed     =#e84f81
+BoldGreen   =#91eb59
+BoldBlue    =#668dfa
 
-Cyan        =#47E3A8
-Magenta     =#B047D6
-Yellow      =#EBD04D
+Cyan        =#86ebc5
+Magenta     =#b887e6
+Yellow      =#f2e99b
 
-BoldCyan    =#65E8B6
-BoldMagenta =#C756F0
+BoldCyan    =#65e6b6
+BoldMagenta =#b074e8
 BoldYellow  =#FFE500
 

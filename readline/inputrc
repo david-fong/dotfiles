@@ -16,7 +16,7 @@ set completion-ignore-case on
 "\\": self-insert
 
 # insert double-quoted variable
-"\e'": "\"\"\e[D${}\e[D"
+"\e'": "\"\"\e[D${"
 "\ee": "cd .. && ls\en"
 
 

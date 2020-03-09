@@ -48,6 +48,7 @@ function manifest() {
 
 
 
+alias lag='start lazygit &'
 alias gti='git'
 alias cim='vim' # typing is hard.
 alias vims='vim -S'
