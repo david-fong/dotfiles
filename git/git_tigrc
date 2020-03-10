@@ -20,6 +20,7 @@
     generic = <Ctrl-J> scroll-line-down
     generic = S none
     generic = c none
+    generic = f +git fetch
     main    = C +git switch --detach %(commit)
     refs    = C +git switch %(branch)
 

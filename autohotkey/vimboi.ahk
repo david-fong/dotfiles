@@ -6,8 +6,9 @@ SetBatchLines -1
 SendMode Input
 
 #MenuMaskKey vkFF
-+CapsLock::CapsLock
-CapsLock::Ctrl
+;+CapsLock::CapsLock
+*CapsLock Up::Send {LControl up}
+*CapsLock::Send {LControl down}
 
 ; main body
 ;#If WinNotActive("Octave")
