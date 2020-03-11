@@ -2,9 +2,6 @@
 # exit if not running interactively:
 [[ "$-" =~ "i" ]] || return
 
-
-
-
 # Not related, but written here in case I forget what I did:
 # Computer\HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer\NoUninstallFromStart
 # right-click recycle bin and check the "prompt before moving to recycle-bin" box
@@ -15,8 +12,6 @@
 # settings > system > power&sleep  > always network disconnect on sleep.
 # Search up how to "force" uninstall things like Microsoft Solitaire Collection.
 # https://www.windowscentral.com/how-disable-password-reveal-button-sign-screen-windows-10
-
-
 
 
 # commands to list things:
@@ -30,7 +25,6 @@
 
 
 
-
 # disable sending and receiving XON/XOFF
 # (only one is actually necessary to do)
 stty stop '' -ixoff
@@ -40,7 +34,6 @@ shopt -s globstar
 shopt -s extglob
 export FUNCNEST=100
 export LINES COLUMNS # for .gitconfig
-
 
 
 
@@ -62,7 +55,6 @@ unset histignore
 export HISTCONTROL=ignoredups:ignorespace
 export HISTSIZE=1024
 export HISTFILESIZE=2048
-
 
 
 
@@ -92,7 +84,6 @@ export CSCOPE_EDITOR='view'
 
 
 
-
 # startup the gpg and ssh agent:
 # make the gpg-agent cache my password for one hour.
 # https://help.github.com/en/github/authenticating-to-github/associating-an-email-with-your-gpg-key
@@ -106,7 +97,6 @@ function ssh-agent() {
     echo '  taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T'
 }
 readonly -f ssh-agent
-
 
 
 
@@ -131,7 +121,6 @@ echo -e '\e[?7786l'
 
 
 
-
 # expand variables to their contained values,
 # and don't suggest files for these commands:
 shopt -s direxpand
@@ -144,7 +133,6 @@ complete -A enabled -E
 
 
 
-
 # finalize prompt:
 readonly PS1
 declare -rxi PROMPT_DIRTRIM=5
@@ -152,8 +140,6 @@ declare -rxi PSLINES="$(echo -e "$PS1" | wc --lines)"
 
 
 
-
 # go to the user's home directory:
-if [[ "$PWD" = '/' || "$PWD" = "$HOME" ]]
-then home; else clsa; fi
-
+# if [[ "$PWD" = '/' || "$PWD" = "$HOME" ]]
+# then home; else clsa; fi

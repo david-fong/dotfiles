@@ -18,5 +18,6 @@ SendMode Input
 <!l::Send {Right}
 <!;::Send {Backspace}
 <!n::Send {Enter}
+<!e::Send {Escape}
 #If
 

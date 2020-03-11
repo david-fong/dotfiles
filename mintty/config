@@ -2,16 +2,21 @@
 Term=xterm
 AllowBlinking=yes
 FontSmoothing=none
+SessionGeomSync=0
+
 Locale=en_CA
+Language=en
 Charset=UTF-8
 
 BackspaceSendsBS=yes
+ClicksPlaceCursor=yes
+DisplaySpeedup=8
 
 Columns=100
 Rows=40
+RowSpacing=0
+ColSpacing=0
 Padding=5
-SessionGeomSync=0
-Language=en
 
 Font=Fixedsys
 FontHeight=11

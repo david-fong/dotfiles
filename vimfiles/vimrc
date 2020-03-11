@@ -87,6 +87,9 @@ inoremap <silent> <ESC>w <C-O>w
 inoremap <silent> <ESC>p <C-O>p
 inoremap <silent> <ESC>P <C-O>P
 
+" control-backspace to delete word: -------------
+    imap <silent> <C-BS> <C-W>
+
 " readline-style bindings: ----------------------
 cnoremap          <C-A>  <C-B>
 inoremap <silent> <C-A>  <C-O>^

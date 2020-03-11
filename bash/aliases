@@ -112,9 +112,10 @@ function lsen() {
 # BOOKMARKED DIRECTORIES & DIRECTORY NAVIGATION:
 alias root='\cd / && clsa'
 function home() {
+    clear
     stty -echo
     \echo -e "\n$(heading "$(date)")""\n"
-    \cd "${HOME}" && time ls --width=75 --hide=[nN][tT][uU][sS]*
+    \cd "${HOME}" && ls --width=75 --hide=[nN][tT][uU][sS]*
     stty echo
 }
 alias config='\cd ${XGD_CONFIG_HOME} && clsa'
