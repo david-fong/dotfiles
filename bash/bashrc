@@ -40,7 +40,7 @@ export LINES COLUMNS # for .gitconfig
 shopt -s histappend
 declare -a histignore=(
     'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear'
-    'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
+    'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
     'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
     'vims' 'todo'
     './build' './main'
@@ -58,26 +58,26 @@ export HISTFILESIZE=2048
 
 
 
-declare -rx INPUTRC="${XGD_CONFIG_HOME}/readline/inputrc"
-#declare -rx LESSKEY="${XGD_CONFIG_HOME}/less/lesskey" <- this doesn't work :/
-declare -rx     VIM="${XGD_CONFIG_HOME}"
-declare -rx VIMINIT='source ${VIM}/vimfiles/vimrc'
-declare -rx TIGRC_USER="${XGD_CONFIG_HOME}/git/tigrc_colorstrings"
-declare -rx PYTHONSTARTUP="${XGD_CONFIG_HOME}/python/startup.py"
-PYTHONHOME+=":${XGD_CONFIG_HOME}/python/"
+declare -rx       INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
+#declare -rx      LESSKEY="${XDG_CONFIG_HOME}/less/lesskey" <- this doesn't work :/
+declare -rx           VIM="${XDG_CONFIG_HOME}"
+declare -rx       VIMINIT='source ${VIM}/vimfiles/vimrc'
+declare -rx    TIGRC_USER="${XDG_CONFIG_HOME}/git/tigrc_colorstrings"
+declare -rx PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
+             PYTHONHOME+=":${XDG_CONFIG_HOME}/python/"
 
-source "${XGD_CONFIG_HOME}/npm/completion"
+source "${XDG_CONFIG_HOME}/npm/completion"
 
-[[ -f "${XGD_CONFIG_HOME}/ansicode/ansicode"   ]] && source "${XGD_CONFIG_HOME}/ansicode/ansicode"
-[[ -f "${XGD_CONFIG_HOME}/bash/aliases"        ]] && source "${XGD_CONFIG_HOME}/bash/aliases"
-[[ -f "${XGD_CONFIG_HOME}/bash/aliases__local" ]] && source "${XGD_CONFIG_HOME}/bash/aliases__local"
-alias   inputrc='"$EDITOR" "${XGD_CONFIG_HOME}/readline/inputrc"'
-alias    bashrc='"$EDITOR" "${XGD_CONFIG_HOME}/bash/bashrc"'
-alias       als='"$EDITOR" "${XGD_CONFIG_HOME}/bash/aliases"'
-alias      alsl='"$EDITOR" "${XGD_CONFIG_HOME}/bash/aliases__local"'
-alias     vimrc='"$EDITOR" "${XGD_CONFIG_HOME}/vimfiles/vimrc"'
-alias gitconfig='"$EDITOR" "${XGD_CONFIG_HOME}/git/config"'
-alias     tigrc='"$EDITOR" "${XGD_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ noma /etc/tigrc | 20 wincmd > | wincmd p"'
+[[ -f "${XDG_CONFIG_HOME}/ansicode/ansicode"   ]] && source "${XDG_CONFIG_HOME}/ansicode/ansicode"
+[[ -f "${XDG_CONFIG_HOME}/bash/aliases"        ]] && source "${XDG_CONFIG_HOME}/bash/aliases"
+[[ -f "${XDG_CONFIG_HOME}/bash/aliases__local" ]] && source "${XDG_CONFIG_HOME}/bash/aliases__local"
+alias   inputrc='"$EDITOR" "${XDG_CONFIG_HOME}/readline/inputrc"'
+alias    bashrc='"$EDITOR" "${XDG_CONFIG_HOME}/bash/bashrc"'
+alias       als='"$EDITOR" "${XDG_CONFIG_HOME}/bash/aliases"'
+alias      alsl='"$EDITOR" "${XDG_CONFIG_HOME}/bash/aliases__local"'
+alias     vimrc='"$EDITOR" "${XDG_CONFIG_HOME}/vimfiles/vimrc"'
+alias gitconfig='"$EDITOR" "${XDG_CONFIG_HOME}/git/config"'
+alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ noma /etc/tigrc | 20 wincmd > | wincmd p"'
 
 export EDITOR='vim'
 export CSCOPE_EDITOR='view'

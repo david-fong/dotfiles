@@ -3,6 +3,7 @@ Term=xterm
 AllowBlinking=yes
 FontSmoothing=none
 SessionGeomSync=0
+ScrollbackLines=1024
 
 Locale=en_CA
 Language=en
@@ -10,6 +11,7 @@ Charset=UTF-8
 
 BackspaceSendsBS=yes
 ClicksPlaceCursor=yes
+SelectionShowSize=12
 DisplaySpeedup=8
 
 Columns=100

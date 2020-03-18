@@ -2,6 +2,7 @@
 cscope.in.out
 
 *.o
+*.exe
 
 *.swp
 *.swo

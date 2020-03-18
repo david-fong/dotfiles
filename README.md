@@ -9,7 +9,7 @@ You will notice that I embed a lot of links in this readme- even ones that you m
 
 ## :briefcase: How to use it
 As I said before, everything is under one directory, which means less clutter, and easier portability. All you need to do to mirror my environment is to:
-1. Clone and copy the contents of this repo into the directory specified by the environment variable [`XGD_CONFIG_HOME`](https://wiki.archlinux.org/index.php/XDG_Base_Directory), which by convention is usually `~/.config/`, if set by default.
+1. Clone and copy the contents of this repo into the directory specified by the environment variable [`XDG_CONFIG_HOME`](https://wiki.archlinux.org/index.php/XDG_Base_Directory), which by convention is usually `~/.config/`, if set by default.
 1. Source [`:/bash/bashrc`](git/bashrc) in your `~/.bash_profile` file, or whatever is passed as the `--init-file` argument when invoking bash.
 1. You can put a gitconfig-style file in [`:/git/config__local`](git) containing your name and email.
 1. Similarly, you can put machine-local bash run-config comands in [`:/bash/aliases__local`](bash).

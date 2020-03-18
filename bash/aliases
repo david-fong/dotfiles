@@ -26,9 +26,9 @@ then alias octave='"$OCTAVE_HOME"/mingw64/bin/octave-cli --interactive'; fi
 
 declare -a grepargs=('--line-number' '--text' '--color=auto')
 grepargs+=('--exclude-dir={.git,build,dist,compile,db,node_modules}')
-if [[ ! -f "${XGD_CONFIG_HOME}/grep/excludefrom" ]]
-then touch "${XGD_CONFIG_HOME}/grep/excludefrom"; fi
-grepargs+=('--exclude-from="${XGD_CONFIG_HOME}/grep/excludefrom"' '--extended-regexp')
+if [[ ! -f "${XDG_CONFIG_HOME}/grep/excludefrom" ]]
+then touch "${XDG_CONFIG_HOME}/grep/excludefrom"; fi
+grepargs+=('--exclude-from="${XDG_CONFIG_HOME}/grep/excludefrom"' '--extended-regexp')
 alias grep='\grep '"${grepargs[@]}"''
 unset grepargs
 
@@ -118,7 +118,7 @@ function home() {
     \cd "${HOME}" && ls --width=75 --hide=[nN][tT][uU][sS]*
     stty echo
 }
-alias config='\cd ${XGD_CONFIG_HOME} && clsa'
+alias config='\cd ${XDG_CONFIG_HOME} && clsa'
 alias githome='\cd "$(git rev-parse --show-toplevel 2>/dev/null)" && clsa'
 alias e='\cd .. && clsa'
 

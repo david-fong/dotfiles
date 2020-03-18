@@ -5,8 +5,8 @@
 
 [core]
     pager = less -F
-    ; "${XGD_CONFIG_HOME}/git/ignore" is the default
-    ;excludeFile = ~/.config/git/ignore
+    ; "${XDG_CONFIG_HOME}/git/ignore" is the default
+    ;excludeFile =
 
 [push]
     default = simple
