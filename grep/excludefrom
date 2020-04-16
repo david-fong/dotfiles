@@ -1,6 +1,8 @@
 
 cscope.in.out
 
+*.js.map
+
 *.o
 *.exe
 
@@ -12,5 +14,11 @@ cscope.in.out
 
 *.ico
 *.png
+*.PNG
 *.jpg
+*.JPG
+
+*.mp3
+*.mp4
+*.wav
 

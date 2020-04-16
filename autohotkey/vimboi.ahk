@@ -7,7 +7,7 @@ ListLines Off
 SetBatchLines -1
 SendMode Input
 
-;#MenuMaskKey vkFF
+#MenuMaskKey vkFF
 ;+CapsLock::CapsLock
 ;*Shift::Send {LShift down}
 ;*Shift Up::Send {LShift up}

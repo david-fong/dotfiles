@@ -32,7 +32,7 @@ BellFreq=880
 BellLen=300
 BellInterval=900
 
-Transparency=none
+Transparency=Off
 OpaqueWhenFocused=no
 CursorType=underscore
 Scrollbar=none
