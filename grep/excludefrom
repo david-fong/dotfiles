@@ -2,6 +2,7 @@
 cscope.in.out
 
 *.js.map
+*cache.json
 
 *.o
 *.exe

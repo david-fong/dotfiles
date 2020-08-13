@@ -16,13 +16,21 @@ SendMode Input
 
 ; main body
 ;#If WinNotActive("Octave")
-<!h::Send {Left}
-<!j::Send {Down}
-<!k::Send {Up}
-<!l::Send {Right}
+<!l::Send {Up}
+<!k::Send {Down}
+<!i::Send {Left}
+<!o::Send {Right}
+<!<+l::Send +{Up}
+<!<+k::Send +{Down}
+<!<+i::Send +{Left}
+<!<+o::Send +{Right}
+<!<+<^l::Send ^+{Up}
+<!<+<^k::Send ^+{Down}
+<!<+<^i::Send ^+{Left}
+<!<+<^o::Send ^+{Right}
 <!;::Send {Backspace}
 <!d::Send {Delete}
-<!n::Send {Enter}
+<!m::Send {Enter}
 <!e::Send {Escape}
 #If
 

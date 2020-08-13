@@ -4,6 +4,7 @@
 
 # Not related, but written here in case I forget what I did:
 # Computer\HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer\NoUninstallFromStart
+# Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CredUI\DisablePasswordReveal
 # right-click recycle bin and check the "prompt before moving to recycle-bin" box
 # random note: can open control panel with windows + pause/break
 # don't turn on "lower screen brightness in battery saving mode".
@@ -30,6 +31,9 @@
 stty stop '' -ixoff
 stty stop '' -ixon
 
+# set codepage (on windows) to UTF-8
+chcp.com 65001
+
 shopt -s globstar
 shopt -s extglob
 export FUNCNEST=100
@@ -43,7 +47,7 @@ declare -a histignore=(
     'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
     'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
     'vims' 'todo'
-    './build' './main'
+    './build' #'./main' 'npm\ run\ start'
     'git\ status' 'git gra' 'git\ graph' 'git\ diff'
     'soundcheck' 'coinflip' 'yes'
 )
@@ -81,6 +85,7 @@ alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ n
 
 export EDITOR='vim'
 export CSCOPE_EDITOR='view'
+export NODE_ENV='development'
 
 
 

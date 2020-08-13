@@ -22,6 +22,8 @@
     tool = vimdiff
 
 [alias]
+    sw = "switch"
+    st = "status"
     fall = "!f() { tput rmam; \
         heading \"REMOTES\"; git fetch -v --all; \
         echo; heading \"BRANCHES\"; git branch -avv; \

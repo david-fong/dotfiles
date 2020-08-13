@@ -126,8 +126,7 @@ alias e='\cd .. && clsa'
 
 
 
-alias paste='\cat /dev/clipboard'
-alias soundcheck='\echo -ne "\a"'
+alias beep='\echo -ne "\a"'
 function numdirents() {
     local -a dirents=(*)
     local -i num="${#dirents}"

@@ -3,7 +3,7 @@ Term=xterm
 AllowBlinking=yes
 FontSmoothing=none
 SessionGeomSync=0
-ScrollbackLines=1024
+ScrollbackLines=512
 
 Locale=en_CA
 Language=en
@@ -20,13 +20,13 @@ RowSpacing=0
 ColSpacing=0
 Padding=5
 
-Font=Fixedsys
-FontHeight=11
+Font=Lucida Console
+FontHeight=8
 FontWeight=400
 
 FontIsBold=no
-BoldAsColour=yes
-BoldAsFont=no
+BoldAsColour=no
+BoldAsFont=yes
 
 BellFreq=880
 BellLen=300
