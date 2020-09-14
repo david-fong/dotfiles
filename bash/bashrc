@@ -14,6 +14,7 @@
 # Search up how to "force" uninstall things like Microsoft Solitaire Collection.
 # https://www.windowscentral.com/how-disable-password-reveal-button-sign-screen-windows-10
 
+# https://man7.org/linux/man-pages/man4/console_codes.4.html
 
 # commands to list things:
 # declare -p    variables and function names
@@ -32,10 +33,12 @@ stty stop '' -ixoff
 stty stop '' -ixon
 
 # set codepage (on windows) to UTF-8
+# https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
 chcp.com 65001
 
 shopt -s globstar
 shopt -s extglob
+shopt -s checkwinsize
 export FUNCNEST=100
 export LINES COLUMNS # for .gitconfig
 
@@ -120,6 +123,9 @@ declare -rx LESS='-+X -qRJM -x4'
 # disable mouse-scrolling in mintty for the alternate screen
 echo -e '\e[?7786l'
 
+# thicker underscore cursor on mintty:
+echo -e '\e[?3c'
+
 # grep colored output styling:
 # https://askubuntu.com/a/1042242
 # TODO declare -rx GREP_COLORS=''
@@ -131,6 +137,11 @@ echo -e '\e[?7786l'
 shopt -s direxpand
 complete -d -o bashdefault -- cd ls lsa mkdir
 complete -ab -A function -X '{_*,}' -- type
+complete -A shopt shopt
+complete -A stopped fg
+complete -A running bg
+complete -A helptopic help
+complete -A variable unset
 
 # suggest completions for an empty
 # commandline with enabled builtins:
