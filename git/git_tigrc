@@ -6,6 +6,7 @@
     mouse = true
     main-options = "--all"
 
+    start-on-head                   = yes
     main-view-line-number-display   = yes
     main-view-author-display        = abbreviated
     main-view-date                  = custom
@@ -14,6 +15,7 @@
     main-view-commit-title-overflow = true
     tree-view-date-display          = relative
     blame-view-date-display         = relative
+    refs-view-date-display          = relative
     log-view-line-number-display    = yes
 
 [tig "bind"]
@@ -31,8 +33,8 @@
     date        = blue    default dim
     diff-stat   = default default
 
-    title-focus     = default default bold reverse
-    title-blur      = black   white
+    title-focus     = black   white
+    title-blur      = default default bold reverse
     header          = default default bold reverse
     help-group      = cyan    default underline
 

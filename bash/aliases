@@ -25,11 +25,12 @@ then alias octave='"$OCTAVE_HOME"/mingw64/bin/octave-cli --interactive'; fi
 
 
 declare -a grepargs=('--line-number' '--text' '--color=auto')
-grepargs+=('--exclude-dir={.git,build,dist,compile,db,node_modules}')
+grepargs+=('--exclude-dir={.git,build,dist,compile,db,incremental_db,node_modules,.vs,obj,packages}')
 if [[ ! -f "${XDG_CONFIG_HOME}/grep/excludefrom" ]]
 then touch "${XDG_CONFIG_HOME}/grep/excludefrom"; fi
-grepargs+=('--exclude-from="${XDG_CONFIG_HOME}/grep/excludefrom"' '--extended-regexp')
-alias grep='\grep '"${grepargs[@]}"''
+grepargs+=('--exclude-from="${XDG_CONFIG_HOME}/grep/excludefrom"')
+alias fgrep='\grep '"${grepargs[@]}"''
+alias  grep='\grep '"${grepargs[@]}"' --extended-regexp'
 unset grepargs
 
 

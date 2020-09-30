@@ -39,22 +39,14 @@ Scrollbar=none
 PgUpDnScroll=yes
 ZoomMouse=no
 
-ThemeFile=solarized_dark
+ThemeFile=solarized
 # Other nice themes on https://terminal.sexy/
 # base16
-#   atelierlakeside
 #   embers
-#   mocha
-#   monokai
-#   ocean
 # collections
-#   gotham
-#   navy-and-ivory
 #   vacuous2
 #   x-erosion
 # xcolors.net
 #   tartan
 #   colorfulcolors
-#   gjm
 #   jwr-dark
-#   material

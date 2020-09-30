@@ -155,7 +155,8 @@ set list
 set statusline=\ [%f]%h%m%r%y[%{&ff}]
 set statusline+=%=%l,%c%V\ %P\ "
 set laststatus=2
-hi StatusLineNC ctermfg=grey ctermbg=darkgrey
+hi StatusLine   ctermfg=white ctermbg=black cterm=bold,inverse
+hi StatusLineNC ctermfg=black ctermbg=grey
 
 
 " check for external changes (from u/weisenzahm on reddit)

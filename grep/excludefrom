@@ -2,7 +2,16 @@
 cscope.in.out
 
 *.js.map
+*.min.js*
+*.min.css*
 *cache.json
+
+*.ttf
+*.woff
+*.woff2
+
+*.pdb
+*.sqlite
 
 *.o
 *.exe
