@@ -79,25 +79,25 @@ alias todoe='todo -e'
 
 
 alias ls='\ls -CX --color=auto --group-directories-first'
-function __lsa() {
+function lsa() {
     ls "$@" -o --almost-all --human-readable
 }
-function lsa() {
-    local -r OLD_GREP_COLORS="$GREP_COLORS"
-    export GREP_COLORS='ms=38;5;246' # grey
-    local -x coloropt='--color=never'
-    if [[ -t 1 ]]; then
-        coloropt='--color=always'
-    fi
-    local -r listing="$(__lsa "$@" "$coloropt")"
-        \grep -E "^[^-]" <<< "$listing"
-        \grep -E "^[-]"  <<< "$listing" \
-      | \grep -E "\\s[.]?[^. ]+$"
-        \grep -E "^[-].*\\S+[.][^. ]+$"  <<< "$listing" \
-      | \grep -E "$coloropt" "[.][^. ]+$"
-    export GREP_COLORS="$OLD_GREP_COLORS"
-    return 0
-}
+#function lsa() {
+#    local -r OLD_GREP_COLORS="$GREP_COLORS"
+#    export GREP_COLORS='ms=38;5;246' # grey
+#    local -x coloropt='--color=never'
+#    if [[ -t 1 ]]; then
+#        coloropt='--color=always'
+#    fi
+#    local -r listing="$(__lsa "$@" "$coloropt")"
+#        \grep -E "^[^-]" <<< "$listing"
+#        \grep -E "^[-]"  <<< "$listing" \
+#      | \grep -E "\\s[.]?[^. ]+$"
+#        \grep -E "^[-].*\\S+[.][^. ]+$"  <<< "$listing" \
+#      | \grep -E "$coloropt" "[.][^. ]+$"
+#    export GREP_COLORS="$OLD_GREP_COLORS"
+#    return 0
+#}
 alias clsa='greeting; lsa'
 function lsen() {
     for extension in "$@"; do
@@ -120,14 +120,11 @@ function home() {
     stty echo
 }
 alias config='\cd ${XDG_CONFIG_HOME} && clsa'
-alias githome='\cd "$(git rev-parse --show-toplevel 2>/dev/null)" && clsa'
-alias e='\cd .. && clsa'
 
 
 
 
 
-alias beep='\echo -ne "\a"'
 function numdirents() {
     local -a dirents=(*)
     local -i num="${#dirents}"
@@ -155,13 +152,6 @@ function yes() {
         let i="($i+1)"%"${#colors[@]}"
     done
 }
-
-
-
-declare -rxa COIN_FLIP_STR=('tails' 'heads')
-alias coinflip='echo "${COIN_FLIP_STR["$((RANDOM%2))"]}"'
-alias coin='coinflip'
-alias iamsad='echo -e "\e[34m\nthere, there.\n\nit will be alright.\e[0m\n"'
 
 function bind() {
     if [[ -z "$*" ]]; then
@@ -193,8 +183,6 @@ function heading() {
 
 
 # make functions unmodifiable:
-readonly -f manifest todo __lsa lsa lsen home numdirents yes heading
-export   -f manifest todo __lsa lsa lsen home numdirents yes heading
-
-
+readonly -f manifest todo lsa lsen home numdirents yes heading
+export   -f manifest todo lsa lsen home numdirents yes heading
 

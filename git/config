@@ -14,24 +14,19 @@
 [pager]
     ls-tree
 
-[winUpdater]
-    recentlySeenVersion = 2.22.0.windows.1
-
 [merge]
     defaultToUpstream = true
     tool = vimdiff
 
 [alias]
-    sw = "switch"
+    tag = "tag --sign"
+    f = "fetch --prune --all"
     st = "status"
-    fall = "!f() { tput rmam; \
-        heading \"REMOTES\"; git fetch -v --all; \
-        echo; heading \"BRANCHES\"; git branch -avv; \
-        tput smam; }; f;"
+    sw = "switch"
+    wt = "worktree"
+    br = "branch -vv"
+    bra = "branch -avv"
     graph = "log --oneline --graph --all --decorate --color=always"
     gra = "!echo; tput rmam; git graph -n20 | head -n20; tput smam"
     ls = "ls-tree --full-tree --abbrev=7 -r HEAD"
     logg = "log --graph --decorate --stat --find-renames"
-
-[gui]
-    recentrepo = C:/Users/davdf/Documents/Sudoku-CPP
