@@ -4,10 +4,6 @@
 # entry 0 = full file path to script
 # entry 1 = full file path to pwd of script caller
 
-
-
-
-
 alias greeting='clear; \echo -e "\n$(heading "$(date)")""\n"'
 alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
 
@@ -20,43 +16,38 @@ function hash() {
 }
 
 if [[ "$OCTAVE_HOME" ]]
-then alias octave='"$OCTAVE_HOME"/mingw64/bin/octave-cli --interactive'; fi
+    then alias octave='"$OCTAVE_HOME"/mingw64/bin/octave-cli --interactive'; fi
 
 
-
-declare -a grepargs=('--line-number' '--text' '--color=auto')
+declare -a grepargs=('--line-number' '--color=auto')
 grepargs+=('--exclude-dir={.git,build,dist,compile,db,incremental_db,node_modules,.vs,obj,packages}')
-if [[ ! -f "${XDG_CONFIG_HOME}/grep/excludefrom" ]]
-then touch "${XDG_CONFIG_HOME}/grep/excludefrom"; fi
-grepargs+=('--exclude-from="${XDG_CONFIG_HOME}/grep/excludefrom"')
+if [[ -f "${XDG_CONFIG_HOME}/grep/excludefrom" ]]
+    then grepargs+=('--exclude-from="${XDG_CONFIG_HOME}/grep/excludefrom"'); fi
 alias fgrep='\grep '"${grepargs[@]}"''
 alias  grep='\grep '"${grepargs[@]}"' --extended-regexp'
 unset grepargs
 
-
-
-alias search='grep -r --byte-offset --include="*.java"'
-alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
-function manifest() {
-    local -ra choices="$(find -type f -name "*.jar")"
-    [[ "${#choices}" -le 0 ]] && return 1
-    select jarchoice in ${choices[@]}; do
-        [[ "$jarchoice" ]] && unzip -qc "$jarchoice" META-INF/MANIFEST.MF
-    done
+function rgrep {
+    grep -r --color=always "$@" | awk -F '[:]' -v OFS=':' 'f!=$1 {f=$1; print "\n"f} f==$1 {$1=""; printf "%34s",$2; $2=""; print}';
 }
 
 
-
+alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
+#function manifest() {
+#    local -ra choices="$(find -type f -name "*.jar")"
+#    [[ "${#choices}" -le 0 ]] && return 1
+#    select jarchoice in ${choices[@]}; do
+#        [[ "$jarchoice" ]] && unzip -qc "$jarchoice" META-INF/MANIFEST.MF
+#    done
+#}
 
 
 alias lag='start lazygit &'
 alias gti='git'
+alias it='git' # I am too fast (insert sanic.gif.wav.jpeg here)
 alias cim='vim' # typing is hard.
 alias vims='vim -S'
 alias swp='find "$@" -type f -name "*.swp"'
-
-
-
 
 
 function todo() {
@@ -72,32 +63,12 @@ function todo() {
         "$EDITOR" "$todopath" -c 'vnew +set\ noma | wincmd p'
     fi
 }
-alias todoe='todo -e'
-
-
-
 
 
 alias ls='\ls -CX --color=auto --group-directories-first'
 function lsa() {
     ls "$@" -o --almost-all --human-readable
 }
-#function lsa() {
-#    local -r OLD_GREP_COLORS="$GREP_COLORS"
-#    export GREP_COLORS='ms=38;5;246' # grey
-#    local -x coloropt='--color=never'
-#    if [[ -t 1 ]]; then
-#        coloropt='--color=always'
-#    fi
-#    local -r listing="$(__lsa "$@" "$coloropt")"
-#        \grep -E "^[^-]" <<< "$listing"
-#        \grep -E "^[-]"  <<< "$listing" \
-#      | \grep -E "\\s[.]?[^. ]+$"
-#        \grep -E "^[-].*\\S+[.][^. ]+$"  <<< "$listing" \
-#      | \grep -E "$coloropt" "[.][^. ]+$"
-#    export GREP_COLORS="$OLD_GREP_COLORS"
-#    return 0
-#}
 alias clsa='greeting; lsa'
 function lsen() {
     for extension in "$@"; do
@@ -105,9 +76,6 @@ function lsen() {
         __lsa | \grep -Ei "\\S*[.]${extension}$" --
     done
 }
-
-
-
 
 
 # BOOKMARKED DIRECTORIES & DIRECTORY NAVIGATION:
@@ -122,9 +90,6 @@ function home() {
 alias config='\cd ${XDG_CONFIG_HOME} && clsa'
 
 
-
-
-
 function numdirents() {
     local -a dirents=(*)
     local -i num="${#dirents}"
@@ -132,7 +97,6 @@ function numdirents() {
     num+="${#dirents}"
     echo -n "$((num-2))"
 }
-
 
 
 function yes() {
@@ -163,9 +127,6 @@ function bind() {
 }
 
 
-
-
-
 # $1: string for heading text
 function heading() {
     local payload="$1"
@@ -179,10 +140,7 @@ function heading() {
 }
 
 
-
-
-
 # make functions unmodifiable:
-readonly -f manifest todo lsa lsen home numdirents yes heading
-export   -f manifest todo lsa lsen home numdirents yes heading
+readonly -f todo lsa lsen home numdirents yes heading
+export   -f todo lsa lsen home numdirents yes heading
 

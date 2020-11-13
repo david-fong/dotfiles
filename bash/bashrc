@@ -150,7 +150,7 @@ complete -A enabled -E
 
 
 # finalize prompt:
-readonly PS1
+#readonly PS1
 declare -rxi PROMPT_DIRTRIM=5
 declare -rxi PSLINES="$(echo -e "$PS1" | wc --lines)"
 
