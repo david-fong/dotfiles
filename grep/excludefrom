@@ -13,6 +13,8 @@ cscope.in.out
 
 *.pdb
 *.sqlite
+*.trdp
+*.trdx
 
 *.o
 *.exe
@@ -28,6 +30,7 @@ cscope.in.out
 *.PNG
 *.jpg
 *.JPG
+*.psd
 
 *.mp3
 *.mp4

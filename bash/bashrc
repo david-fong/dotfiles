@@ -150,12 +150,7 @@ complete -A enabled -E
 
 
 # finalize prompt:
-#readonly PS1
+source "$(dirname "${BASH_SOURCE[0]}")""/prompt.sh"
 declare -rxi PROMPT_DIRTRIM=5
 declare -rxi PSLINES="$(echo -e "$PS1" | wc --lines)"
 
-
-
-# go to the user's home directory:
-# if [[ "$PWD" = '/' || "$PWD" = "$HOME" ]]
-# then home; else clsa; fi
