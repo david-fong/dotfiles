@@ -42,22 +42,13 @@ alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --co
 #}
 
 
-alias lag='start lazygit &'
+alias lag='lazygit'
 alias gti='git'
 
 
 function todo() {
     local -r todopath="${HOME}/.todo.md"
-    if [[ "$1" = '-e' ]]
-    then
-        echo; heading "TODO"
-        tput rmam
-        cat "$todopath"
-        heading
-        tput smam
-    else
-        "$EDITOR" "$todopath" -c 'vnew +set\ noma | wincmd p'
-    fi
+    "$EDITOR" "$todopath" -c 'vnew +set\ noma | wincmd p'
 }
 
 

@@ -4,6 +4,7 @@ AllowBlinking=yes
 FontSmoothing=none
 SessionGeomSync=0
 ScrollbackLines=512
+Printer=Microsoft Print to PDF
 
 Language=en
 Locale=en_CA
@@ -11,8 +12,9 @@ Charset=UTF-8
 
 BackspaceSendsBS=yes
 ClicksPlaceCursor=yes
+FilterPasteControls=BS,NL,CR,FF,ESC,DEL,C0,C1
 SelectionShowSize=12
-DisplaySpeedup=8
+DisplaySpeedup=9
 
 Columns=100
 Rows=40
