@@ -1,4 +1,10 @@
 
+[[ "$MINGW64_HOME" ]] && MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
+[[ "$JAVA_HOME"    ]] &&    JAVA_HOME="$(cygpath "$JAVA_HOME")"
+[[ "$NODEJS_HOME"  ]] &&  NODEJS_HOME="$(cygpath "$NODEJS_HOME")"
+[[ "$PYTHON_HOME"  ]] &&  PYTHON_HOME="$(cygpath "$PYTHON_HOME")"
+[[ "$GRADLE_HOME"  ]] &&  GRADLE_HOME="$(cygpath "$GRADLE_HOME")"
+
 # exit if not running interactively:
 [[ "$-" =~ "i" ]] || return
 
@@ -10,7 +16,6 @@
 # hash          hashed executables from PATH
 # bind -p       readline key-bindings
 # enable        enabled shell builtins
-
 
 
 # disable sending and receiving XON/XOFF
@@ -26,7 +31,6 @@ shopt -s globstar
 shopt -s extglob
 shopt -s checkwinsize
 export FUNCNEST=100
-
 
 
 shopt -s histappend
@@ -53,7 +57,7 @@ export HISTFILESIZE=2048
 declare -rx       INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
 #declare -rx      LESSKEY="${XDG_CONFIG_HOME}/less/lesskey" <- this doesn't work :/
 declare -rx           VIM="${XDG_CONFIG_HOME}"
-declare -rx       VIMINIT='source ${VIM}/vimfiles/vimrc'
+declare -rx      VIMINIT='source ${VIM}/vimfiles/vimrc'
 declare -rx    TIGRC_USER="${XDG_CONFIG_HOME}/git/tigrc_colorstrings"
 declare -rx PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
              PYTHONHOME+=":${XDG_CONFIG_HOME}/python/"
@@ -76,7 +80,6 @@ export CSCOPE_EDITOR='view'
 export NODE_ENV='development'
 
 
-
 # startup the gpg and ssh agent:
 # make the gpg-agent cache my password for one hour.
 # https://help.github.com/en/github/authenticating-to-github/associating-an-email-with-your-gpg-key
@@ -90,7 +93,6 @@ function ssh-agent() {
     echo '  taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T'
 }
 readonly -f ssh-agent
-
 
 
 # less command behaviour:
@@ -116,7 +118,6 @@ echo -e '\e[?3c'
 # TODO declare -rx GREP_COLORS=''
 
 
-
 # expand variables to their contained values,
 # and don't suggest files for these commands:
 shopt -s direxpand
@@ -133,9 +134,7 @@ complete -A variable unset
 complete -A enabled -E
 
 
-
 # finalize prompt:
 source "$(dirname "${BASH_SOURCE[0]}")""/prompt.sh"
 declare -rxi PROMPT_DIRTRIM=5
-declare -rxi PSLINES="$(echo -e "$PS1" | wc --lines)"
 
