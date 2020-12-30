@@ -3,10 +3,16 @@
     path = ./config__local
     path = ./git_tigrc
 
+[includeIf "gitdir:**/code/fork/"]
+    path = ./config__forks
+
 [core]
     pager = less -F
     ; "${XDG_CONFIG_HOME}/git/ignore" is the default
     ;excludeFile =
+
+[feature]
+    manyFiles = true
 
 [push]
     default = simple
@@ -20,7 +26,7 @@
 
 [alias]
     tag = "tag --sign"
-    f = "fetch --prune --all"
+    f = "fetch --all --prune"
     st = "status"
     sw = "switch"
     wt = "worktree"
@@ -30,8 +36,10 @@
     gra = "!echo; tput rmam; git graph -n20 | head -n20; tput smam"
     ls = "ls-tree --full-tree --abbrev=7 -r HEAD"
     logg = "log --graph --decorate --stat --find-renames"
+
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+

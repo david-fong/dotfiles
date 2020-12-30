@@ -21,6 +21,7 @@ Rows=40
 RowSpacing=0
 ColSpacing=0
 Padding=5
+# Background=~/.config/background.jpg,32
 
 Font=Lucida Console
 FontHeight=9

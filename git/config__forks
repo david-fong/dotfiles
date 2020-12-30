@@ -1,0 +1,4 @@
+
+[alias]
+    f = "fetch --all --prune --depth=100"
+

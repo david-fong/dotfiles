@@ -25,7 +25,7 @@ stty stop '' -ixon
 
 # set codepage (on windows) to UTF-8
 # https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
-chcp.com 65001
+# chcp.com 65001
 
 shopt -s globstar
 shopt -s extglob
@@ -63,6 +63,7 @@ declare -rx PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
              PYTHONHOME+=":${XDG_CONFIG_HOME}/python/"
 
 source "${XDG_CONFIG_HOME}/npm/completion"
+PATH+=":$(cygpath "${APPDATA}")/npm"
 
 [[ -f "${XDG_CONFIG_HOME}/ansicode/ansicode"   ]] && source "${XDG_CONFIG_HOME}/ansicode/ansicode"
 [[ -f "${XDG_CONFIG_HOME}/bash/aliases"        ]] && source "${XDG_CONFIG_HOME}/bash/aliases"
@@ -104,7 +105,7 @@ readonly -f ssh-agent
 # -N : show line numbers (off)
 # -M : use long prompt
 # -x4: use <4> as tabstop
-declare -rx LESS='-+X -qRJM -x4'
+declare -x LESS='-+X -qRJM -x4'
 
 # https://github.com/mintty/mintty/issues/170#issuecomment-108889098
 # disable mouse-scrolling in mintty for the alternate screen

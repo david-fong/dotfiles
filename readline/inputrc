@@ -3,7 +3,7 @@
 
 
 # basic settings
-set bell-style audible
+set bell-style none
 set completion-query-items 70
 set completion-ignore-case on
 

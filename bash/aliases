@@ -20,7 +20,7 @@ if [[ "$OCTAVE_HOME" ]]
 
 
 declare -a grepargs=('--line-number' '--color=auto')
-grepargs+=('--exclude-dir={.git,bin,build,dist,compile,db,incremental_db,node_modules,.vs,obj,packages,logs}')
+grepargs+=('--exclude-dir={.git,bin,build,dist,compile,db,incremental_db,node_modules,.yarn,.vs,obj,packages,logs}')
 if [[ -f "${XDG_CONFIG_HOME}/grep/excludefrom" ]]
     then grepargs+=('--exclude-from="${XDG_CONFIG_HOME}/grep/excludefrom"'); fi
 alias fgrep='\grep '"${grepargs[@]}"''
@@ -44,11 +44,13 @@ alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --co
 
 alias lag='lazygit'
 alias gti='git'
+alias it='git'
 
 
 function todo() {
     local -r todopath="${HOME}/.todo.md"
-    "$EDITOR" "$todopath" -c 'vnew +set\ noma | wincmd p'
+    #"$EDITOR" "$todopath" -c 'vnew +set\ noma | wincmd p'
+    nano "$todopath"
 }
 
 

@@ -1,5 +1,6 @@
 
 cscope.in.out
+*.tsbuildinfo
 
 *.js.map
 *.min.js*
