@@ -1,8 +1,6 @@
 
 [[ "$MINGW64_HOME" ]] && MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
 [[ "$JAVA_HOME"    ]] &&    JAVA_HOME="$(cygpath "$JAVA_HOME")"
-[[ "$NODEJS_HOME"  ]] &&  NODEJS_HOME="$(cygpath "$NODEJS_HOME")"
-[[ "$PYTHON_HOME"  ]] &&  PYTHON_HOME="$(cygpath "$PYTHON_HOME")"
 [[ "$GRADLE_HOME"  ]] &&  GRADLE_HOME="$(cygpath "$GRADLE_HOME")"
 
 # exit if not running interactively:
@@ -40,8 +38,7 @@ declare -a histignore=(
     'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
     'vims' 'todo'
     './build' #'./main' 'npm\ run\ start'
-    'git\ status' 'git gra' 'git\ graph' 'git\ diff'
-    'yes'
+    'tig' 'git\ status' 'git\ st' 'git\ br' 'git\ diff'
 )
 export HISTIGNORE=
 for pattern in "${histignore[@]}"; do
