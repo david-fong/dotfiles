@@ -1,1 +1,4 @@
-themes/
+themes/*
+!themes/snakey
+!themes/solarized
+!themes/*LICENSE*

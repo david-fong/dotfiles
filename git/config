@@ -25,18 +25,19 @@
     tool = vimdiff
 
 [alias]
-    tag = "tag --sign"
-    f = "fetch --all --prune"
-    st = "status -sb"
-    sw = "switch"
-    wt = "worktree"
-    br = "branch -vv"
-    #br = "branch --sort=worktreepath --format='%(color:blue)%(align:2,right)%(upstream:trackshort)%(end) %(color:yellow)%(align:6,left)%(worktreepath)%(end) %(if:equals=*)%(HEAD)%(then)%(color:bold white)%(else)%(color:cyan)%(end)%(refname:short)  %(color:black)%(contents:subject)'"
-    bra = "branch -avv"
+    ls = "ls-tree --full-tree --abbrev=7 -r HEAD"
     graph = "log --oneline --graph --all --decorate --color=always"
     gra = "!echo; tput rmam; git graph -n20 | head -n20; tput smam"
-    ls = "ls-tree --full-tree --abbrev=7 -r HEAD"
     logg = "log --graph --decorate --stat --find-renames"
+    #br = "branch -vv"
+    br = "branch --sort=worktreepath --format='%(color:blue)%(align:2,right)%(upstream:trackshort)%(end) %(if:equals=*)%(HEAD)%(then)%(color:bold white)%(else)%(color:cyan)%(end)%(refname:short) %(color:yellow)%(worktreepath) %(color:black)%(contents:subject)'"
+    #br = "branch --sort=worktreepath --format='%(color:blue)%(align:2,right)%(upstream:trackshort)%(end) %(color:yellow)%(align:6,left)%(worktreepath)%(end) %(if:equals=*)%(HEAD)%(then)%(color:bold white)%(else)%(color:cyan)%(end)%(refname:short)  %(color:black)%(contents:subject)'"
+    wt = "worktree"
+    st = "status -sb"
+    df = "diff --word-diff"
+    f = "fetch --all --prune"
+    tag = "tag --sign"
+    sw = "switch"
 
 [filter "lfs"]
     process = git-lfs filter-process
