@@ -1,4 +1,6 @@
+#!/bin/bash
 # https://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/bash-prompt-escape-sequences.html
+
 
 if test -z "$WINELOADERNOEXEC"
 then

@@ -8,17 +8,16 @@ set completion-query-items 70
 set completion-ignore-case on
 
 # vim-style arrow-keys
-"\eh": backward-char
-"\ej": next-history
-"\ek": previous-history
-"\el": forward-char
-"\en": accept-line
+"\ei": backward-char
+"\eo": forward-char
+"\el": previous-history
+"\ek": next-history
+"\em": accept-line
 "\\": self-insert
 
 # insert double-quoted variable
 "\e'": "\"\"\e[D${"
-"\ee": "cd .. && ls\en"
-
+#"\ee": "cd .. && ls\en"
 
 
 

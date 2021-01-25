@@ -50,7 +50,7 @@ alias it='git'
 function todo() {
     local -r todopath="${HOME}/.todo.md"
     #"$EDITOR" "$todopath" -c 'vnew +set\ noma | wincmd p'
-    nano "$todopath"
+    "$EDITOR" "$todopath"
 }
 
 

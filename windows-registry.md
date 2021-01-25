@@ -22,6 +22,4 @@ https://www.howtogeek.com/129178/why-does-64-bit-windows-need-a-separate-program
 ## Filesystem Indexing Options
 
 - `~/Python`
-- `!/VirtualBox_VMs`
-
 

@@ -1,3 +1,4 @@
+#!/bin/bash
 
 [[ "$MINGW64_HOME" ]] && MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
 [[ "$JAVA_HOME"    ]] &&    JAVA_HOME="$(cygpath "$JAVA_HOME")"
@@ -23,7 +24,9 @@ stty stop '' -ixon
 
 # set codepage (on windows) to UTF-8
 # https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
-# chcp.com 65001
+# mintty no longer needs this, but the new windows terminal does.
+# https://github.com/msys2/msys2-runtime/pull/15
+chcp.com 65001
 
 shopt -s globstar
 shopt -s extglob
@@ -50,32 +53,26 @@ export HISTSIZE=1024
 export HISTFILESIZE=2048
 
 
-# https://wiki.archlinux.org/index.php/XDG_Base_Directory
-declare -rx       INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
-#declare -rx      LESSKEY="${XDG_CONFIG_HOME}/less/lesskey" <- this doesn't work :/
-declare -rx           VIM="${XDG_CONFIG_HOME}"
-declare -rx      VIMINIT='source ${VIM}/vimfiles/vimrc'
-declare -rx    TIGRC_USER="${XDG_CONFIG_HOME}/git/tigrc_colorstrings"
-declare -rx PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
-             PYTHONHOME+=":${XDG_CONFIG_HOME}/python/"
-
-source "${XDG_CONFIG_HOME}/npm/completion"
+export NODE_ENV='development'
 PATH+=":$(cygpath "${APPDATA}")/npm"
+source "${XDG_CONFIG_HOME}/npm/completion"
 
-[[ -f "${XDG_CONFIG_HOME}/ansicode/ansicode"   ]] && source "${XDG_CONFIG_HOME}/ansicode/ansicode"
+
+source "${XDG_CONFIG_HOME}/bash/xdg_compat.sh"
+
+#[[ -f "${XDG_CONFIG_HOME}/ansicode/ansicode"   ]] && source "${XDG_CONFIG_HOME}/ansicode/ansicode"
 [[ -f "${XDG_CONFIG_HOME}/bash/aliases"        ]] && source "${XDG_CONFIG_HOME}/bash/aliases"
 [[ -f "${XDG_CONFIG_HOME}/bash/aliases__local" ]] && source "${XDG_CONFIG_HOME}/bash/aliases__local"
 alias   inputrc='"$EDITOR" "${XDG_CONFIG_HOME}/readline/inputrc"'
 alias    bashrc='"$EDITOR" "${XDG_CONFIG_HOME}/bash/bashrc"'
 alias       als='"$EDITOR" "${XDG_CONFIG_HOME}/bash/aliases"'
 alias      alsl='"$EDITOR" "${XDG_CONFIG_HOME}/bash/aliases__local"'
-alias     vimrc='"$EDITOR" "${XDG_CONFIG_HOME}/vimfiles/vimrc"'
+alias     vimrc='"$EDITOR" "${XDG_CONFIG_HOME}/vim/vimrc"'
 alias gitconfig='"$EDITOR" "${XDG_CONFIG_HOME}/git/config"'
 alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ noma /etc/tigrc | 20 wincmd > | wincmd p"'
 
 export EDITOR='vim'
 export CSCOPE_EDITOR='view'
-export NODE_ENV='development'
 
 
 # startup the gpg and ssh agent:
