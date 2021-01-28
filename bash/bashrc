@@ -57,6 +57,9 @@ export NODE_ENV='development'
 PATH+=":$(cygpath "${APPDATA}")/npm"
 source "${XDG_CONFIG_HOME}/npm/completion"
 
+export EDITOR='vim'
+export CSCOPE_EDITOR='view'
+
 
 source "${XDG_CONFIG_HOME}/bash/xdg_compat.sh"
 
@@ -70,9 +73,6 @@ alias      alsl='"$EDITOR" "${XDG_CONFIG_HOME}/bash/aliases__local"'
 alias     vimrc='"$EDITOR" "${XDG_CONFIG_HOME}/vim/vimrc"'
 alias gitconfig='"$EDITOR" "${XDG_CONFIG_HOME}/git/config"'
 alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ noma /etc/tigrc | 20 wincmd > | wincmd p"'
-
-export EDITOR='vim'
-export CSCOPE_EDITOR='view'
 
 
 # startup the gpg and ssh agent:
@@ -103,10 +103,11 @@ declare -x LESS='-+X -qRJM -x4'
 
 # https://github.com/mintty/mintty/issues/170#issuecomment-108889098
 # disable mouse-scrolling in mintty for the alternate screen
-echo -e '\e[?7786l'
+# no longer needed: https://github.com/gwsw/less/issues/111
+# echo $'\e[?7786l'
 
 # thicker underscore cursor on mintty:
-echo -e '\e[?3c'
+echo $'\e[?3c'
 
 # grep colored output styling:
 # https://askubuntu.com/a/1042242
