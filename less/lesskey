@@ -2,6 +2,7 @@
 
 #command
 
+^Q  quit
 \kU back-scroll
 \kD forw-scroll
 
@@ -9,6 +10,29 @@ l  back-line
 ^L back-scroll
 k  forw-line
 ^K forw-scroll
+
+i  left-scroll
+o  right-scroll
+
+y  noaction
+^Y noaction
+Y  noaction
+^P noaction
+K  noaction
+
+b  noaction
+^B noaction
+
+\r noaction
+\n noaction
+e  noaction
+^E noaction
+n  noaction
+^N noaction
+
+f  noaction
+^F noaction
+
 
 #env
 
