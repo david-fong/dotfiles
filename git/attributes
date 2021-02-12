@@ -1,0 +1,18 @@
+
+*.sh    diff=bash
+*.md    diff=markdown
+
+*.html  diff=html
+*.css   diff=css
+*.php   diff=php
+
+*.rb    diff=ruby
+*.go    diff=golang
+*.py    diff=python
+
+*.java  diff=java
+*.cs    diff=csharp
+
+*.cpp   diff=cpp
+*.rs    diff=rust
+

@@ -4,6 +4,9 @@
 # entry 0 = full file path to script
 # entry 1 = full file path to pwd of script caller
 
+alias nom='pnpm'
+alias nomx='pnpx'
+
 alias greeting='clear; \echo -e "\n$(heading "$(date)")""\n"'
 alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
 

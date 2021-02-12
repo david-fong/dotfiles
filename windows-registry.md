@@ -11,6 +11,9 @@ don't turn on "lower screen brightness in battery saving mode".
 settings > system > multitasking > don't show snap beside options.
 settings > system > power&sleep  > always network disconnect on sleep.
 
+File Type settings for .ts files:
+https://superuser.com/a/1464304
+
 Search up how to "force" uninstall things like Microsoft Solitaire Collection.
 https://www.windowscentral.com/how-disable-password-reveal-button-sign-screen-windows-10
 https://www.howtogeek.com/224159/how-to-disable-bing-in-the-windows-10-start-menu/

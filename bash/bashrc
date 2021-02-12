@@ -1,8 +1,9 @@
 #!/bin/bash
 
-[[ "$MINGW64_HOME" ]] && MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
-[[ "$JAVA_HOME"    ]] &&    JAVA_HOME="$(cygpath "$JAVA_HOME")"
-[[ "$GRADLE_HOME"  ]] &&  GRADLE_HOME="$(cygpath "$GRADLE_HOME")"
+[[ "$MINGW64_HOME"     ]] &&      MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
+[[ "$JAVA_HOME"        ]] &&         JAVA_HOME="$(cygpath "$JAVA_HOME")"
+[[ "$GRADLE_HOME"      ]] &&       GRADLE_HOME="$(cygpath "$GRADLE_HOME")"
+[[ "$MONGODB_HOME"     ]] &&      MONGODB_HOME="$(cygpath "$MONGODB_HOME")"
 
 # exit if not running interactively:
 [[ "$-" =~ "i" ]] || return

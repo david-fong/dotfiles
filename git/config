@@ -34,7 +34,7 @@
     #br = "branch --sort=worktreepath --format='%(color:blue)%(align:2,right)%(upstream:trackshort)%(end) %(color:yellow)%(align:6,left)%(worktreepath)%(end) %(if:equals=*)%(HEAD)%(then)%(color:bold white)%(else)%(color:cyan)%(end)%(refname:short)  %(color:black)%(contents:subject)'"
     wt = "worktree"
     st = "status -sb"
-    df = "diff --word-diff"
+    df = "diff --word-diff=color"
     f = "fetch --all --prune"
     tag = "tag --sign"
     sw = "switch"
