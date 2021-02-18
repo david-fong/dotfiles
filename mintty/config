@@ -23,6 +23,7 @@ ColSpacing=0
 Padding=5
 # Background=~/.config/background.jpg,32
 
+#Font=Lucida Console
 Font=Lucida Console
 FontHeight=9
 FontWeight=400
