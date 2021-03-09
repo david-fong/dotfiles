@@ -27,7 +27,7 @@ b  noaction
 \n noaction
 e  noaction
 ^E noaction
-n  noaction
+#n noaction
 ^N noaction
 
 f  noaction
