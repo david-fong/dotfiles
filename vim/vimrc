@@ -53,10 +53,10 @@ map  <silent> <ScrollWheelUp>   <C-Y>
 map  <silent> <ScrollWheelDown> <C-E>
 imap <silent> <ScrollWheelUp>   <C-O><C-Y>
 imap <silent> <ScrollWheelDown> <C-O><C-E>
-map  <silent> <C-K> <C-Y>
-map  <silent> <C-J> <C-E>
-imap <silent> <C-K> <C-O><C-Y>
-imap <silent> <C-J> <C-O><C-E>
+map  <silent> <C-L> <C-Y>
+map  <silent> <C-K> <C-E>
+imap <silent> <C-L> <C-O><C-Y>
+imap <silent> <C-K> <C-O><C-E>
 
 
 " save using ctrl+s: ----------------------------
@@ -79,10 +79,6 @@ inoremap <silent> <C-Z> <ESC><C-Z>
 
 
 " normal things in insert mode: -----------------
-    imap <silent> <ESC>h <LEFT>
-    imap <silent> <ESC>j <DOWN>
-    imap <silent> <ESC>k <UP>
-    imap <silent> <ESC>l <RIGHT>
 inoremap <silent> <ESC>b <C-O>b
 inoremap <silent> <ESC>w <C-O>w
 inoremap <silent> <ESC>p <C-O>p
@@ -97,13 +93,6 @@ inoremap <silent> <C-A>  <C-O>^
 inoremap <silent> <C-E>  <C-O>$
 inoremap <silent> <ESC>f <C-O>w
 "inoremap <silent> <C-D>  <DEL>
-
-
-" vim-style udlr in command-mode: ---------------
-cnoremap <ESC>h <LEFT>
-cnoremap <ESC>j <DOWN>
-cnoremap <ESC>k <UP>
-cnoremap <ESC>l <RIGHT>
 
 
 " line numbers: ---------------------------------
