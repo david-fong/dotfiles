@@ -36,6 +36,7 @@ f  noaction
 
 #env
 
+# this below line solves jank boundary scrolling.
 LESS_TERMCAP_vb=
 
 # +X : enable startup termcap

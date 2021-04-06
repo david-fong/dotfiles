@@ -36,6 +36,7 @@
     st = "status -sb"
     df = "diff --word-diff=color"
     f = "fetch --all --prune"
+    adu = "add -u"
     tag = "tag --sign"
     sw = "switch"
 

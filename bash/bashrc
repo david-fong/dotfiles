@@ -9,13 +9,13 @@
 [[ "$-" =~ "i" ]] || return
 
 # commands to list things:
-# declare -p    variables and function names
-# set           like above, but show function bodies
-# alias         aliases
-# shopt         shell options
-# hash          hashed executables from PATH
+# set -o        shell options
+# shopt         shell optional options
+# enable        shell builtins
 # bind -p       readline key-bindings
-# enable        enabled shell builtins
+# declare -p    variables and function names
+# alias         aliases
+# hash          hashed executables from PATH
 
 
 # disable sending and receiving XON/XOFF

@@ -4,6 +4,7 @@
 
 *.html  diff=html
 *.css   diff=css
+*.scss  diff=css
 *.php   diff=php
 
 *.rb    diff=ruby

@@ -6,6 +6,7 @@
 set bell-style none
 set completion-query-items 70
 set completion-ignore-case on
+set completion-display-width 80
 
 # vim-style arrow-keys
 "\ei": backward-char
