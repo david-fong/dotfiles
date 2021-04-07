@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# note to self: in a script, BASH_SOURCE is an array with
+# entry 0 = full file path to script
+# entry 1 = full file path to pwd of script caller
+
 [[ "$MINGW64_HOME"     ]] &&      MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
 [[ "$JAVA_HOME"        ]] &&         JAVA_HOME="$(cygpath "$JAVA_HOME")"
 [[ "$GRADLE_HOME"      ]] &&       GRADLE_HOME="$(cygpath "$GRADLE_HOME")"
@@ -40,9 +44,9 @@ declare -a histignore=(
     'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear'
     'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
     'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
-    'vims' 'todo'
-    './build' #'./main' 'npm\ run\ start'
-    'tig' 'git\ status' 'git\ st' 'git\ br' 'git\ diff'
+    'todo'
+    './build*' #'./main' 'npm\ run\ start'
+    'tig' 'git\ status' 'git\ st' 'git\ br' 'git\ diff' 'git\ df'
 )
 export HISTIGNORE=
 for pattern in "${histignore[@]}"; do
@@ -62,16 +66,15 @@ export EDITOR='vim'
 export CSCOPE_EDITOR='view'
 
 
-source "${XDG_CONFIG_HOME}/bash/xdg_compat.sh"
+source "${XDG_CONFIG_HOME}/bash/_xdg_compat.sh"
 
-#[[ -f "${XDG_CONFIG_HOME}/ansicode/ansicode"   ]] && source "${XDG_CONFIG_HOME}/ansicode/ansicode"
-[[ -f "${XDG_CONFIG_HOME}/bash/aliases"        ]] && source "${XDG_CONFIG_HOME}/bash/aliases"
-[[ -f "${XDG_CONFIG_HOME}/bash/aliases__local" ]] && source "${XDG_CONFIG_HOME}/bash/aliases__local"
+[[ -f "${XDG_CONFIG_HOME}/bash/_aliases.sh"        ]] && source "${XDG_CONFIG_HOME}/bash/_aliases.sh"
+[[ -f "${XDG_CONFIG_HOME}/bash/_aliases__local.sh" ]] && source "${XDG_CONFIG_HOME}/bash/_aliases__local.sh"
 alias   inputrc='"$EDITOR" "${XDG_CONFIG_HOME}/readline/inputrc"'
-alias    bashrc='"$EDITOR" "${XDG_CONFIG_HOME}/bash/bashrc"'
-alias       als='"$EDITOR" "${XDG_CONFIG_HOME}/bash/aliases"'
-alias      alsl='"$EDITOR" "${XDG_CONFIG_HOME}/bash/aliases__local"'
-alias     vimrc='"$EDITOR" "${XDG_CONFIG_HOME}/vim/vimrc"'
+alias    bashrc='"$EDITOR" "${XDG_CONFIG_HOME}/bash/main.sh"'
+alias       als='"$EDITOR" "${XDG_CONFIG_HOME}/bash/_aliases.sh"'
+alias      alsl='"$EDITOR" "${XDG_CONFIG_HOME}/bash/_aliases__local.sh"'
+alias     vimrc='"$EDITOR" "${XDG_CONFIG_HOME}/vim/main.vim"'
 alias gitconfig='"$EDITOR" "${XDG_CONFIG_HOME}/git/config"'
 alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ noma /etc/tigrc | 20 wincmd > | wincmd p"'
 
@@ -132,6 +135,5 @@ complete -A enabled -E
 
 
 # finalize prompt:
-source "$(dirname "${BASH_SOURCE[0]}")""/prompt.sh"
-declare -rxi PROMPT_DIRTRIM=5
+source "$(dirname "${BASH_SOURCE[0]}")""/_prompt.sh"
 

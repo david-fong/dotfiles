@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# note to self: in a script, BASH_SOURCE is an array with
-# entry 0 = full file path to script
-# entry 1 = full file path to pwd of script caller
-
 alias nom='pnpm'
 alias nomx='pnpx'
 
@@ -82,37 +78,11 @@ function home() {
 alias config='\cd ${XDG_CONFIG_HOME} && clsa'
 
 
-function numdirents() {
-    local -a dirents=(*)
-    local -i num="${#dirents}"
-    dirents=(.*)
-    num+="${#dirents}"
-    echo -n "$((num-2))"
-}
-
-
-function yes() {
-    [[ ! -t 1 ]] && exec \yes
-    local -a colors=(red yellow green cyan blue magenta)
-    local -i i=0
-    while [[ i -lt "${#colors[@]}" ]]; do
-        colors["$i"]="$(ansicode sgr start "${colors[$i]}")"
-        i+=1
-    done; i=0; readonly colors
-    local payload="$@"
-    readonly payload="${payload:=y\n}"
-    trap 'echo -ne "\e[0m"; trap - SIGINT; return 0' SIGINT
-    while : #sleep '0.01'
-    do
-        echo -ne "${colors[$i]}""$payload"
-        let i="($i+1)"%"${#colors[@]}"
-    done
-}
 
 function bind() {
     if [[ -z "$*" ]]; then
         local -r filterout="(self-insert)|(do-lowercase-version)"
-        bind -p | grep -vT --color=always "$filterout" | less
+        bind -p | command grep -vT --color=always "$filterout" | less
     else
         command bind "$@"
     fi
@@ -133,6 +103,5 @@ function heading() {
 
 
 # make functions unmodifiable:
-readonly -f todo lsa lsen home numdirents yes heading
-export   -f todo lsa lsen home numdirents yes heading
-
+readonly -f todo lsa lsen home heading
+export   -f todo lsa lsen home heading

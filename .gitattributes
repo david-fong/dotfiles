@@ -1,0 +1,92 @@
+## GITATTRIBUTES FOR WEB PROJECTS
+#
+# Details per file setting:
+#   text    These files should be normalized (i.e. convert CRLF to LF).
+#   binary  These files are binary and should be left untouched.
+#
+# Note that binary is a macro for -text -diff.
+#
+# Based on https://github.com/alexkaratarakis/gitattributes
+
+# Auto detect
+##   Handle line endings automatically for files detected as
+##   text and leave all files detected as binary untouched.
+##   This will handle all files NOT defined below.
+*                 text=auto
+
+# Source code
+*.sh              text eol=lf
+*.bash            text eol=lf
+*.bash_profile    text eol=lf
+*.bat             text eol=crlf
+*.cmd             text eol=crlf
+*.css             text diff=css
+*.html            text diff=html
+*.js              text
+*.json            text
+*.jsx             text
+*.less            text
+*.map             text -diff
+*.ps1             text eol=crlf
+*.py              text diff=python
+*.sass            text
+*.scss            text diff=css
+*.sql             text
+*.ts              text
+*.tsx             text
+*.xml             text
+*.xhtml           text diff=html
+
+# Docker
+Dockerfile        text
+
+# Documentation
+*.md              text diff=markdown
+*.txt             text
+AUTHORS           text
+CHANGELOG         text
+CONTRIBUTING      text
+LICENSE           text
+*README*          text
+TODO              text
+
+# Configs
+*.cnf             text
+*.conf            text
+*.config          text
+.editorconfig     text
+.env              text
+.gitattributes    text
+.gitconfig        text
+
+# Heroku
+Procfile          text
+
+# Graphics
+*.gif             binary
+*.ico             binary
+*.jpg             binary
+*.jpeg            binary
+*.pdf             binary
+*.png             binary
+*.psd             binary
+*.svg             text
+
+# Archives
+*.7z              binary
+*.gz              binary
+*.br              binary
+*.jar             binary
+*.rar             binary
+*.tar             binary
+*.zip             binary
+
+# Executables
+*.exe             binary
+*.pyc             binary
+
+# RC files (like .babelrc or .eslintrc)
+*.*rc             text
+
+# Ignore files (like .npmignore or .gitignore)
+*.*ignore         text

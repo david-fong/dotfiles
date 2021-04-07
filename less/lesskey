@@ -3,35 +3,52 @@
 #command
 
 ^Q  quit
+^F  forw-search
 \kU back-scroll
 \kD forw-scroll
 
+# iokl
 l  back-line
+L  back-line-force
 ^L back-scroll
 k  forw-line
+K  forw-line-force
 ^K forw-scroll
-
 i  left-scroll
 o  right-scroll
 
+# disabled back-line
 y  noaction
 ^Y noaction
 Y  noaction
 ^P noaction
-K  noaction
 
-b  noaction
-^B noaction
-
+# disabled forw-line
 \r noaction
 \n noaction
+j  noaction
 e  noaction
 ^E noaction
 #n noaction
 ^N noaction
 
+# disabled forw-screen
 f  noaction
 ^F noaction
+\40 noaction
+^V noaction
+\e\40 noaction
+
+# disabled back-screen
+b  noaction
+^B noaction
+\ev noaction
+
+# disabled forw-window back-window
+z noaction
+w noaction
+
+# TODO turn off more things that I won't use.
 
 
 #env

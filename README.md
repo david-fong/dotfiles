@@ -11,21 +11,20 @@ This is a collection of configuration files made for a Git For Windows + MinTTY 
 # echo '[[ -f "${XDG_CONFIG_HOME}/bash/profile" ]] && source "${XDG_CONFIG_HOME}/bash/profile"' >> "$HOME/.bash_profile"
 
 git clone https://github.com/david-fong/dotfiles.git "$XDG_CONFIG_HOME"
-echo '[[ -f "${XDG_CONFIG_HOME}/bash/bashrc" ]] && source "${XDG_CONFIG_HOME}/bash/bashrc"' >> "$HOME/.bash_profile"
+echo '[[ -f "${XDG_CONFIG_HOME}/bash/main.sh" ]] && source "${XDG_CONFIG_HOME}/bash/main.sh"' >> "$HOME/.bash_profile"
 ```
 
 ## Features of Interest
 
 - Keybindings are based around `iokl,.`, which are mapped to left, right, down, up, home, and end, respectively.
 - Via AutoHotKey, the Caps-Lock is an alias for the Ctrl key, alt-m for enter, alt-; for backspace, alt-d for delete, and alt-e for escape.
-- Fast prompt (by taking out the parts that make calls to git).
 - Nice scrolling behaviour inside less [(see this)](https://github.com/gwsw/less/issues/111).
 
 ## :balloon: A Bird's Eye View
 
-Below is my attempt to describe some common MSYS2-bundled facilities in a non-technical way. I may have accidentally gotten something wrong, so if you notice a mistake or something that can be improved, please create an issue in this repo!
+For information about what Git For Windows, MSYS2, Cygwin, MinGW-64, and MinTTY are, see the following helpful links: [MSYS2's history](https://www.msys2.org/wiki/History/), [MSYS2 vs Cygwin](https://www.msys2.org/wiki/How-does-MSYS2-differ-from-Cygwin/), [MSYS2 explains terminals](https://www.msys2.org/wiki/Terminals/).
 
-For more information about what Git For Windows, MSYS2, Cygwin, MinGW-64, and MinTTY are, see the following helpful links: [MSYS2's history](https://www.msys2.org/wiki/History/), [MSYS2 vs Cygwin](https://www.msys2.org/wiki/How-does-MSYS2-differ-from-Cygwin/), [MSYS2 explains terminals](https://www.msys2.org/wiki/Terminals/).
+Below is my attempt to describe some common MSYS2-bundled facilities in a non-technical way. I may have accidentally gotten something wrong, so if you notice a mistake or something that can be improved, please create an issue in this repo!
 
 program                 | description
 :----------------------:| -------------------------

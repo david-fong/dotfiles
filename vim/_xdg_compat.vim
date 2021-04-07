@@ -1,3 +1,5 @@
+" https://wiki.archlinux.org/index.php/XDG_Base_Directory
+
 set runtimepath^=$XDG_CONFIG_HOME/vim
 set runtimepath+=$XDG_DATA_HOME/vim
 set runtimepath+=$XDG_CONFIG_HOME/vim/after

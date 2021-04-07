@@ -1,0 +1,6 @@
+{
+    "files.exclude": {
+        "configstore/": true,
+    },
+    "files.trimTrailingWhitespace": true,
+}

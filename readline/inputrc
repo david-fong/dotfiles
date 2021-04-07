@@ -7,8 +7,10 @@ set bell-style none
 set completion-query-items 70
 set completion-ignore-case on
 set completion-display-width 80
+set skip-completed-text off
 
-# vim-style arrow-keys
+
+# iokl arrow-keys
 "\ei": backward-char
 "\eo": forward-char
 "\el": previous-history
@@ -16,16 +18,18 @@ set completion-display-width 80
 "\em": accept-line
 "\\": self-insert
 
+
+# Macros:
 # insert double-quoted variable
 "\e'": "\"\"\e[D${"
 #"\ee": "cd .. && ls\en"
 
 
-
 # disable/enable 8bit input
-set input-meta on
-set output-meta on
+set input-meta off
+#set output-meta off
 set convert-meta off
+
 
 # visible-stats
 # Append a mark according to the file type in a listing
@@ -75,8 +79,8 @@ $if mode=emacs
     "\e[3~": delete-char            # Delete Key
     "\e[1;5D": backward-word        # Ctrl-Left
     "\e[1;5C": forward-word         # Ctrl-Right
-    "\e\e[C": forward-word          # Alt-Right
-    "\e\e[D": backward-word         # Alt-Left
+    #"\e\e[C": forward-word          # Alt-Right
+    #"\e\e[D": backward-word         # Alt-Left
     "\e[17~": "Function Key 6"
     "\e[18~": "Function Key 7"
     "\e[19~": "Function Key 8"

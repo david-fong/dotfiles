@@ -22,12 +22,9 @@ https://man7.org/linux/man-pages/man4/console_codes.4.html
 https://www.howtogeek.com/129178/why-does-64-bit-windows-need-a-separate-program-files-x86-folder/
 ```
 
-## Filesystem Indexing Options
-
-- `~/Python`
-
 ## Fonts
 
+- Fira Code
 - Source Code Pro
 - JetBrains Mono
 
