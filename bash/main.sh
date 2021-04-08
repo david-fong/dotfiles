@@ -20,7 +20,7 @@ stty stop '' -ixon
 # https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
 # mintty no longer needs this, but the new windows terminal does.
 # https://github.com/msys2/msys2-runtime/pull/15
-chcp.com 65001
+chcp.com 65001 2> /dev/null
 
 shopt -s globstar
 shopt -s extglob
@@ -69,21 +69,6 @@ alias gitconfig='"$EDITOR" "${XDG_CONFIG_HOME}/git/config"'
 alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ noma /etc/tigrc | 20 wincmd > | wincmd p"'
 
 
-# startup the gpg and ssh agent:
-# make the gpg-agent cache my password for one hour.
-# https://help.github.com/en/github/authenticating-to-github/associating-an-email-with-your-gpg-key
-export GPG_TTY=$(tty)
-eval "(gpg-agent --daemon)" 2> /dev/null
-[[ -z "${SSH_AUTH_SOCK}" ]] && eval "$(ssh-agent -s)"
-function ssh-agent() {
-    echo 'warning: an ssh agent has already been started.'
-    echo 'if you wish to use this executable, prefix with the command builtin.'
-    echo 'to kill all ssh-agents, do:'
-    echo '  taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T'
-}
-readonly -f ssh-agent
-
-
 # less command behaviour:
 # +X : enable startup termcap
 # -F : (not used) print to console if 1 page
@@ -122,6 +107,23 @@ complete -A variable unset
 # suggest completions for an empty
 # commandline with enabled builtins:
 complete -A enabled -E
+
+
+# startup the gpg and ssh agent:
+# make the gpg-agent cache my password for one hour.
+# https://help.github.com/en/github/authenticating-to-github/associating-an-email-with-your-gpg-key
+echo 'starting up gpg-agent daemon...'
+export GPG_TTY=$(tty)
+eval "(gpg-agent --daemon)" 2> /dev/null
+
+# [[ -z "${SSH_AUTH_SOCK}" ]] && eval "$(ssh-agent -s)"
+# function ssh-agent() {
+#     echo 'warning: an ssh agent has already been started.'
+#     echo 'if you wish to use this executable, prefix with the command builtin.'
+#     echo 'to kill all ssh-agents, do:'
+#     echo '  taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T'
+# }
+# readonly -f ssh-agent
 
 
 # finalize prompt:

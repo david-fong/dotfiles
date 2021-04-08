@@ -37,6 +37,7 @@ set convert-meta off
 # visible-stats
 # Append a mark according to the file type in a listing
 set visible-stats off
+set colored-stats on
 set mark-directories on
 set mark-symlinked-directories on
 
