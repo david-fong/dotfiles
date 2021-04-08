@@ -1,6 +1,6 @@
 #!/bin/bash
 # https://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/bash-prompt-escape-sequences.html
-
+set -eo pipefail
 
 if test -z "$WINELOADERNOEXEC"
 then
@@ -32,3 +32,5 @@ PS1="\[\033]0;\u@\H : $PWD\007\]\n\[\033[32m\]\u@\H \[\033[1;34m\]\@\[\033[22m\]
 declare -rx PS1
 
 declare -rxi PROMPT_DIRTRIM=5
+
+set +eo pipefail

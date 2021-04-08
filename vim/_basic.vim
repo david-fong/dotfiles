@@ -10,8 +10,8 @@ set expandtab
 set formatoptions=croqlj
 set vb t_vb=
 set mouse=a
-set incsearch
 set clipboard=unnamed
+set incsearch
 
 set title
 set splitright

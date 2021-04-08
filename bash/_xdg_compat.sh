@@ -1,6 +1,7 @@
 #!/bin/bash
 # https://wiki.archlinux.org/index.php/XDG_Base_Directory
 # https://web.archive.org/web/20180827160401/plus.google.com/+RobPikeTheHuman/posts/R58WgWwN9jp
+set -eo pipefail
 
 mkdir -p "${XDG_DATA_HOME}/bash"
 mkdir -p "${XDG_DATA_HOME}/tig"
@@ -20,3 +21,4 @@ declare -rx       LESSKEY="${XDG_DATA_HOME}/less/lesskey"
 # note: this must go after the declaration of LESSKEY.
 lesskey --output="${XDG_DATA_HOME}/less/lesskey" -- "${XDG_CONFIG_HOME}/less/lesskey"
 
+set +eo pipefail

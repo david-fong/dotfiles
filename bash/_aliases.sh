@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 
 alias nom='pnpm'
 alias nomx='pnpx'
@@ -105,3 +106,5 @@ function heading() {
 # make functions unmodifiable:
 readonly -f todo lsa lsen home heading
 export   -f todo lsa lsen home heading
+
+set +eo pipefail

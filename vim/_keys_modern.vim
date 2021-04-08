@@ -29,6 +29,12 @@ inoremap <silent> <ESC>P <C-O>P
 imap     <silent> <C-BS> <C-W>
 
 
+" Use <C-L> to clear the highlighting of :set hlsearch.
+" if maparg('<C-L>', 'n') ==# ''
+"   nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+" endif
+
+
 " text wrapping: --------------------------------
 if exists('+linebreak')
     set nowrap

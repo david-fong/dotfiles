@@ -1,3 +1,4 @@
+" some ideas taken from https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim
 
 set encoding=utf-8
 scriptencoding utf-8
@@ -46,6 +47,7 @@ inoremap <silent> <ESC>f <C-O>w
 
 
 
+" set autoread
 " check for external changes (from u/weisenzahm on reddit)
 " check for file modifications automatically (current buffer only).
 " use :NoAutoChecktime to disable it (uses b:autochecktime)
@@ -58,8 +60,8 @@ function! MyAutoCheckTime()
     endif
 endfunction
 augroup MyAutoChecktime
-  au!
-  au FocusGained,BufEnter,CursorHold,CursorHoldI * call MyAutoCheckTime()
+    au!
+    au FocusGained,BufEnter,CursorHold,CursorHoldI * call MyAutoCheckTime()
 augroup END
 command! NoAutoChecktime let b:autochecktime=0
 

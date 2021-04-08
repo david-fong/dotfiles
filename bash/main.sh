@@ -1,8 +1,6 @@
 #!/bin/bash
-
-# note to self: in a script, BASH_SOURCE is an array with
-# entry 0 = full file path to script
-# entry 1 = full file path to pwd of script caller
+# Some ideas taken from https://github.com/mrzool/bash-sensible/blob/master/sensible.bash
+set -eo pipefail
 
 [[ "$MINGW64_HOME"     ]] &&      MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
 [[ "$JAVA_HOME"        ]] &&         JAVA_HOME="$(cygpath "$JAVA_HOME")"
@@ -11,15 +9,6 @@
 
 # exit if not running interactively:
 [[ "$-" =~ "i" ]] || return
-
-# commands to list things:
-# set -o        shell options
-# shopt         shell optional options
-# enable        shell builtins
-# bind -p       readline key-bindings
-# declare -p    variables and function names
-# alias         aliases
-# hash          hashed executables from PATH
 
 
 # disable sending and receiving XON/XOFF
@@ -53,14 +42,15 @@ for pattern in "${histignore[@]}"; do
     HISTIGNORE+="$pattern"':'
 done
 unset histignore
-export HISTCONTROL=ignoredups:ignorespace
+export HISTCONTROL=ignoredups:ignorespace:erasedups
 export HISTSIZE=1024
 export HISTFILESIZE=2048
+PROMPT_COMMAND='history -a' # Record each line as it gets issued
 
 
 export NODE_ENV='development'
 PATH+=":$(cygpath "${APPDATA}")/npm"
-source "${XDG_CONFIG_HOME}/npm/completion"
+[[ -f "${XDG_CONFIG_HOME}/npm/completion" ]] && source "${XDG_CONFIG_HOME}/npm/completion"
 
 export EDITOR='vim'
 export CSCOPE_EDITOR='view'
@@ -83,7 +73,7 @@ alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ n
 # make the gpg-agent cache my password for one hour.
 # https://help.github.com/en/github/authenticating-to-github/associating-an-email-with-your-gpg-key
 export GPG_TTY=$(tty)
-eval "(gpg-agent --daemon)"
+eval "(gpg-agent --daemon)" 2> /dev/null
 [[ -z "${SSH_AUTH_SOCK}" ]] && eval "$(ssh-agent -s)"
 function ssh-agent() {
     echo 'warning: an ssh agent has already been started.'
@@ -137,3 +127,4 @@ complete -A enabled -E
 # finalize prompt:
 source "$(dirname "${BASH_SOURCE[0]}")""/_prompt.sh"
 
+set +eo pipefail

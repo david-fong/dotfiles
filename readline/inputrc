@@ -13,10 +13,13 @@ set skip-completed-text off
 # iokl arrow-keys
 "\ei": backward-char
 "\eo": forward-char
-"\el": previous-history
 "\ek": next-history
+"\el": previous-history
 "\em": accept-line
 "\\": self-insert
+
+"\ej": complete
+"\e\C-d": kill-word
 
 
 # Macros:
@@ -90,10 +93,10 @@ $if mode=emacs
   $endif
 
   $if term=cygwin
-    "\e[A": previous-history # Cursor Up
-    "\e[B": next-history     # Cursor Down
-    "\e[C": forward-char     # Cursor Right
-    "\e[D": backward-char    # Cursor Left
+    #"\e[A": previous-history # Cursor Up
+    #"\e[B": next-history     # Cursor Down
+    #"\e[C": forward-char     # Cursor Right
+    #"\e[D": backward-char    # Cursor Left
   $endif
 $endif
 
