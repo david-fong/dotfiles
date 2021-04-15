@@ -21,12 +21,15 @@ set colored-stats on
 set mark-directories on
 set mark-symlinked-directories on
 
+#set keymap iokl
 
 # Unbinding Things I Don't Use™
 "\C-s": # foward-search-history
 "\C-p": # previous-history
 "\C-n": # next-history
 "\C-j": # enter
+"\C-o": # enter
+#"\C-m": # enter
 "\C-q": # quoted-insert
 "\C-v": # quoted-insert
 "\C-t": # transpose-chars
@@ -35,7 +38,13 @@ set mark-symlinked-directories on
 "\el": # downcase-word
 "\ec": # capitalize-word
 "\C-d": # delete-char
+"\C-f": # forward-char
+"\C-b": # backward-char
 #"\ed": # kill-word
+"\C-i": # complete
+"\e\e": # complete
+#"\C-h": # backward-delete-char
+"\e\C-h": # backward-kill-word
 
 "\e\'": quoted-insert
 "\\": self-insert
@@ -49,6 +58,9 @@ set mark-symlinked-directories on
 "\e;": backward-delete-char
 "\C-?": backward-kill-word
 "\e[3;5~": kill-word
+"\e/": kill-whole-line
+"\eD": kill-whole-line
 "\ej": complete
+"\eA": insert-comment
 
 #"\C-/": comment-begin
