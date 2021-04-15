@@ -78,7 +78,8 @@ alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ n
 # -N : show line numbers (off)
 # -M : use long prompt
 # -x4: use <4> as tabstop
-declare -x LESS='-+X -qRJM -x4'
+# -#N: use <N> as the horizontal scroll amount
+declare -x LESS='-+X -qRJM -x4 -#4'
 
 # https://github.com/mintty/mintty/issues/170#issuecomment-108889098
 # disable mouse-scrolling in mintty for the alternate screen

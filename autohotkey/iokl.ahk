@@ -29,6 +29,7 @@ SendMode Input
 <!<+<^i::Send ^+{Left}
 <!<+<^o::Send ^+{Right}
 <!;::Send {Backspace}
+<!<+;::Send +{Backspace}
 <!d::Send {Delete}
 <!m::Send {Enter}
 <!e::Send {Escape}

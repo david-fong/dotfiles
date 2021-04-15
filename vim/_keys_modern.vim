@@ -27,6 +27,7 @@ inoremap <silent> <ESC>P <C-O>P
 
 " control-backspace to delete word: -------------
 imap     <silent> <C-BS> <C-W>
+imap     <silent> <C-Del> <C-O>diw
 
 
 " Use <C-L> to clear the highlighting of :set hlsearch.

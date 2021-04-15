@@ -8,6 +8,6 @@ declare -rx   XDG_DATA_HOME="$(cygpath   "${XDG_DATA_HOME:-"${HOME}/.local/share
 # This should be useful on windows in `~/.bash_logout`:
 # if [[ "$SHLVL" = 1 ]]
 # then
-#     taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T
-#     taskkill //F //FI "IMAGENAME eq gpg-agent.exe" //T
+#     taskkill //F //T //IM "ssh-agent.exe"
+#     taskkill //F //T //IM "gpg-agent.exe"
 # fi
