@@ -28,11 +28,17 @@ SendMode Input
 <!<+<^k::Send ^+{Down}
 <!<+<^i::Send ^+{Left}
 <!<+<^o::Send ^+{Right}
+
 <!;::Send {Backspace}
-<!<+;::Send +{Backspace}
+;<!<+;::Send +{Backspace}
 <!d::Send {Delete}
+;<!<^d::Send ^{Delete}
+;<!<+d::Send +{Delete}
 <!m::Send {Enter}
 <!e::Send {Escape}
+
+<!p::Send {-}
+<!<+p::Send {_}
 
 <!<+.::Send {PgUp}
 <!<+,::Send {PgDn}

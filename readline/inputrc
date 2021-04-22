@@ -41,13 +41,14 @@ set mark-symlinked-directories on
 "\C-f": # forward-char
 "\C-b": # backward-char
 #"\ed": # kill-word
-"\C-i": # complete
+#"\C-i": # complete
 "\e\e": # complete
-#"\C-h": # backward-delete-char
+"\C-h": # backward-delete-char
 "\e\C-h": # backward-kill-word
 
 "\e\'": quoted-insert
 "\\": self-insert
+"\t": complete
 
 # iokl arrow-keys
 "\ei": backward-char

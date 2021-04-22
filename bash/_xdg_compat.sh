@@ -12,6 +12,7 @@ declare -rx NODE_REPL_HISTORY="${XDG_DATA_HOME}/.node_repl_history"
 declare -rx      LESSHISTFILE="${XDG_DATA_HOME}/.less_history"
 
 declare -rx       INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
+declare -rx RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/grep/ripgrep"
 declare -rx       VIMINIT='source ${XDG_CONFIG_HOME}/vim/main.vim'
 declare -rx    TIGRC_USER="${XDG_CONFIG_HOME}/git/tigrc_colorstrings"
 declare -rx PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
