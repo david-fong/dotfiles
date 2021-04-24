@@ -9,7 +9,7 @@ alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
 
 alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
-alias jobs='jobs -l; tasklist | command grep agent'
+#alias jobs='jobs -l; tasklist | command grep agent'
 alias hist='history | less +G'
 function hash() {
     command hash "$@" | sort -r

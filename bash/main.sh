@@ -1,11 +1,11 @@
 #!/bin/bash
 # Some ideas taken from https://github.com/mrzool/bash-sensible/blob/master/sensible.bash
-set -eo pipefail
+#set -eo pipefail
 
-[[ "$MINGW64_HOME"     ]] &&      MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
-[[ "$JAVA_HOME"        ]] &&         JAVA_HOME="$(cygpath "$JAVA_HOME")"
-[[ "$GRADLE_HOME"      ]] &&       GRADLE_HOME="$(cygpath "$GRADLE_HOME")"
-[[ "$MONGODB_HOME"     ]] &&      MONGODB_HOME="$(cygpath "$MONGODB_HOME")"
+#[[ "$MINGW64_HOME"     ]] &&      MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
+#[[ "$JAVA_HOME"        ]] &&         JAVA_HOME="$(cygpath "$JAVA_HOME")"
+#[[ "$GRADLE_HOME"      ]] &&       GRADLE_HOME="$(cygpath "$GRADLE_HOME")"
+#[[ "$MONGODB_HOME"     ]] &&      MONGODB_HOME="$(cygpath "$MONGODB_HOME")"
 
 # exit if not running interactively:
 [[ "$-" =~ "i" ]] || return
@@ -20,7 +20,7 @@ stty stop '' -ixon
 # https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
 # mintty no longer needs this, but the new windows terminal does.
 # https://github.com/msys2/msys2-runtime/pull/15
-chcp.com 65001 2> /dev/null
+#chcp.com 65001 2> /dev/null
 
 shopt -s globstar
 shopt -s extglob
@@ -49,7 +49,7 @@ PROMPT_COMMAND='history -a' # Record each line as it gets issued
 
 
 export NODE_ENV='development'
-PATH+=":$(cygpath "${APPDATA}")/npm"
+#PATH+=":$(cygpath "${APPDATA}")/npm"
 [[ -f "${XDG_CONFIG_HOME}/npm/completion" ]] && source "${XDG_CONFIG_HOME}/npm/completion"
 
 export EDITOR='vim'

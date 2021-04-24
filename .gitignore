@@ -7,3 +7,25 @@
 /git/gitk
 /octave/
 
+/monitors.xml
+/dconf/
+/enchant/
+/eog/
+/evolution/
+/gedit/
+/gnome-control-center/
+/gnome-games/
+/gnome-initial-setup-done
+/goa-1.0/
+/google-chrome/
+/gtk-3.0/
+/gtk-4.0/
+/ibus/
+/libreoffice/
+/mimeapps.list
+/pulse/
+/remmina/
+/transmission/
+/user-dirs.dirs
+/user-dirs.locale
+/yelp/
