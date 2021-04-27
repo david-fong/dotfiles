@@ -1,0 +1,94 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+    {
+        "key": "ctrl+alt+up",
+        "command": "-editor.action.insertCursorAbove",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+alt+down",
+        "command": "-editor.action.insertCursorBelow",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "shift+alt+i",
+        "command": "-editor.action.insertCursorAtEndOfEachLineSelected",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "shift+alt+f12",
+        "command": "-references-view.find",
+        "when": "editorHasReferenceProvider"
+    },
+    {
+        "key": "ctrl+r",
+        "command": "references-view.find",
+        "when": "editorHasReferenceProvider"
+    },
+
+    {
+        "key": "ctrl+space",
+        "command": "-editor.action.triggerSuggest",
+        "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+space",
+        "command": "-toggleSuggestionDetails",
+        "when": "suggestWidgetVisible && textInputFocus"
+    },
+    // {
+    //     "key": "alt+i",
+    //     "command": "cursorLeft",
+    //     "when": "textInputFocus"
+    // },
+    // {
+    //     "key": "alt+o",
+    //     "command": "cursorRight",
+    //     "when": "textInputFocus"
+    // },
+    // {
+    //     "key": "alt+k",
+    //     "command": "cursorDown",
+    //     "when": "textInputFocus"
+    // },
+    // {
+    //     "key": "alt+l",
+    //     "command": "cursorUp",
+    //     "when": "textInputFocus"
+    // },
+    // {
+    //     "key": "alt+,",
+    //     "command": "cursorHome",
+    //     "when": "textInputFocus"
+    // },
+    // {
+    //     "key": "alt+.",
+    //     "command": "cursorEnd",
+    //     "when": "textInputFocus"
+    // },
+    // {
+    //     "key": "alt+;",
+    //     "command": "deleteLeft",
+    //     "when": "textInputFocus"
+    // },
+    {
+        "key": "alt+j",
+        "command": "editor.action.triggerSuggest",
+        "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "alt+j",
+        "command": "toggleSuggestionDetails",
+        "when": "suggestWidgetVisible && textInputFocus"
+    },
+    {
+        "key": "shift+alt+a",
+        "command": "editor.action.blockComment",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+shift+a",
+        "command": "-editor.action.blockComment",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+]

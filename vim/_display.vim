@@ -1,4 +1,6 @@
 
+set t_Co=8 "I like having just the 8 terminal colors :)
+
 " line numbers: ---------------------------------
 set foldcolumn=1
 set numberwidth=1

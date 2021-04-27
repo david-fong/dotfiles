@@ -1,5 +1,6 @@
-**/*
-!.gitignore
-!User/settings.json
-!User/keybindings.json
+/**/*
+!/.gitignore
+!/User/
+!/User/settings.json
+!/User/keybindings.json
 

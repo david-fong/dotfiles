@@ -130,4 +130,6 @@ eval "(gpg-agent --daemon)" 2> /dev/null
 # finalize prompt:
 source "$(dirname "${BASH_SOURCE[0]}")""/_prompt.sh"
 
+xkbcomp "$HOME/.config/xkb.xkb" $DISPLAY 2>/dev/null
+
 set +eo pipefail
