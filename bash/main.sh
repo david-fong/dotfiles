@@ -34,7 +34,7 @@ declare -a histignore=(
     'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
     'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
     'todo'
-    './build*' #'./main' 'npm\ run\ start'
+    #'./build*' './main' 'npm\ run\ start'
     'tig' 'git\ status' 'git\ st' 'git\ br' 'git\ diff' 'git\ df'
 )
 export HISTIGNORE=
@@ -117,14 +117,14 @@ echo 'starting up gpg-agent daemon...'
 export GPG_TTY=$(tty)
 eval "(gpg-agent --daemon)" 2> /dev/null
 
-# [[ -z "${SSH_AUTH_SOCK}" ]] && eval "$(ssh-agent -s)"
-# function ssh-agent() {
-#     echo 'warning: an ssh agent has already been started.'
-#     echo 'if you wish to use this executable, prefix with the command builtin.'
-#     echo 'to kill all ssh-agents, do:'
-#     echo '  taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T'
-# }
-# readonly -f ssh-agent
+[[ -z "${SSH_AUTH_SOCK}" ]] && eval "$(ssh-agent -s)"
+function ssh-agent() {
+    echo 'warning: an ssh agent has already been started.'
+    echo 'if you wish to use this executable, prefix with the command builtin.'
+    echo 'to kill all ssh-agents on windows, do:'
+    echo '  taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T'
+}
+readonly -f ssh-agent
 
 
 # finalize prompt:

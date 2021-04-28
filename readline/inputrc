@@ -64,4 +64,6 @@ set mark-symlinked-directories on
 "\ej": complete
 "\eA": insert-comment
 
+"\C-h": backward-delete-char
+
 #"\C-/": comment-begin

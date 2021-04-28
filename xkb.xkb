@@ -29,7 +29,7 @@ xkb_keymap {
     replace key <AD09> { type="ALT_NAV", [ o, O ], actions=[NoAction(),NoAction(),RedirectKey(key=<RGHT>,clearmods=Alt)] };
 
     replace key <AC01> { [ a, A ] };
-    replace key <AC02> { [ s, S ] };
+    replace key <AC02> { type="ALT_NAV", [ s, S, backslash, bar ] };
     replace key <AC03> { type="ALT_NAV", [ d, D ], actions=[NoAction(),NoAction(),RedirectKey(key=<DELE>,clearmods=Alt)] };
     replace key <AC04> { [ f, F ] };
     replace key <AC07> { [ j, J ] };

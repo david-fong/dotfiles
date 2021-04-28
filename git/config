@@ -46,4 +46,4 @@
     smudge = git-lfs smudge -- %f
 
 [init]
-	defaultBranch = main
+    defaultBranch = main

@@ -54,9 +54,9 @@ function todo() {
 }
 
 
-alias ls='\ls -CX --color=auto --group-directories-first'
+alias ls='\ls -CX --color=auto --group-directories-first --width=90'
 function lsa() {
-    ls "$@" -o --almost-all --human-readable --width=72
+    ls "$@" -o --almost-all --human-readable
 }
 alias clsa='greeting; lsa'
 function lsen() {
