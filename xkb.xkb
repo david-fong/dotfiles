@@ -23,7 +23,7 @@ xkb_keymap {
   };
 
   xkb_symbols {
-    include "pc+us+us(basic)+inet(evdev)+capslock(ctrl_modifier)"
+    include "pc+us(basic)+inet(evdev)+capslock(ctrl_modifier)"
     replace key <AD03> { type="ALT_NAV", [ e, E ], actions=[NoAction(),NoAction(),RedirectKey(key=<ESC>,clearmods=Alt)] };
     replace key <AD08> { type="ALT_NAV", [ i, I ], actions=[NoAction(),NoAction(),RedirectKey(key=<LEFT>,clearmods=Alt)] };
     replace key <AD09> { type="ALT_NAV", [ o, O ], actions=[NoAction(),NoAction(),RedirectKey(key=<RGHT>,clearmods=Alt)] };

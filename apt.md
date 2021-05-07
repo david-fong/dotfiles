@@ -24,6 +24,7 @@
 - [](https://askubuntu.com/questions/103249/how-to-increase-brightness-in-smaller-steps/1080149#1080149)
 
 - [](https://askubuntu.com/questions/315625/how-to-disable-the-shortcut-ctrl-alt-arrow-in-gnome-3-8)
+- [](https://unix.stackexchange.com/questions/260601/understanding-setting-up-different-input-methods)
 
 - [](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
 

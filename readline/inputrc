@@ -57,8 +57,8 @@ set mark-symlinked-directories on
 "\el": previous-history
 "\em": accept-line
 "\e;": backward-delete-char
-"\C-?": backward-kill-word
 "\e[3;5~": kill-word
+"\C-?": backward-kill-word
 "\e/": kill-whole-line
 "\eD": kill-whole-line
 "\ej": complete

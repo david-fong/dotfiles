@@ -121,4 +121,5 @@
         "editor.wordWrap": "bounded",
         "editor.quickSuggestions": false
     },
+    "window.zoomLevel": 1.7,
 }
