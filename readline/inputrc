@@ -58,12 +58,12 @@ set mark-symlinked-directories on
 "\em": accept-line
 "\e;": backward-delete-char
 "\e[3;5~": kill-word
-"\C-?": backward-kill-word
+"\C-?": backward-delete-char
+"\C-h": backward-kill-word
 "\e/": kill-whole-line
 "\eD": kill-whole-line
 "\ej": complete
 "\eA": insert-comment
 
-"\C-h": backward-delete-char
 
 #"\C-/": comment-begin

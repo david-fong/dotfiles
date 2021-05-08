@@ -12,6 +12,8 @@ This is a collection of configuration files made for a Git For Windows + MinTTY 
 
 git clone https://github.com/david-fong/dotfiles.git "$XDG_CONFIG_HOME"
 echo '[[ -f "${XDG_CONFIG_HOME}/bash/main.sh" ]] && source "${XDG_CONFIG_HOME}/bash/main.sh"' >> "$HOME/.bash_profile"
+
+# If not done already, add `AddKeysToAgent=yes` to `~/.ssh/config` and `chmod 600 ~/.ssh/config`
 ```
 
 ## Features of Interest
