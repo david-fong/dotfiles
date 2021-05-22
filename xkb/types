@@ -1,0 +1,21 @@
+default xkb_types "complete" {
+    virtual_modifiers Alt;
+
+    include "basic"
+    include "mousekeys"
+    include "pc"
+    include "iso9995"
+    include "level5"
+    include "extra"
+    include "numpad"
+    
+    type "ALT_NAV" {
+      modifiers = Shift+Alt;
+      map[Shift] = Level2;
+      map[Alt] = Level3;
+      map[Alt+Shift] = Level3;
+      level_name[Level1] = "Base";
+      level_name[Level2] = "Caps";
+      level_name[Level3] = "Arrows";
+    };
+};

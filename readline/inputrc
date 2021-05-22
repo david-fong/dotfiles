@@ -53,8 +53,8 @@ set mark-symlinked-directories on
 # iokl arrow-keys
 "\ei": backward-char
 "\eo": forward-char
-"\ek": next-history
-"\el": previous-history
+"\ek": previous-history
+"\el": next-history
 "\em": accept-line
 "\e;": backward-delete-char
 "\e[3;5~": kill-word

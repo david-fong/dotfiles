@@ -130,7 +130,7 @@ readonly -f ssh-agent
 # finalize prompt:
 source "$(dirname "${BASH_SOURCE[0]}")""/_prompt.sh"
 
-#xkbcomp "$HOME/.config/xkb.xkb" $DISPLAY 2>/dev/null
+#xkbcomp "$HOME/.config/xkb/xkb.xkb" $DISPLAY 2>/dev/null
 # ^copy the above into /usr/share/X11/xkb/symbols/us
 # Note: https://bugs.freedesktop.org/show_bug.cgi?id=78661
 xset r 31; xset r 32; xset r 45; xset r 46; xset r 27; xset r 40; xset r 47; xset r 58; xset r 59; xset r 60;

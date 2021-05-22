@@ -20,6 +20,7 @@
     "material-icon-theme.folders.associations": {
         "defs": "constant",
         "impl": "class",
+        "repl": "command",
         ".templates": "template",
         ".ts": "typescript",
     },
@@ -63,6 +64,7 @@
     "editor.renderWhitespace": "none",
     "editor.minimap.renderCharacters": false,
     "editor.suggest.showWords": false,
+    "editor.autoClosingDelete": "always",
 
     "debug.openDebug": "openOnSessionStart",
     "debug.console.closeOnEnd": true,
@@ -121,5 +123,7 @@
         "editor.wordWrap": "bounded",
         "editor.quickSuggestions": false
     },
+    "rust-client.rustupPath": "~/.local/share/cargo/bin/rustup",
     "window.zoomLevel": 1.7,
+    "C_Cpp.updateChannel": "Insiders",
 }

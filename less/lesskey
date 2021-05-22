@@ -8,12 +8,12 @@
 \kD forw-scroll
 
 # iokl
-l  back-line
-L  back-line-force
-^L back-scroll
-k  forw-line
-K  forw-line-force
-^K forw-scroll
+k  back-line
+K  back-line-force
+^K back-scroll
+l  forw-line
+L  forw-line-force
+^L forw-scroll
 i  left-scroll
 o  right-scroll
 

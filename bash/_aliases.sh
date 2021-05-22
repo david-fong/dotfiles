@@ -42,9 +42,11 @@ alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --co
 #}
 
 
+# spelling is hard
 alias lag='lazygit'
 alias gti='git'
 alias it='git'
+alias vm='mv'
 
 
 function todo() {

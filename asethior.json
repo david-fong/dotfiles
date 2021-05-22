@@ -1,0 +1,178 @@
+[
+  {
+    "name": "ASETHIOR",
+    "author": "David Fong",
+    "notes": "An ergonomic keyboard layout for programmers.\nhttps://norvig.com/mayzner.html",
+    "background": {
+      "name": "PBT Black",
+      "style": "background-image: url('/bg/plastic/pbt-black.png');"
+    },
+    "plate": false,
+    "pcb": false
+  },
+  [
+    {
+      "a": 7
+    },
+    "",
+    {
+      "a": 5
+    },
+    "\n0",
+    "\n1",
+    "\n2",
+    "\n3",
+    "\n4",
+    "\n5",
+    "\n6",
+    "\n7",
+    "\n8",
+    "\n9",
+    {
+      "a": 7
+    },
+    ""
+  ],
+  [
+    "Tab",
+    {
+      "a": 4
+    },
+    "Q",
+    {
+      "fa": [
+        0,
+        0,
+        2
+      ]
+    },
+    "S\n\n\\",
+    {
+      "fa": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "E\n\n!\nEsc",
+    "F",
+    "B\n\n`",
+    "V",
+    "P\n\n+",
+    {
+      "fa": [
+        0,
+        0,
+        2
+      ]
+    },
+    "I\n\n&\n&larr;",
+    "O\n\n|\n&rarr;",
+    ":\n;",
+    {
+      "a": 7
+    },
+    ""
+  ],
+  [
+    "Ctrl",
+    {
+      "a": 4
+    },
+    "A\n\n@",
+    "C\n\n^",
+    {
+      "fa": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "U\n\n\nDel",
+    "T\n\n~",
+    "G\n\n=",
+    "M\n\n%",
+    "H\n\n#",
+    {
+      "fa": [
+        0,
+        0,
+        2
+      ]
+    },
+    "W\n\n\n&uarr;",
+    "L\n\n\n&darr;",
+    {
+      "fa": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "R\n\n\nBkSpc",
+    "\"\n'"
+  ],
+  [
+    {
+      "a": 7
+    },
+    "",
+    {
+      "a": 4
+    },
+    "Y\n\n( )",
+    "Z\n\n[ ]",
+    "K\n\n{ }",
+    "D\n\n$",
+    "J",
+    "X\n\n*",
+    "N",
+    "<\n,\n\nPgUp",
+    ">\n.\n\nPgDn",
+    "?\n/",
+    {
+      "a": 7
+    },
+    ""
+  ],
+  [
+    {
+      "w": 1.5
+    },
+    "",
+    "Fn",
+    "<i class='kb kb-logo-windows-8'></i>",
+    "Alt",
+    {
+      "a": 4
+    },
+    "-\n\n\n\n\n\n_",
+    {
+      "a": 7,
+      "fa": [
+        2
+      ]
+    },
+    "Symbol",
+    {
+      "f": 3
+    },
+    "Shift",
+    {
+      "f": 3
+    },
+    "&#9251;",
+    "",
+    "",
+    {
+      "fa": [
+        1
+      ],
+      "w": 1.5
+    },
+    "launch nuke"
+  ]
+]
