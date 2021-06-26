@@ -17,15 +17,14 @@ xkb_symbols "basic" {
     key <AE12> {	[     equal,	plus		]	};
 
     key <AD01> {	[	  q,	Q 		]	};
-    key <AD02> {	[	  w,	W		]	};
-    key <AD03> {	[	  e,	E		]	};
-    key <AD03> { type="ALT_NAV", [ e, E ], actions=[NoAction(),NoAction(),RedirectKey(key=<ESC>,clearmods=Alt)], repeat=yes };
+    key <AD02> { type="ALT_NAV", [ w, W ], actions=[NoAction(),NoAction(),RedirectKey(key=<RTRN>,clearmods=Alt)], repeat=yes };
+    key <AD03> { type="ALT_NAV", [ e, E ], actions=[NoAction(),NoAction(),RedirectKey(key=<ESC> ,clearmods=Alt)], repeat=yes };
     key <AD04> {	[	  r,	R		]	};
     key <AD05> {	[	  t,	T		]	};
     key <AD06> {	[	  y,	Y		]	};
     key <AD07> {	[	  u,	U		]	};
-    key <AD08> { type="ALT_NAV", [ i, I ], actions=[NoAction(),NoAction(),RedirectKey(key=<LEFT>,clearmods=Alt)], repeat=yes };
-    key <AD09> { type="ALT_NAV", [ o, O ], actions=[NoAction(),NoAction(),RedirectKey(key=<RGHT>,clearmods=Alt)], repeat=yes };
+    key <AD08> { type="ALT_NAV", [ i, I ], actions=[NoAction(),NoAction(),RedirectKey(key=<UP>  ,clearmods=Alt)], repeat=yes };
+    key <AD09> { type="ALT_NAV", [ o, O ], actions=[NoAction(),NoAction(),RedirectKey(key=<DOWN>,clearmods=Alt)], repeat=yes };
     key <AD10> {	[	  p,	P		]	};
     key <AD11> {	[ bracketleft,	braceleft	]	};
     key <AD12> {	[ bracketright,	braceright	]	};
@@ -36,10 +35,10 @@ xkb_symbols "basic" {
     key <AC04> {	[	  f,	F		]	};
     key <AC05> {	[	  g,	G		]	};
     key <AC06> {	[	  h,	H		]	};
-    key <AC07> {	[	  j,	J		]	};
-    key <AC08> { type="ALT_NAV", [ k, K ],             actions=[NoAction(),NoAction(),RedirectKey(key=<UP>  ,clearmods=Alt)], repeat=yes };
-    key <AC09> { type="ALT_NAV", [ l, L ],             actions=[NoAction(),NoAction(),RedirectKey(key=<DOWN>,clearmods=Alt)], repeat=yes };
-    key <AC10> { type="ALT_NAV", [ semicolon, colon ], actions=[NoAction(),NoAction(),RedirectKey(key=<BKSP>,clearmods=Alt)], repeat=yes };
+    key <AC07> { type="ALT_NAV", [ j, J ],             actions=[NoAction(),NoAction(),RedirectKey(key=<LEFT>,clearmods=Alt)], repeat=yes };
+    key <AC08> { type="ALT_NAV", [ k, K ],             actions=[NoAction(),NoAction(),RedirectKey(key=<BKSP>,clearmods=Alt)], repeat=yes };
+    key <AC09> { type="ALT_NAV", [ l, L ],             actions=[NoAction(),NoAction(),RedirectKey(key=<DELE>,clearmods=Alt)], repeat=yes };
+    key <AC10> { type="ALT_NAV", [ semicolon, colon ], actions=[NoAction(),NoAction(),RedirectKey(key=<RGHT>,clearmods=Alt)], repeat=yes };
     key <AC11> {	[ apostrophe,	quotedbl	]	};
 
     key <AB01> {	[	  z,	Z 		]	};

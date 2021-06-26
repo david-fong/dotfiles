@@ -20,8 +20,9 @@
     log-view-line-number-display    = yes
 
 [tig "bind"]
-    generic = <Ctrl-K> scroll-line-up
-    generic = <Ctrl-J> scroll-line-down
+    generic = <Ctrl-I> none
+    generic = <Ctrl-I> scroll-line-up
+    generic = <Ctrl-O> scroll-line-down
     generic = S none
     generic = c none
     generic = f +git fetch

@@ -18,7 +18,7 @@ echo '[[ -f "${XDG_CONFIG_HOME}/bash/main.sh" ]] && source "${XDG_CONFIG_HOME}/b
 
 ## Features of Interest
 
-- Keybindings are based around `iokl,.`, which are mapped to left, right, down, up, home, and end, respectively.
+- Keybindings are based around `jio;,.kl`, which are mapped to left, up, down, right, home, end, backspace, and delete, respectively.
 - Via AutoHotKey, the Caps-Lock is an alias for the Ctrl key, alt-m for enter, alt-; for backspace, alt-d for delete, and alt-e for escape.
 - Nice scrolling behaviour inside less [(see this)](https://github.com/gwsw/less/issues/111).
 

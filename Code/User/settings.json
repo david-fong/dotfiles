@@ -124,6 +124,6 @@
         "editor.quickSuggestions": false
     },
     "rust-client.rustupPath": "~/.local/share/cargo/bin/rustup",
-    "window.zoomLevel": 1.7,
+    "window.zoomLevel": 2,
     "C_Cpp.updateChannel": "Insiders",
 }

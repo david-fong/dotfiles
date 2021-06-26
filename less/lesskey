@@ -8,14 +8,14 @@
 \kD forw-scroll
 
 # iokl
-k  back-line
-K  back-line-force
-^K back-scroll
-l  forw-line
-L  forw-line-force
-^L forw-scroll
-i  left-scroll
-o  right-scroll
+i  back-line
+I  back-line-force
+^I back-scroll
+o  forw-line
+O  forw-line-force
+^O forw-scroll
+j  left-scroll
+;  right-scroll
 
 # disabled back-line
 y  noaction
@@ -26,7 +26,7 @@ Y  noaction
 # disabled forw-line
 \r noaction
 \n noaction
-j  noaction
+#j  noaction
 e  noaction
 ^E noaction
 #n noaction

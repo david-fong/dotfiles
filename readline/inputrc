@@ -50,19 +50,20 @@ set mark-symlinked-directories on
 "\\": self-insert
 "\t": complete
 
-# iokl arrow-keys
-"\ei": backward-char
-"\eo": forward-char
-"\ek": previous-history
-"\el": next-history
+# arrow-keys
+"\ej": backward-char
+"\e;": forward-char
+"\ei": previous-history
+"\eo": next-history
 "\em": accept-line
-"\e;": backward-delete-char
+"\ew": accept-line
+"\ek": backward-delete-char
 "\e[3;5~": kill-word
 "\C-?": backward-delete-char
 "\C-h": backward-kill-word
 "\e/": kill-whole-line
 "\eD": kill-whole-line
-"\ej": complete
+"\ef": complete
 "\eA": insert-comment
 
 
