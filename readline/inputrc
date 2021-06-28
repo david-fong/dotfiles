@@ -51,13 +51,14 @@ set mark-symlinked-directories on
 "\t": complete
 
 # arrow-keys
-"\ej": backward-char
-"\e;": forward-char
-"\ei": previous-history
-"\eo": next-history
+"\ei": backward-char
+"\eo": forward-char
+"\ek": previous-history
+"\el": next-history
 "\em": accept-line
 "\ew": accept-line
-"\ek": backward-delete-char
+"\ej": backward-delete-char
+"\e;": delete-char
 "\e[3;5~": kill-word
 "\C-?": backward-delete-char
 "\C-h": backward-kill-word

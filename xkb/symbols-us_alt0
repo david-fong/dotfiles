@@ -35,10 +35,10 @@ xkb_symbols "basic" {
     key <AC04> {	[	  f,	F		]	};
     key <AC05> {	[	  g,	G		]	};
     key <AC06> {	[	  h,	H		]	};
-    key <AC07> { type="ALT_NAV", [ j, J ],             actions=[NoAction(),NoAction(),RedirectKey(key=<BKSP>,clearmods=Alt)], repeat=yes };
-    key <AC08> { type="ALT_NAV", [ k, K ],             actions=[NoAction(),NoAction(),RedirectKey(key=<UP>  ,clearmods=Alt)], repeat=yes };
-    key <AC09> { type="ALT_NAV", [ l, L ],             actions=[NoAction(),NoAction(),RedirectKey(key=<DOWN>,clearmods=Alt)], repeat=yes };
-    key <AC10> { type="ALT_NAV", [ semicolon, colon ], actions=[NoAction(),NoAction(),RedirectKey(key=<DELE>,clearmods=Alt)], repeat=yes };
+    key <AC07> { type="ALT_NAV", [ j, J ],             actions=[NoAction(),NoAction(),RedirectKey(key=<UP>  ,clearmods=Alt)], repeat=yes };
+    key <AC08> { type="ALT_NAV", [ k, K ],             actions=[NoAction(),NoAction(),RedirectKey(key=<HOME>,clearmods=Alt)], repeat=yes };
+    key <AC09> { type="ALT_NAV", [ l, L ],             actions=[NoAction(),NoAction(),RedirectKey(key=<END> ,clearmods=Alt)], repeat=yes };
+    key <AC10> { type="ALT_NAV", [ semicolon, colon ], actions=[NoAction(),NoAction(),RedirectKey(key=<BKSP>,clearmods=Alt)], repeat=yes };
     key <AC11> {	[ apostrophe,	quotedbl	]	};
 
     key <AB01> {	[	  z,	Z 		]	};
@@ -47,9 +47,9 @@ xkb_symbols "basic" {
     key <AB04> {	[	  v,	V		]	};
     key <AB05> {	[	  b,	B		]	};
     key <AB06> {	[	  n,	N		]	};
-    key <AB07> { type="ALT_NAV", [ m, M ],             actions=[NoAction(),NoAction(),RedirectKey(key=<RTRN>,clearmods=Alt)], repeat=yes };
-    key <AB08> { type="ALT_NAV", [ comma, less ],      actions=[NoAction(),NoAction(),RedirectKey(key=<HOME>,clearmods=Alt)], repeat=yes };
-    key <AB09> { type="ALT_NAV", [ period, greater ],  actions=[NoAction(),NoAction(),RedirectKey(key=<END>, clearmods=Alt)], repeat=yes };
+    key <AB07> { type="ALT_NAV", [ m, M ],             actions=[NoAction(),NoAction(),RedirectKey(key=<DOWN>,clearmods=Alt)], repeat=yes };
+    key <AB08> { type="ALT_NAV", [ comma, less ],      actions=[NoAction(),NoAction(),RedirectKey(key=<PGUP>,clearmods=Alt)], repeat=yes };
+    key <AB09> { type="ALT_NAV", [ period, greater ],  actions=[NoAction(),NoAction(),RedirectKey(key=<PGDN>,clearmods=Alt)], repeat=yes };
     key <AB10> {	[     slash,	question	]	};
 
     key <BKSL> {	[ backslash,         bar	]	};

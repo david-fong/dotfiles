@@ -78,12 +78,12 @@
     // },
     // {
     //     "key": "alt+k",
-    //     "command": "cursorDown",
+    //     "command": "cursorUp",
     //     "when": "textInputFocus"
     // },
     // {
     //     "key": "alt+l",
-    //     "command": "cursorUp",
+    //     "command": "cursorDown",
     //     "when": "textInputFocus"
     // },
     // {
@@ -98,16 +98,16 @@
     // },
     // {
     //     "key": "alt+;",
-    //     "command": "deleteLeft",
+    //     "command": "deleteRight",
     //     "when": "textInputFocus"
     // },
     {
-        "key": "alt+j",
+        "key": "alt+f",
         "command": "editor.action.triggerSuggest",
         "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
     },
     {
-        "key": "alt+j",
+        "key": "alt+f",
         "command": "toggleSuggestionDetails",
         "when": "suggestWidgetVisible && textInputFocus"
     },

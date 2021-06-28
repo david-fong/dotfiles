@@ -8,14 +8,14 @@
 \kD forw-scroll
 
 # iokl
-i  back-line
-I  back-line-force
-^I back-scroll
-o  forw-line
-O  forw-line-force
-^O forw-scroll
-j  left-scroll
-;  right-scroll
+k  back-line
+K  back-line-force
+^K back-scroll
+l  forw-line
+L  forw-line-force
+^L forw-scroll
+i  left-scroll
+o  right-scroll
 
 # disabled back-line
 y  noaction
@@ -56,6 +56,7 @@ w noaction
 # this below line solves jank boundary scrolling.
 LESS_TERMCAP_vb=
 
+# TODO this isn't working. why?
 # +X : enable startup termcap
 # -F : print to console if 1 page
 # -q : medium-quiet
@@ -64,6 +65,6 @@ LESS_TERMCAP_vb=
 # -N : show line numbers
 # -M : use long prompt
 # -x4: use <4> as tabstop
-LESS = '-+x -FqRJNM -x4'
+LESS='-+X -+F -qRJM -x4 -#4'
 
 
