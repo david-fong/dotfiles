@@ -49,22 +49,21 @@ set mark-symlinked-directories on
 "\e\'": quoted-insert
 "\\": self-insert
 "\t": complete
-
 # arrow-keys
-"\ei": backward-char
-"\eo": forward-char
-"\ek": previous-history
-"\el": next-history
+"\ej": backward-char
+"\ei": forward-char
+"\eo": previous-history
+"\e;": next-history
 "\em": accept-line
-"\ew": accept-line
-"\ej": backward-delete-char
-"\e;": delete-char
+"\ef": accept-line
+"\eh": backward-delete-char
+#"\e;": delete-char
 "\e[3;5~": kill-word
 "\C-?": backward-delete-char
 "\C-h": backward-kill-word
 "\e/": kill-whole-line
 "\eD": kill-whole-line
-"\ef": complete
+"\ea": complete
 "\eA": insert-comment
 
 

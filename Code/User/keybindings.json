@@ -67,7 +67,7 @@
         "command": "workbench.action.files.saveAll"
     },
     // {
-    //     "key": "alt+i",
+    //     "key": "alt+j",
     //     "command": "cursorLeft",
     //     "when": "textInputFocus"
     // },
@@ -77,37 +77,37 @@
     //     "when": "textInputFocus"
     // },
     // {
-    //     "key": "alt+k",
+    //     "key": "alt+i",
     //     "command": "cursorUp",
     //     "when": "textInputFocus"
     // },
     // {
-    //     "key": "alt+l",
+    //     "key": "alt+;",
     //     "command": "cursorDown",
     //     "when": "textInputFocus"
     // },
     // {
-    //     "key": "alt+,",
+    //     "key": "alt+k",
     //     "command": "cursorHome",
     //     "when": "textInputFocus"
     // },
     // {
-    //     "key": "alt+.",
+    //     "key": "alt+l",
     //     "command": "cursorEnd",
     //     "when": "textInputFocus"
     // },
     // {
-    //     "key": "alt+;",
+    //     "key": "alt+d",
     //     "command": "deleteRight",
     //     "when": "textInputFocus"
     // },
     {
-        "key": "alt+f",
+        "key": "alt+a",
         "command": "editor.action.triggerSuggest",
         "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
     },
     {
-        "key": "alt+f",
+        "key": "alt+a",
         "command": "toggleSuggestionDetails",
         "when": "suggestWidgetVisible && textInputFocus"
     },

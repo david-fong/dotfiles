@@ -49,6 +49,7 @@
     "explorer.sortOrder": "type",
     "explorer.autoReveal": false,
 
+    "editor.tabSize": 3,
     // "editor.fontFamily": "'Fira Code', Consolas, 'Courier New', monospace",
     // "editor.fontLigatures": "'ss03', 'ss04', 'ss06', 'ss07', 'ss08'",
     // "editor.fontSize": 11.5,
@@ -121,7 +122,12 @@
 
     "[markdown]": {
         "editor.wordWrap": "bounded",
+        "editor.wrappingIndent": "indent",
         "editor.quickSuggestions": false
+    },
+    "[plaintext]": {
+        "editor.wordWrap": "bounded",
+        "editor.wrappingIndent": "same",
     },
     "rust-client.rustupPath": "~/.local/share/cargo/bin/rustup",
     "window.zoomLevel": 2,

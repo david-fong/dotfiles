@@ -1,8 +1,6 @@
-
-prefix=${XDG_DATA_HOME}/npm
-cache=${XDG_CACHE_HOME}/npm
-tmp=${XDG_RUNTIME_DIR}/npm
-init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
-
-store-dir=${XDG_DATA_HOME}/pnpm-store
-
+prefix=/home/david/.local/share/npm
+cache=/home/david/.cache/npm
+tmp=/run/user/1000/npm
+init-module=/home/david/.config/npm/config/npm-init.js
+store-dir=/home/david/.local/share/pnpm-store
+//registry.npmjs.org/:_authToken=0e1efc20-7aa7-4b7d-9339-55678cdbd6ea

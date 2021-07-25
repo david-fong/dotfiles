@@ -29,14 +29,14 @@
     graph = "log --oneline --graph --all --decorate --color=always"
     gra = "!echo; tput rmam; git graph -n20 | head -n20; tput smam"
     logg = "log --graph --decorate --stat --find-renames"
-    br = "branch --sort=worktreepath --format='%(color:blue)%(align:2,right)%(upstream:trackshort)%(end) %(if:equals=*)%(HEAD)%(then)%(color:bold white)%(else)%(color:cyan)%(end)%(refname:short) %(color:yellow)%(worktreepath) %(color:black)%(contents:subject)'"
+    b = "branch --sort=worktreepath --format='%(color:blue)%(align:2,right)%(upstream:trackshort)%(end) %(if:equals=*)%(HEAD)%(then)%(color:bold white)%(else)%(color:cyan)%(end)%(refname:short) %(color:yellow)%(worktreepath) %(color:black)%(contents:subject)'"
     #br = "branch --sort=worktreepath --format='%(color:blue)%(align:2,right)%(upstream:trackshort)%(end) %(color:yellow)%(align:6,left)%(worktreepath)%(end) %(if:equals=*)%(HEAD)%(then)%(color:bold white)%(else)%(color:cyan)%(end)%(refname:short)  %(color:black)%(contents:subject)'"
     wt = "worktree"
     st = "status -sb"
-    df = "diff --word-diff=color"
+    d = "diff --word-diff=color"
     f = "fetch --all --prune"
-    adu = "add -u"
-    tag = "tag --sign"
+    a = "add -u"
+    tg = "tag --sign"
     sw = "switch"
 
 [filter "lfs"]
