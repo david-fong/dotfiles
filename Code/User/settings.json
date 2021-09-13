@@ -90,6 +90,9 @@
     "typescript.preferences.importModuleSpecifier": "non-relative",
     //"typescript.implementationsCodeLens.enabled": true,
 
+    "dart.allowAnalytics": false,
+    "dart.flutterOutline": false,
+
     "cSpell.language": "en-GB",
     "trailing-spaces.highlightCurrentLine": false,
 
@@ -123,11 +126,18 @@
     "[markdown]": {
         "editor.wordWrap": "bounded",
         "editor.wrappingIndent": "indent",
-        "editor.quickSuggestions": false
+        "editor.quickSuggestions": false,
+        "editor.tabSize": 2,
     },
     "[plaintext]": {
         "editor.wordWrap": "bounded",
         "editor.wrappingIndent": "same",
+    },
+    "[json]": {
+        "editor.tabSize": 2,
+    },
+    "[toml]": {
+        "editor.tabSize": 2,
     },
     "rust-client.rustupPath": "~/.local/share/cargo/bin/rustup",
     "window.zoomLevel": 2,
