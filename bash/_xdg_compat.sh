@@ -23,7 +23,7 @@ declare -rx PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
              PYTHONHOME+=":${XDG_CONFIG_HOME}/python/"
 declare -rx NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 declare -rx   CARGO_HOME="${XDG_DATA_HOME}/cargo"
-[[ -f "${XDG_DATA_HOME}/emsdk/emsdk_env.sh" ]] && source "${XDG_DATA_HOME}/emsdk/emsdk_env.sh"
+#[[ -f "${XDG_DATA_HOME}/emsdk/emsdk_env.sh" ]] && source "${XDG_DATA_HOME}/emsdk/emsdk_env.sh"
 
 # note: this must go after the declaration of LESSKEY.
 lesskey --output="${XDG_DATA_HOME}/less/lesskey" -- "${XDG_CONFIG_HOME}/less/lesskey"

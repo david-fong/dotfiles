@@ -31,10 +31,10 @@ endfunction
 set scrolloff=5
 set sidescroll=1
 set sidescrolloff=7
-map  <silent> <ScrollWheelUp>   <C-Y>
-map  <silent> <ScrollWheelDown> <C-E>
-imap <silent> <ScrollWheelUp>   <C-O><C-Y>
-imap <silent> <ScrollWheelDown> <C-O><C-E>
+noremap  <silent> <ScrollWheelUp>   <C-Y>
+noremap  <silent> <ScrollWheelDown> <C-E>
+inoremap <silent> <ScrollWheelUp>   <C-O><C-Y>
+inoremap <silent> <ScrollWheelDown> <C-O><C-E>
 
 
 

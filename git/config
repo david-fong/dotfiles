@@ -54,6 +54,16 @@
     defaultToUpstream = true
     tool = vimdiff
 
+[commit]
+    gpgSign = true
+
+[tag]
+    gpgSign = true
+
 [push]
     default = simple
     recurseSubmodules = check
+
+[gpg.ssh]
+    defaultKeyCommand = "ssh-add -L"
+    allowedSignersFile = "~/.config/git/allowed_signers"; with env vars could be used :/

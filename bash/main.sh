@@ -133,6 +133,10 @@ source "$(dirname "${BASH_SOURCE[0]}")""/_prompt.sh"
 #xkbcomp "$HOME/.config/xkb/xkb.xkb" $DISPLAY 2>/dev/null
 # ^copy the above into /usr/share/X11/xkb/symbols/us
 # Note: https://bugs.freedesktop.org/show_bug.cgi?id=78661
-xset r 25; xset r 27; xset r 31; xset r 32; xset r 38; xset r 39; xset r 40; xset r 41; xset r 43; xset r 44; xset r 45; xset r 46; xset r 47; xset r 58; xset r 59; xset r 60;
+if [[ -x "$(command -v xset)" ]]; then
+    xset r 25; xset r 26; xset r 27; xset r 31; xset r 32; xset r 38; xset r 39;
+    xset r 40; xset r 41; xset r 43; xset r 44; xset r 45; xset r 46; xset r 47;
+    xset r 58; xset r 59; xset r 60;
+fi
 
 set +eo pipefail

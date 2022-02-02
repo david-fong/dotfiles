@@ -11,6 +11,7 @@
     "zenMode.hideActivityBar": false,
     "window.newWindowDimensions": "maximized",
     "window.titleBarStyle": "custom",
+    "window.zoomLevel": 2,
 
     // File Explorer Icons
     "workbench.iconTheme": "material-icon-theme",
@@ -29,10 +30,10 @@
     // Behaviour
     "workbench.startupEditor": "welcomePage",
     "window.enableMenuBarMnemonics": false,
+    "window.customMenuBarAltFocus": false,
     "extensions.ignoreRecommendations": false,
     "extensions.closeExtensionDetailsOnViewChange": true,
-    "telemetry.enableCrashReporter": false,
-    "telemetry.enableTelemetry": false,
+    "telemetry.telemetryLevel": "off",
 
     "workbench.editor.closeOnFileDelete": true,
     "workbench.editor.limit.enabled": true,
@@ -45,6 +46,7 @@
     "git.enableStatusBarSync": false,
     "git.alwaysShowStagedChangesResourceGroup": true,
     "git.showCommitInput": false,
+    "git.confirmSync": false,
 
     "explorer.sortOrder": "type",
     "explorer.autoReveal": false,
@@ -65,6 +67,7 @@
     "editor.renderWhitespace": "none",
     "editor.minimap.renderCharacters": false,
     "editor.suggest.showWords": false,
+    "editor.suggestSelection": "first",
     "editor.autoClosingDelete": "always",
 
     "debug.openDebug": "openOnSessionStart",
@@ -100,7 +103,6 @@
     "todo-tree.highlights.enabled": true,
     "todo-tree.filtering.useBuiltInExcludes": "file excludes",
     "todo-tree.general.statusBar": "tags",
-    "todo-tree.tree.showScanModeButton": false,
     "todo-tree.tree.showCountsInTree": true,
     "todo-tree.tree.flat": true,
     "todo-tree.tree.hideIconsWhenGroupedByTag": true,
@@ -140,6 +142,18 @@
         "editor.tabSize": 2,
     },
     "rust-client.rustupPath": "~/.local/share/cargo/bin/rustup",
-    "window.zoomLevel": 2,
+    // "rust.wait_to_build": null,
     "C_Cpp.updateChannel": "Insiders",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "java.imports.gradle.wrapper.checksums": [
+        {
+            "sha256": "1fca1b1af7c3ed6cb9059346aaa89179c82abf11252837115e546c4da38e8b0c",
+            "allowed": true
+        }
+    ],
 }

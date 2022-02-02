@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="color-scheme: dark;">
     <head>
         <meta charset="UTF-8"/>
         <title>blank</title>
@@ -17,17 +17,23 @@
     </head>
 
 
-    <body style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; background-color: #222;">
+    <body style="position: fixed; inset: 0; font-family: monospace;">
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+        </style>
         <input type="button"></input>
-        <input type="text"></input>
-        <input type="checkbox"></input>
+        <input type="text" autocomplete></input>
+        <input type="checkbox" autocomplete></input>
         <input type="color"></input>
         <input type="date"></input>
         <input type="file"></input>
-        <input type="number"></input>
+        <input type="number" autocomplete></input>
         <input type="password"></input>
         <input type="range"></input>
         <input type="tel"></input>
         <input type="url"></input>
+        <div>hi <span>there</span></div>
     </body>
 </html>
