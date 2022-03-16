@@ -16,6 +16,8 @@
 stty stop '' -ixoff
 stty stop '' -ixon
 
+tabs -3
+
 # set codepage (on windows) to UTF-8
 # https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
 # mintty no longer needs this, but the new windows terminal does.
@@ -136,7 +138,7 @@ source "$(dirname "${BASH_SOURCE[0]}")""/_prompt.sh"
 if [[ -x "$(command -v xset)" ]]; then
     xset r 25; xset r 26; xset r 27; xset r 31; xset r 32; xset r 38; xset r 39;
     xset r 40; xset r 41; xset r 43; xset r 44; xset r 45; xset r 46; xset r 47;
-    xset r 58; xset r 59; xset r 60;
+    xset r 57; xset r 58; xset r 59; xset r 60;
 fi
 
 set +eo pipefail

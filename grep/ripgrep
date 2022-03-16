@@ -1,4 +1,4 @@
 # https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
 --path-separator=/
---max-columns=140
+--max-columns=130
 --max-columns-preview

@@ -17,34 +17,33 @@ SendMode Input
 ; main body
 ;#If WinNotActive("Octave")
 <!k::Send {Up}
-<!l::Send {Down}
-<!i::Send {Left}
-<!;::Send {Right}
+<!m::Send {Down}
+<!j::Send {Left}
+<!i::Send {Right}
 <!<+k::Send +{Up}
-<!<+l::Send +{Down}
-<!<+i::Send +{Left}
-<!<+o::Send +{Right}
+<!<+m::Send +{Down}
+<!<+j::Send +{Left}
+<!<+i::Send +{Right}
 <!<+<^k::Send ^+{Up}
-<!<+<^l::Send ^+{Down}
-<!<+<^i::Send ^+{Left}
-<!<+<^o::Send ^+{Right}
+<!<+<^m::Send ^+{Down}
+<!<+<^j::Send ^+{Left}
+<!<+<^i::Send ^+{Right}
 
-<!j::Send {Backspace}
-;<!<+;::Send +{Backspace}
-<!;::Send {Delete}
+<!o::Send {Backspace}
+;<!<+o::Send +{Backspace}
 <!d::Send {Delete}
 ;<!<^d::Send ^{Delete}
 ;<!<+d::Send +{Delete}
-<!m::Send {Enter}
-<!w::Send {Enter}
+;<!m::Send {Enter}
+<!f::Send {Enter}
 <!e::Send {Escape}
 
 <!p::Send {-}
 <!<+p::Send {_}
 
-<!<+.::Send {PgUp}
-<!<+,::Send {PgDn}
-<!,::Send {Home}
-<!.::Send {End}
+<!<+,::Send {PgUp}
+<!<+.::Send {PgDn}
+<!l::Send {Home}
+<!;::Send {End}
 #If
 
