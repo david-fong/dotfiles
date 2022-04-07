@@ -1,4 +1,4 @@
-// Place your key bindings in this file to override the defaultsauto[]
+// Place your key bindings in this file to override the defaults
 [
     {
         "key": "alt+right",
@@ -16,13 +16,45 @@
         "key": "ctrl+alt+-",
         "command": "-workbench.action.navigateBack"
     },
+
+
     {
-        "key": "ctrl+alt+up",
+        "key": "ctrl+up",
+        "command": "-scrollLineUp",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+down",
+        "command": "-scrollLineDown",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+up",
+        "command": "editor.action.insertCursorAbove",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+down",
+        "command": "editor.action.insertCursorBelow",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+up",
         "command": "-editor.action.insertCursorAbove",
         "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+alt+down",
+        "key": "ctrl+shift+down",
+        "command": "-editor.action.insertCursorBelow",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "shift+alt+up",
+        "command": "-editor.action.insertCursorAbove",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "shift+alt+down",
         "command": "-editor.action.insertCursorBelow",
         "when": "editorTextFocus"
     },
@@ -31,6 +63,8 @@
         "command": "-editor.action.insertCursorAtEndOfEachLineSelected",
         "when": "editorTextFocus"
     },
+
+
     {
         "key": "shift+alt+f12",
         "command": "-references-view.find",
@@ -42,6 +76,7 @@
         "when": "editorHasReferenceProvider"
     },
 
+
     {
         "key": "ctrl+space",
         "command": "-editor.action.triggerSuggest",
@@ -52,55 +87,31 @@
         "command": "-toggleSuggestionDetails",
         "when": "suggestWidgetVisible && textInputFocus"
     },
-    {
-        "key": "shift+alt+a",
-        "command": "editor.action.blockComment",
-        "when": "editorTextFocus && !editorReadonly"
-    },
+
+
     {
         "key": "ctrl+shift+a",
         "command": "-editor.action.blockComment",
         "when": "editorTextFocus && !editorReadonly"
     },
     {
+        "key": "ctrl+alt+/",
+        "command": "editor.action.blockComment",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+
+
+    {
         "key": "ctrl+k s",
         "command": "workbench.action.files.saveAll"
     },
-    // {
-    //     "key": "alt+j",
-    //     "command": "cursorLeft",
-    //     "when": "textInputFocus"
-    // },
-    // {
-    //     "key": "alt+o",
-    //     "command": "cursorRight",
-    //     "when": "textInputFocus"
-    // },
-    // {
-    //     "key": "alt+i",
-    //     "command": "cursorUp",
-    //     "when": "textInputFocus"
-    // },
-    // {
-    //     "key": "alt+;",
-    //     "command": "cursorDown",
-    //     "when": "textInputFocus"
-    // },
-    // {
-    //     "key": "alt+k",
-    //     "command": "cursorHome",
-    //     "when": "textInputFocus"
-    // },
-    // {
-    //     "key": "alt+l",
-    //     "command": "cursorEnd",
-    //     "when": "textInputFocus"
-    // },
-    // {
-    //     "key": "alt+d",
-    //     "command": "deleteRight",
-    //     "when": "textInputFocus"
-    // },
+    {
+        "key": "ctrl+shift+c",
+        "command": "-workbench.action.terminal.openNativeConsole",
+        "when": "!terminalFocus"
+    },
+
+
     {
         "key": "alt+a",
         "command": "editor.action.triggerSuggest",
@@ -110,10 +121,5 @@
         "key": "alt+a",
         "command": "toggleSuggestionDetails",
         "when": "suggestWidgetVisible && textInputFocus"
-    },
-    {
-        "key": "ctrl+shift+c",
-        "command": "-workbench.action.terminal.openNativeConsole",
-        "when": "!terminalFocus"
     },
 ]

@@ -1,18 +1,28 @@
 
-- dconf-editor
-- gnome-tweak-tool
-- gnome-shell-extension-dash-to-panel
-- xbacklight
-- xserver-xorg-video-intel
-- tlp
-- tlp-rdw
-- fonts-inconsolata
-- fish
-- vim
-- git
-- tig
-- ripgrep
+```
+dconf-editor
+gnome-tweak-tool
+gnome-shell-extension-dash-to-panel
+xbacklight
+xserver-xorg-video-intel
+tlp
+tlp-rdw
+fonts-inconsolata
 
+vim
+git
+git-lfs
+tig
+ripgrep
+fish
+
+build-essential
+libboost-all-dev
+libssl-dev
+ninja-build
+ocl-icd-opencl-dev
+default-jdk
+```
 
 
 - [](https://askubuntu.com/questions/147462/how-can-i-change-the-tty-colors)

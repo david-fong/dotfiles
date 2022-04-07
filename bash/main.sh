@@ -45,8 +45,8 @@ for pattern in "${histignore[@]}"; do
 done
 unset histignore
 export HISTCONTROL=ignoredups:ignorespace:erasedups
-export HISTSIZE=1024
-export HISTFILESIZE=2048
+export HISTSIZE=2048
+export HISTFILESIZE=4096
 PROMPT_COMMAND='history -a' # Record each line as it gets issued
 
 

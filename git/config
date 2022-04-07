@@ -33,6 +33,7 @@
     wt = "worktree"
     s = "status -sb"
     d = "diff --word-diff=color"
+    dc = "diff --word-diff=color --cached"
     f = "fetch --all --prune"
     a = "add -u"
     tg = "tag --sign"
