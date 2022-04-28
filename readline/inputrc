@@ -7,6 +7,7 @@ set bell-style none
 set completion-query-items 70
 set completion-ignore-case on
 set completion-display-width 95
+set colored-completion-prefix on
 set skip-completed-text on
 
 set show-all-if-ambiguous on
@@ -49,22 +50,25 @@ set mark-symlinked-directories on
 "\e\'": quoted-insert
 "\\": self-insert
 "\t": complete
+"\ea": complete
+"\ef": accept-line
+"\eA": insert-comment
+
 # arrow-keys
 "\ej": backward-char
 "\ei": forward-char
-"\eo": previous-history
-"\e;": next-history
-"\em": accept-line
-"\ef": accept-line
-"\eh": backward-delete-char
+"\el": beginning-of-line
+"\e;": end-of-line
+"\ek": previous-history
+"\em": next-history
+
+"\eo": backward-delete-char
 #"\e;": delete-char
 "\e[3;5~": kill-word
 "\C-?": backward-delete-char
 "\C-h": backward-kill-word
 "\e/": kill-whole-line
 "\eD": kill-whole-line
-"\ea": complete
-"\eA": insert-comment
 
 
 #"\C-/": comment-begin

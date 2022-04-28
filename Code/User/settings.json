@@ -1,17 +1,31 @@
 {
     // UI Layout
-    "workbench.colorTheme": "One Dark Pro Darker",
-    "workbench.sideBar.location": "left",
+    "workbench.colorTheme": "Monokai",
+    "window.newWindowDimensions": "maximized",
+    "window.zoomLevel": 2,
+
+    "window.titleBarStyle": "custom",
+    "window.enableMenuBarMnemonics": false,
+    "window.customMenuBarAltFocus": false,
+
     "workbench.editor.tabCloseButton": "off",
     "workbench.editor.pinnedTabSizing": "shrink",
     "workbench.editor.tabSizing": "shrink",
-    "workbench.tree.indent": 15,
-    "workbench.tree.renderIndentGuides": "always",
+    
     "workbench.activityBar.visible": true,
     "zenMode.hideActivityBar": false,
-    "window.newWindowDimensions": "maximized",
-    "window.titleBarStyle": "custom",
-    "window.zoomLevel": 2,
+    
+    "workbench.sideBar.location": "left",
+    "workbench.tree.indent": 15,
+    "workbench.tree.renderIndentGuides": "always",
+    "explorer.sortOrder": "type",
+    "explorer.autoReveal": false,
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
 
     // File Explorer Icons
     "workbench.iconTheme": "material-icon-theme",
@@ -19,6 +33,7 @@
         "TODO.md": "todo",
     },
     "material-icon-theme.folders.associations": {
+        "lib": "api", "libs": "api", // I don't like the color of the lib folder icon :P
         "defs": "constant",
         "impl": "class",
         "repl": "command",
@@ -29,8 +44,6 @@
 
     // Behaviour
     "workbench.startupEditor": "welcomePage",
-    "window.enableMenuBarMnemonics": false,
-    "window.customMenuBarAltFocus": false,
     "extensions.ignoreRecommendations": false,
     "extensions.closeExtensionDetailsOnViewChange": true,
     "telemetry.telemetryLevel": "off",
@@ -47,9 +60,6 @@
     "git.alwaysShowStagedChangesResourceGroup": true,
     "git.showCommitInput": false,
     "git.confirmSync": false,
-
-    "explorer.sortOrder": "type",
-    "explorer.autoReveal": false,
 
     "editor.tabSize": 3,
     // "editor.fontFamily": "'Fira Code', Consolas, 'Courier New', monospace",
@@ -143,12 +153,6 @@
     },
     "rust-client.rustupPath": "~/.local/share/cargo/bin/rustup",
     // "rust.wait_to_build": null,
-    "files.exclude": {
-        "**/.classpath": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.factorypath": true
-    },
     "java.imports.gradle.wrapper.checksums": [
         {
             "sha256": "1fca1b1af7c3ed6cb9059346aaa89179c82abf11252837115e546c4da38e8b0c",

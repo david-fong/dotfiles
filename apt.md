@@ -40,3 +40,12 @@ default-jdk
 
 - [](https://www.youtube.com/watch?v=KA6A3oeocHY&ab_channel=MentalOutlaw)
 - [](https://github.com/StevenBlack/hosts)
+
+edit `/etc/bashrc` and enable the bash-completions things
+
+
+a command to list manually installed packages:
+courtesy of https://askubuntu.com/a/492343
+```
+alias aptlistman='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n "s/^Package: //p" | sort -u) | less'
+```

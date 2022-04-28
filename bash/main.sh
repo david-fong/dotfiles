@@ -24,9 +24,7 @@ tabs -3
 # https://github.com/msys2/msys2-runtime/pull/15
 #chcp.com 65001 2> /dev/null
 
-shopt -s globstar
-shopt -s extglob
-shopt -s checkwinsize
+shopt -s checkhash globstar extglob checkwinsize
 export FUNCNEST=100
 
 
@@ -47,7 +45,7 @@ unset histignore
 export HISTCONTROL=ignoredups:ignorespace:erasedups
 export HISTSIZE=2048
 export HISTFILESIZE=4096
-PROMPT_COMMAND='history -a' # Record each line as it gets issued
+#PROMPT_COMMAND='history -a' # Record each line as it gets issued
 
 
 export NODE_ENV='development'
@@ -98,7 +96,7 @@ echo $'\e[?3c'
 
 # expand variables to their contained values,
 # and don't suggest files for these commands:
-shopt -s direxpand
+#shopt -s direxpand
 complete -d -o bashdefault -- cd ls lsa mkdir
 complete -ab -A function -X '{_*,}' -- type
 complete -A shopt shopt
