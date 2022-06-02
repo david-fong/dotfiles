@@ -8,3 +8,5 @@ map  <silent> <C-UP>   <C-Y>
 map  <silent> <C-DOWN> <C-E>
 imap <silent> <C-UP>   <C-O><C-Y>
 imap <silent> <C-DOWN> <C-O><C-E>
+
+cnoremap <silent> <M-A> <TAB>

@@ -1,8 +1,9 @@
 {
     // UI Layout
-    "workbench.colorTheme": "Monokai",
+    "workbench.colorTheme": "Monokai-Contrast",
     "window.newWindowDimensions": "maximized",
     "window.zoomLevel": 2,
+    "window.confirmBeforeClose": "keyboardOnly",
 
     "window.titleBarStyle": "custom",
     "window.enableMenuBarMnemonics": false,
@@ -11,14 +12,14 @@
     "workbench.editor.tabCloseButton": "off",
     "workbench.editor.pinnedTabSizing": "shrink",
     "workbench.editor.tabSizing": "shrink",
-    
+
     "workbench.activityBar.visible": true,
     "zenMode.hideActivityBar": false,
-    
+
     "workbench.sideBar.location": "left",
     "workbench.tree.indent": 15,
     "workbench.tree.renderIndentGuides": "always",
-    "explorer.sortOrder": "type",
+    "explorer.sortOrder": "default",
     "explorer.autoReveal": false,
     "files.exclude": {
         "**/.classpath": true,
@@ -79,12 +80,14 @@
     "editor.suggest.showWords": false,
     "editor.suggestSelection": "first",
     "editor.autoClosingDelete": "always",
+    "editor.bracketPairColorization.enabled": false,
+    // "editor.selectionHighlight": false,
 
     "debug.openDebug": "openOnSessionStart",
     "debug.console.closeOnEnd": true,
     "debug.openExplorerOnEnd": true,
     "debug.toolBarLocation": "docked",
-    "debug.inlineValues": true,
+    "debug.inlineValues": "auto",
     "debug.console.fontSize": 11,
 
     "terminal.integrated.cursorStyle": "underline",
@@ -151,6 +154,10 @@
     "[toml]": {
         "editor.tabSize": 2,
     },
+    "[cpp]": {
+        "editor.quickSuggestions": false, // it got annoying.
+        "editor.tabSize": 3,
+    },
     "rust-client.rustupPath": "~/.local/share/cargo/bin/rustup",
     // "rust.wait_to_build": null,
     "java.imports.gradle.wrapper.checksums": [
@@ -159,4 +166,6 @@
             "allowed": true
         }
     ],
+    "cmake.emscriptenSearchDirs": ["~/code/tool/emsdk/upstream/emscripten"],
+    "cmake.statusbar.visibility": "compact",
 }

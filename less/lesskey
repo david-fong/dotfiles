@@ -7,15 +7,16 @@
 \kU back-scroll
 \kD forw-scroll
 
+
 # iokl
 k  back-line
 K  back-line-force
 ^K back-scroll
-l  forw-line
-L  forw-line-force
-^L forw-scroll
-i  left-scroll
-o  right-scroll
+m  forw-line
+M  forw-line-force
+^M forw-scroll
+j  left-scroll
+i  right-scroll
 
 # disabled back-line
 y  noaction

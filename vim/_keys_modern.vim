@@ -20,14 +20,16 @@ inoremap <silent> <C-Q> <ESC>:qa<CR>
 inoremap <silent> <C-Z> <ESC><C-Z>
 
 " normal things in insert mode: -----------------
-inoremap <silent> <ESC>b <C-O>b
-inoremap <silent> <ESC>w <C-O>w
+"inoremap <silent> <ESC>b <C-O>b
+"inoremap <silent> <ESC>w <C-O>w
 inoremap <silent> <ESC>p <C-O>p
 inoremap <silent> <ESC>P <C-O>P
 
 " control-backspace to delete word: -------------
-imap     <silent> <C-BS> <C-W>
-imap     <silent> <C-Del> <C-O>diw
+"imap     <silent> <C-BS> <C-W>
+"imap     <silent> <C-H> <C-W>
+"imap     <silent> <C-Del> <C-O>diw
+"inoremap     <silent> <M-[>3;5~ <C-O>diw
 
 " Use <C-L> to clear the highlighting of :set hlsearch.
 " if maparg('<C-L>', 'n') ==# ''

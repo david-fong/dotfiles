@@ -35,3 +35,4 @@ hi StatusLineNC ctermfg=black ctermbg=grey
 " netrw
 let g:netrw_liststyle=1 " default file listing: with timestamps
 let g:netrw_sizestyle="H" " human-readable 1024 base
+let g:netrw_timefmt="  %y.%m.%d  %a  %T"

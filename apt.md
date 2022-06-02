@@ -24,6 +24,7 @@ ocl-icd-opencl-dev
 default-jdk
 ```
 
+- [](https://help.ubuntu.com/stable/ubuntu-help/power-batterylife.html.en)
 
 - [](https://askubuntu.com/questions/147462/how-can-i-change-the-tty-colors)
 

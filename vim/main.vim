@@ -39,10 +39,10 @@ inoremap <silent> <ScrollWheelDown> <C-O><C-E>
 
 
 " readline-style bindings: ----------------------
-cnoremap          <C-A>  <C-B>
-inoremap <silent> <C-A>  <C-O>^
-inoremap <silent> <C-E>  <C-O>$
-inoremap <silent> <ESC>f <C-O>w
+"cnoremap          <C-A>  <C-B>
+"inoremap <silent> <C-A>  <C-O>^
+"inoremap <silent> <C-E>  <C-O>$
+"inoremap <silent> <ESC>f <C-O>w
 "inoremap <silent> <C-D>  <DEL>
 
 
