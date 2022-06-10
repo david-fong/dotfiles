@@ -36,14 +36,20 @@ SendMode Input
 ;<!<^d::Send ^{Delete}
 ;<!<+d::Send +{Delete}
 <!f::Send {Enter}
+<!<+f::Send +{Enter}
 <!e::Send {Escape}
 
 <!p::Send {-}
 <!<+p::Send {_}
 
-<!<+,::Send {PgUp}
-<!<+.::Send {PgDn}
+<!,::Send {PgUp}
+<!.::Send {PgDn}
+<!<+,::Send +{PgUp}
+<!<+.::Send +{PgDn}
 <!l::Send {Home}
 <!;::Send {End}
+<!<+l::Send +{Home}
+<!<+;::Send +{End}
+
 #If
 
