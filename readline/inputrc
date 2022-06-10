@@ -66,9 +66,12 @@ set mark-symlinked-directories on
 #"\e;": delete-char
 "\e[3;5~": kill-word
 "\C-?": backward-delete-char
-"\C-h": backward-delete-char
+"\C-h": backward-kill-word
 "\e/": kill-whole-line
 "\eD": kill-whole-line
 
+$if Gdb
+"\C-h": backward-delete-char
+$endif
 
 #"\C-/": comment-begin

@@ -1,8 +1,8 @@
 {
     // UI Layout
-    "workbench.colorTheme": "Monokai-Contrast",
+    "workbench.colorTheme": "Monokai",
     "window.newWindowDimensions": "maximized",
-    "window.zoomLevel": 2,
+    "window.zoomLevel": 1.7,
     "window.confirmBeforeClose": "keyboardOnly",
 
     "window.titleBarStyle": "custom",
@@ -141,7 +141,11 @@
     "[markdown]": {
         "editor.wordWrap": "bounded",
         "editor.wrappingIndent": "indent",
-        "editor.quickSuggestions": false,
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        },
         "editor.tabSize": 2,
     },
     "[plaintext]": {
@@ -155,9 +159,14 @@
         "editor.tabSize": 2,
     },
     "[cpp]": {
-        "editor.quickSuggestions": false, // it got annoying.
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }, // it got annoying.
         "editor.tabSize": 3,
     },
+
     "rust-client.rustupPath": "~/.local/share/cargo/bin/rustup",
     // "rust.wait_to_build": null,
     "java.imports.gradle.wrapper.checksums": [
