@@ -29,7 +29,8 @@ fi
 # }
 # readonly -f __ps1_face
 PS1="\n\[\033[32m\]\u@\H \[\033[33m\]\w\[\033[36m\] (._.)\[\033[37m\]\n$\[\033[0m\] "
-declare -rx PS1
+#declare -rx PS1
+declare -x PS1
 
 declare -rxi PROMPT_DIRTRIM=5
 

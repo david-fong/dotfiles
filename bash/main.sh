@@ -120,13 +120,13 @@ export GPG_TTY=$(tty)
 eval "(gpg-agent --daemon)" 2> /dev/null
 
 [[ -z "${SSH_AUTH_SOCK}" ]] && eval "$(ssh-agent -s)"
-function ssh-agent() {
-    echo 'warning: an ssh agent has already been started.'
-    echo 'if you wish to use this executable, prefix with the command builtin.'
-    echo 'to kill all ssh-agents on windows, do:'
-    echo '  taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T'
-}
-readonly -f ssh-agent
+#function ssh-agent() {
+#    echo 'warning: an ssh agent has already been started.'
+#    echo 'if you wish to use this executable, prefix with the command builtin.'
+#    echo 'to kill all ssh-agents on windows, do:'
+#    echo '  taskkill //F //FI "IMAGENAME eq ssh-agent.exe" //T'
+#}
+#readonly -f ssh-agent
 
 
 # finalize prompt:

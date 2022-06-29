@@ -110,7 +110,6 @@
     "dart.flutterOutline": false,
 
     "cSpell.language": "en-GB",
-    "trailing-spaces.highlightCurrentLine": false,
 
     "todo-tree.tree.labelFormat": "${after}",
     "todo-tree.highlights.enabled": true,
@@ -167,14 +166,8 @@
         "editor.tabSize": 3,
     },
 
-    "rust-client.rustupPath": "~/.local/share/cargo/bin/rustup",
-    // "rust.wait_to_build": null,
-    "java.imports.gradle.wrapper.checksums": [
-        {
-            "sha256": "1fca1b1af7c3ed6cb9059346aaa89179c82abf11252837115e546c4da38e8b0c",
-            "allowed": true
-        }
-    ],
     "cmake.emscriptenSearchDirs": ["~/code/tool/emsdk/upstream/emscripten"],
     "cmake.statusbar.visibility": "compact",
+	"cmake.configureOnOpen": false,
+    "cmake.configureOnEdit": false,
 }

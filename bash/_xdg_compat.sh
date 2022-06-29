@@ -8,6 +8,8 @@ mkdir -p "${XDG_DATA_HOME}/tig"
 mkdir -p "${XDG_DATA_HOME}/less"
 alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 
+declare -rx CPM_SOURCE_CACHE="${XDG_CACHE_HOME}/CPM"
+
 declare -rx          HISTFILE="${XDG_DATA_HOME}/bash/history"
 declare -rx NODE_REPL_HISTORY="${XDG_DATA_HOME}/.node_repl_history"
 declare -rx      LESSHISTFILE="${XDG_DATA_HOME}/.less_history"

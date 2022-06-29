@@ -20,6 +20,7 @@ build-essential
 libboost-all-dev
 libssl-dev
 ninja-build
+linux-tools-generic
 ocl-icd-opencl-dev
 default-jdk
 ```
