@@ -25,6 +25,7 @@ if [ "$TERM" = "linux" ]; then
     echo -en "\e]PFFDF6E3" #white
     clear #for background artifacting
 fi
+#gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier', 'lv3:ralt_alt']"
 
 # This should be useful on windows in `~/.bash_logout`:
 # if [[ "$SHLVL" = 1 ]]

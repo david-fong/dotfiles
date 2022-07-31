@@ -138,4 +138,8 @@
         "command": "editor.unfold",
         "when": "editorTextFocus && foldingEnabled"
     },
+    {
+        "key": "ctrl+p",
+        "command": "workbench.action.showCommands"
+    },
 ]

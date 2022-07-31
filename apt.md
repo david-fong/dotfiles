@@ -1,28 +1,39 @@
 
 ```
 dconf-editor
-gnome-tweak-tool
-gnome-shell-extension-dash-to-panel
+gnome-shell-extension-dash-to-panel (no longer on apt. install from website)
 xbacklight
 xserver-xorg-video-intel
-tlp
-tlp-rdw
+tlp tlp-rdw
 fonts-inconsolata
 
-vim
-git
-git-lfs
-tig
-ripgrep
-fish
+vim git git-lfs tig ripgrep reuse
 
-build-essential
 libboost-all-dev
 libssl-dev
-ninja-build
-linux-tools-generic
 ocl-icd-opencl-dev
-default-jdk
+default-jdk maven
+
+gimp
+ffmpeg pavucontrol
+
+build-essential
+clang clang-tidy conan g++
+ninja-build make
+linux-tools-generic
+```
+
+snaps:
+```
+audacity
+cmake
+code
+discord
+flutter
+gradle
+intellij-idea-community
+node
+zoom-client
 ```
 
 - [](https://help.ubuntu.com/stable/ubuntu-help/power-batterylife.html.en)
@@ -32,6 +43,7 @@ default-jdk
 - [](https://askubuntu.com/questions/1025765/how-to-map-alt-hjkl-keys-to-arrow-keys)
 - [](https://askubuntu.com/a/257497)
 - [](https://medium.com/@damko/a-simple-humble-but-comprehensive-guide-to-xkb-for-linux-6f1ad5e13450)
+<https://wiki.archlinux.org/title/X_keyboard_extension>
 
 - [](https://askubuntu.com/questions/103249/how-to-increase-brightness-in-smaller-steps/1080149#1080149)
 
