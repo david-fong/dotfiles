@@ -11,9 +11,9 @@ alias rm='\rm -I --verbose'
 alias hd='xxd -e -g4 -c32'
 #alias jobs='jobs -l; tasklist | command grep agent'
 alias hist='history | less +G'
-function hash() {
-    command hash "$@" | sort -r
-}
+#function hash() {
+#    command hash "$@" | sort -r
+#}
 
 if [[ "$OCTAVE_HOME" ]]
     then alias octave='"$OCTAVE_HOME"/mingw64/bin/octave-cli --interactive'; fi
@@ -106,7 +106,7 @@ function heading() {
 
 
 # make functions unmodifiable:
-readonly -f todo lsa lsen home heading
-export   -f todo lsa lsen home heading
+#readonly -f todo lsa lsen home heading
+#export   -f todo lsa lsen home heading
 
 set +eo pipefail

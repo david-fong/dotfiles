@@ -4,6 +4,15 @@
 #declare -rx XDG_CONFIG_HOME="$(cygpath "${XDG_CONFIG_HOME:-"${HOME}/.config"}")"
 #declare -rx  XDG_CACHE_HOME="$(cygpath  "${XDG_CACHE_HOME:-"${HOME}/.cache"}")"
 #declare -rx   XDG_DATA_HOME="$(cygpath   "${XDG_DATA_HOME:-"${HOME}/.local/share"}")"
+
+# This should be useful on windows in `~/.bash_logout`:
+# if [[ "$SHLVL" = 1 ]]
+# then
+#     taskkill //F //T //IM "ssh-agent.exe"
+#     taskkill //F //T //IM "gpg-agent.exe"
+# fi
+
+
 #[[ -f "${XDG_CONFIG_HOME}/bash/main.sh"  ]] && source "${XDG_CONFIG_HOME}/bash/main.sh"
 
 if [ "$TERM" = "linux" ]; then
@@ -26,10 +35,3 @@ if [ "$TERM" = "linux" ]; then
     clear #for background artifacting
 fi
 #gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier', 'lv3:ralt_alt']"
-
-# This should be useful on windows in `~/.bash_logout`:
-# if [[ "$SHLVL" = 1 ]]
-# then
-#     taskkill //F //T //IM "ssh-agent.exe"
-#     taskkill //F //T //IM "gpg-agent.exe"
-# fi

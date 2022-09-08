@@ -8,11 +8,13 @@
 /octave/
 
 /monitors.xml
+/cef_user_data/
 /dconf/
 /enchant/
 /eog/
 /evolution/
 /gedit/
+/GIMP/
 /gnome-control-center/
 /gnome-games/
 /gnome-initial-setup-done
@@ -22,6 +24,7 @@
 /gtk-3.0/
 /gtk-4.0/
 /ibus/
+/JetBrains/
 /libreoffice/
 /mimeapps.list
 /nautilus/

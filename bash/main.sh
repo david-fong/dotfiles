@@ -7,6 +7,8 @@
 #[[ "$GRADLE_HOME"      ]] &&       GRADLE_HOME="$(cygpath "$GRADLE_HOME")"
 #[[ "$MONGODB_HOME"     ]] &&      MONGODB_HOME="$(cygpath "$MONGODB_HOME")"
 
+source "${XDG_CONFIG_HOME}/bash/_xdg_compat.sh"
+
 # exit if not running interactively:
 [[ "$-" =~ "i" ]] || return
 
@@ -56,8 +58,6 @@ export NODE_ENV='development'
 export EDITOR='vim'
 export CSCOPE_EDITOR='view'
 
-
-source "${XDG_CONFIG_HOME}/bash/_xdg_compat.sh"
 
 [[ -f "${XDG_CONFIG_HOME}/bash/_aliases.sh"        ]] && source "${XDG_CONFIG_HOME}/bash/_aliases.sh"
 [[ -f "${XDG_CONFIG_HOME}/bash/_aliases__local.sh" ]] && source "${XDG_CONFIG_HOME}/bash/_aliases__local.sh"

@@ -8,6 +8,7 @@ set completion-query-items 70
 set completion-ignore-case on
 set completion-display-width 95
 set colored-completion-prefix on
+#set completion-prefix-display-length 5
 set skip-completed-text on
 
 set show-all-if-ambiguous on
@@ -72,6 +73,7 @@ set mark-symlinked-directories on
 
 $if Gdb
 "\C-h": backward-delete-char
+set completion-prefix-display-length 5
 $endif
 
 #"\C-/": comment-begin
