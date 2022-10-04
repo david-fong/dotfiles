@@ -11,6 +11,7 @@ set formatoptions=croqlj
 set vb t_vb=
 set mouse=a
 set clipboard=unnamed
+set smartcase
 set incsearch
 
 set title
