@@ -1,14 +1,16 @@
 {
-    // UI Layout
     "workbench.colorTheme": "Monokai",
+    "workbench.preferredDarkColorTheme": "Monokai",
     "window.newWindowDimensions": "maximized",
     "window.zoomLevel": 1.7,
     "window.confirmBeforeClose": "keyboardOnly",
 
+    // Top Bar
     "window.titleBarStyle": "custom",
     "window.enableMenuBarMnemonics": false,
     "window.customMenuBarAltFocus": false,
 
+    // Tabs
     "workbench.editor.tabCloseButton": "off",
     "workbench.editor.pinnedTabSizing": "shrink",
     "workbench.editor.tabSizing": "shrink",
@@ -16,17 +18,14 @@
     "workbench.activityBar.visible": true,
     "zenMode.hideActivityBar": false,
 
+    // Sidebar
     "workbench.sideBar.location": "left",
+    "workbench.sash.size": 7,
+    "workbench.sash.hoverDelay": 0,
     "workbench.tree.indent": 15,
     "workbench.tree.renderIndentGuides": "always",
     "explorer.sortOrder": "default",
     "explorer.autoReveal": false,
-    "files.exclude": {
-        "**/.classpath": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.factorypath": true
-    },
 
     // File Explorer Icons
     "workbench.iconTheme": "material-icon-theme",
@@ -44,7 +43,8 @@
     "material-icon-theme.hidesExplorerArrows": true,
 
     // Behaviour
-    "workbench.startupEditor": "welcomePage",
+    "window.restoreWindows": "none",
+    "workbench.startupEditor": "newUntitledFile",
     "extensions.ignoreRecommendations": false,
     "extensions.closeExtensionDetailsOnViewChange": true,
     "telemetry.telemetryLevel": "off",
@@ -73,6 +73,7 @@
     // "editor.fontLigatures": "'ss03', 'ss04', 'ss06', 'ss07', 'ss08'",
     "editor.fontFamily": "'Inconsolata', 'consolas', 'Courier New', 'Ubuntu Mono'",
 
+    // "editor.glyphMargin": false,
     "editor.cursorSurroundingLines": 3,
     "editor.accessibilitySupport": "off",
     "editor.renderWhitespace": "none",
@@ -85,7 +86,7 @@
     // "editor.selectionHighlight": false,
 
     "debug.openDebug": "openOnSessionStart",
-    "debug.console.closeOnEnd": true,
+    // "debug.console.closeOnEnd": true,
     "debug.openExplorerOnEnd": true,
     "debug.toolBarLocation": "docked",
     "debug.inlineValues": "auto",
@@ -99,7 +100,8 @@
     "terminal.integrated.shellArgs.windows": [
         "--command=usr/bin/bash.exe", "-l", "-i",
     ],
-    "terminal.integrated.sendKeybindingsToShell": true,
+    "terminal.integrated.defaultProfile.windows": null,
+    // "terminal.integrated.sendKeybindingsToShell": true,
 
 
     "typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
@@ -167,8 +169,20 @@
         "editor.tabSize": 3,
     },
 
+    "C_Cpp.intelliSenseCacheSize": 0,
     "cmake.emscriptenSearchDirs": ["~/code/tool/emsdk/upstream/emscripten"],
     "cmake.statusbar.visibility": "compact",
 	"cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
+    // "terminal.integrated.commandsToSkipShell": [
+    //     "extension.multiCommand.execute",
+    // ],true
+    // "files.simpleDialog.enable": true
+    // "editor.hover.enabled": false,
+    // "editor.hover.sticky": true,
+    "emmet.syntaxProfiles": {
+        "html": {
+            "compactBooleanAttributes": true
+        },
+    },
 }

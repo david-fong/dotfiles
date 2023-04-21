@@ -7,7 +7,7 @@ xserver-xorg-video-intel
 tlp tlp-rdw
 fonts-inconsolata
 
-vim git git-lfs tig ripgrep reuse
+vim git git-lfs tig ripgrep jq reuse
 
 libboost-all-dev
 libssl-dev
@@ -67,4 +67,8 @@ alias aptlistman='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/
 chrome flags:
 ```
 #omnibox-blur-with-escape
+```
+
+```
+ln -sT /snap/code/current/usr/share/code/resources/completions/bash/code ~/.local/share/bash-completion/completions/code
 ```

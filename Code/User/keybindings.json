@@ -120,11 +120,11 @@
         "key": "ctrl+k s",
         "command": "workbench.action.files.saveAll"
     },
-    {
-        "key": "ctrl+shift+c",
-        "command": "-workbench.action.terminal.openNativeConsole",
-        "when": "!terminalFocus"
-    },
+    // {
+    //     "key": "ctrl+shift+c",
+    //     "command": "-workbench.action.terminal.openNativeConsole",
+    //     "when": "!terminalFocus"
+    // },
 
 
     // collapse and expand code blocks
@@ -142,4 +142,17 @@
         "key": "ctrl+p",
         "command": "workbench.action.showCommands"
     },
+    {
+        "key": "ctrl+o",
+        "command": "workbench.action.showCommands"
+    },
+    {
+        "key": "ctrl+o",
+        "command": "-workbench.action.files.openFile",
+        "when": "true"
+    },
+    {
+        "key": "ctrl+alt+b",
+        "command": "editor.action.showHover"
+    }
 ]

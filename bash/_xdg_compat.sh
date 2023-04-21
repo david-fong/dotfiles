@@ -31,5 +31,6 @@ declare -rx PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
 declare -rx NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 declare -rx   CARGO_HOME="${XDG_DATA_HOME}/cargo"
 #[[ -f "${XDG_DATA_HOME}/emsdk/emsdk_env.sh" ]] && source "${XDG_DATA_HOME}/emsdk/emsdk_env.sh"
+declare -rx CONAN_USER_HOME="${XDG_CONFIG_HOME}"
 
 set +eo pipefail
