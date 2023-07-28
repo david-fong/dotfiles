@@ -2,13 +2,16 @@
     "workbench.colorTheme": "Monokai",
     "workbench.preferredDarkColorTheme": "Monokai",
     "window.newWindowDimensions": "maximized",
-    "window.zoomLevel": 1.7,
+    "window.zoomLevel": 1.7, // 1.7
     "window.confirmBeforeClose": "keyboardOnly",
+    "workbench.settings.editor": "json",
 
     // Top Bar
     "window.titleBarStyle": "custom",
     "window.enableMenuBarMnemonics": false,
     "window.customMenuBarAltFocus": false,
+    "workbench.commandPalette.preserveInput": true,
+    "workbench.quickOpen.preserveInput": true,
 
     // Tabs
     "workbench.editor.tabCloseButton": "off",
@@ -59,7 +62,7 @@
     "git.suggestSmartCommit": false,
     "git.enableStatusBarSync": false,
     "git.alwaysShowStagedChangesResourceGroup": true,
-    "git.showCommitInput": false,
+    // "git.showCommitInput": false,
     "git.confirmSync": false,
 
     "editor.tabSize": 3,
@@ -79,7 +82,7 @@
     "editor.renderWhitespace": "none",
     "editor.minimap.renderCharacters": false,
     "editor.suggest.showWords": false,
-    "editor.suggestSelection": "first",
+    "editor.suggestSelection": "recentlyUsedByPrefix",
     // "editor.suggest.matchOnWordStartOnly": false,
     "editor.autoClosingDelete": "always",
     "editor.bracketPairColorization.enabled": false,
@@ -96,12 +99,9 @@
     "terminal.integrated.cursorBlinking": true,
     "terminal.integrated.fontSize": 11,
     "terminal.integrated.rightClickBehavior": "default",
-    "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\git-cmd.exe",
-    "terminal.integrated.shellArgs.windows": [
-        "--command=usr/bin/bash.exe", "-l", "-i",
-    ],
     "terminal.integrated.defaultProfile.windows": null,
     // "terminal.integrated.sendKeybindingsToShell": true,
+    "terminal.integrated.commandsToSkipShell": [],
 
 
     "typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
@@ -125,8 +125,6 @@
         "TODO", "[ ]", "[x]"
     ],
     "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
-
-    "diffEditor.ignoreTrimWhitespace": false,
 
     // Syntax Highlighting
     "editor.tokenColorCustomizations": {
@@ -170,6 +168,7 @@
     },
 
     "C_Cpp.intelliSenseCacheSize": 0,
+    "C_Cpp.autoAddFileAssociations": false,
     "cmake.emscriptenSearchDirs": ["~/code/tool/emsdk/upstream/emscripten"],
     "cmake.statusbar.visibility": "compact",
 	"cmake.configureOnOpen": false,
@@ -181,8 +180,10 @@
     // "editor.hover.enabled": false,
     // "editor.hover.sticky": true,
     "emmet.syntaxProfiles": {
-        "html": {
-            "compactBooleanAttributes": true
-        },
     },
+    "emmet.preferences": {
+        // "output.inlineBreak": 1
+        "profile.allowCompactBoolean": true
+    },
+    // "editor.defaultColorDecorators": true,
 }

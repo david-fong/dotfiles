@@ -1,4 +1,3 @@
-// Place your key bindings in this file to override the defaults
 [
     // back-forward navigation
     {
@@ -149,10 +148,5 @@
     {
         "key": "ctrl+o",
         "command": "-workbench.action.files.openFile",
-        "when": "true"
     },
-    {
-        "key": "ctrl+alt+b",
-        "command": "editor.action.showHover"
-    }
 ]

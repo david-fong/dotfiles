@@ -62,5 +62,3 @@ GroupAdd, RDP, Remote Desktop Connection
 <!<+l::Send +{Home}
 <!<+;::Send +{End}
 
-#If
-

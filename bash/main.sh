@@ -32,7 +32,7 @@ export FUNCNEST=100
 
 shopt -s histappend
 declare -a histignore=(
-    'sudo\ *'
+    'sudo\ *' 'rm\ -rf'
     'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear'
     'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
     'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
