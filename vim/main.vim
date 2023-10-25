@@ -48,7 +48,7 @@ inoremap <silent> <ScrollWheelDown> <C-O><C-E>
 
 
 " set autoread
-" check for external changes (from u/weisenzahm on reddit)
+" check for external changes (from u/weisenzahm on reddit https://www.reddit.com/r/vim/comments/29iq9s/comment/cj5krck)
 " check for file modifications automatically (current buffer only).
 " use :NoAutoChecktime to disable it (uses b:autochecktime)
 function! MyAutoCheckTime()

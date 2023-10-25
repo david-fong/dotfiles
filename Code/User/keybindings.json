@@ -126,16 +126,15 @@
     // },
 
 
-    // collapse and expand code blocks
     {
         "key": "alt+h",
-        "command": "editor.fold",
-        "when": "editorTextFocus && foldingEnabled"
+        "command": "editor.action.smartSelect.expand",
+        "when": "editorTextFocus"
     },
     {
         "key": "alt+n",
-        "command": "editor.unfold",
-        "when": "editorTextFocus && foldingEnabled"
+        "command": "editor.action.smartSelect.shrink",
+        "when": "editorTextFocus"
     },
     {
         "key": "ctrl+p",

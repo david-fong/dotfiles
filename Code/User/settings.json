@@ -5,6 +5,7 @@
     "window.zoomLevel": 1.7, // 1.7
     "window.confirmBeforeClose": "keyboardOnly",
     "workbench.settings.editor": "json",
+    "window.dialogStyle": "custom",
 
     // Top Bar
     "window.titleBarStyle": "custom",
@@ -12,13 +13,12 @@
     "window.customMenuBarAltFocus": false,
     "workbench.commandPalette.preserveInput": true,
     "workbench.quickOpen.preserveInput": true,
+    // "files.simpleDialog.enable": true
 
     // Tabs
     "workbench.editor.tabCloseButton": "off",
     "workbench.editor.pinnedTabSizing": "shrink",
     "workbench.editor.tabSizing": "shrink",
-
-    "workbench.activityBar.visible": true,
     "zenMode.hideActivityBar": false,
 
     // Sidebar
@@ -83,6 +83,7 @@
     "editor.minimap.renderCharacters": false,
     "editor.suggest.showWords": false,
     "editor.suggestSelection": "recentlyUsedByPrefix",
+    // "editor.suggest.selectionMode": ,
     // "editor.suggest.matchOnWordStartOnly": false,
     "editor.autoClosingDelete": "always",
     "editor.bracketPairColorization.enabled": false,
@@ -96,12 +97,13 @@
     "debug.console.fontSize": 11,
 
     "terminal.integrated.cursorStyle": "underline",
+    "terminal.integrated.cursorStyleInactive": "underline",
     "terminal.integrated.cursorBlinking": true,
     "terminal.integrated.fontSize": 11,
     "terminal.integrated.rightClickBehavior": "default",
     "terminal.integrated.defaultProfile.windows": null,
     // "terminal.integrated.sendKeybindingsToShell": true,
-    "terminal.integrated.commandsToSkipShell": [],
+    "terminal.integrated.commandsToSkipShell": ["workbench.action.togglePanel", "runCommands"],
 
 
     "typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
@@ -138,6 +140,7 @@
         },
     },
 
+    "markdown.editor.pasteUrlAsFormattedLink.enabled": "smart",
     "[markdown]": {
         "editor.wordWrap": "bounded",
         "editor.wrappingIndent": "indent",
@@ -169,16 +172,11 @@
 
     "C_Cpp.intelliSenseCacheSize": 0,
     "C_Cpp.autoAddFileAssociations": false,
-    "cmake.emscriptenSearchDirs": ["~/code/tool/emsdk/upstream/emscripten"],
+    "cmake.emscriptenSearchDirs": ["~/code/tool/emsdk/upstream/emscripten"], // editor.action.selectHighlights addCursorsAtSearchResults selectAllSearchEditorMatches
     "cmake.statusbar.visibility": "compact",
 	"cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
-    // "terminal.integrated.commandsToSkipShell": [
-    //     "extension.multiCommand.execute",
-    // ],true
-    // "files.simpleDialog.enable": true
-    // "editor.hover.enabled": false,
-    // "editor.hover.sticky": true,
+    "notebook.outline.showCodeCells": true,
     "emmet.syntaxProfiles": {
     },
     "emmet.preferences": {
@@ -186,4 +184,7 @@
         "profile.allowCompactBoolean": true
     },
     // "editor.defaultColorDecorators": true,
+    // "window.density.editorTabHeight": "compact"
+    // "editor.hover.enabled": false,
+    // "editor.hover.sticky": true,
 }
