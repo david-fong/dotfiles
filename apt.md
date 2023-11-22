@@ -42,6 +42,7 @@ zoom-client
 
 - [](https://askubuntu.com/questions/1025765/how-to-map-alt-hjkl-keys-to-arrow-keys)
 - [](https://askubuntu.com/a/257497)
+
 - [](https://medium.com/@damko/a-simple-humble-but-comprehensive-guide-to-xkb-for-linux-6f1ad5e13450)
 <https://wiki.archlinux.org/title/X_keyboard_extension>
 
@@ -51,6 +52,7 @@ zoom-client
 - [](https://unix.stackexchange.com/questions/260601/understanding-setting-up-different-input-methods)
 
 - [](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
+https://askubuntu.com/q/67758
 
 - [](https://www.youtube.com/watch?v=KA6A3oeocHY&ab_channel=MentalOutlaw)
 - [](https://github.com/StevenBlack/hosts)
@@ -68,6 +70,15 @@ chrome flags:
 ```
 #omnibox-blur-with-escape
 ```
+
+chrome://settings/syncSetup
+- Automatically sends usage statistics and crash reports to Google: off
+- Send URLs of pages that you visit to Google: off
+- To fix spelling errors, Chrome sends the text that you type in the browser to Google: off
+- When you type in the address bar or search box, Chrome sends what you type to your default search engine to get better suggestions. This is off in Incognito: off
+chrome://settings/security
+- Always use secure connections: on
+- Use secure DNS: on
 
 ```
 ln -sT /snap/code/current/usr/share/code/resources/completions/bash/code ~/.local/share/bash-completion/completions/code

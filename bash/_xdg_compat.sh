@@ -26,7 +26,7 @@ declare -rx DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 #declare -rx        WGETRC="${XDG_CONFIG_HOME}/wgetrc" # currently not used
 
 declare -rx GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
-declare -rx PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
+#declare -rx PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
              PYTHONHOME+=":${XDG_CONFIG_HOME}/python/"
 declare -rx NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 declare -rx   CARGO_HOME="${XDG_DATA_HOME}/cargo"

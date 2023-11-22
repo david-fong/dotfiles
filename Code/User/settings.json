@@ -8,6 +8,7 @@
     "window.dialogStyle": "custom",
 
     // Top Bar
+    // "window.commandCenter": false // uncomment just for web
     "window.titleBarStyle": "custom",
     "window.enableMenuBarMnemonics": false,
     "window.customMenuBarAltFocus": false,
@@ -187,4 +188,6 @@
     // "window.density.editorTabHeight": "compact"
     // "editor.hover.enabled": false,
     // "editor.hover.sticky": true,
+    // "editor.suggest.preview": true,
+    "editor.multiDocumentOccurrencesHighlight": true,
 }
