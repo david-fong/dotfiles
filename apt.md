@@ -57,6 +57,9 @@ https://askubuntu.com/q/67758
 - [](https://www.youtube.com/watch?v=KA6A3oeocHY&ab_channel=MentalOutlaw)
 - [](https://github.com/StevenBlack/hosts)
 
+https://askubuntu.com/q/1014187
+https://linrunner.de/tlp/usage/tlp.html#perform-a-battery-recalibration-while-on-ac-power
+
 edit `/etc/bashrc` and enable the bash-completions things
 
 

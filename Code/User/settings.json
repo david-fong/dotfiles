@@ -14,10 +14,12 @@
     "window.customMenuBarAltFocus": false,
     "workbench.commandPalette.preserveInput": true,
     "workbench.quickOpen.preserveInput": true,
+    "workbench.quickOpen.closeOnFocusLost": false,
     // "files.simpleDialog.enable": true
+    "window.commandCenter": false,
 
     // Tabs
-    "workbench.editor.tabCloseButton": "off",
+    "workbench.editor.tabActionCloseVisibility": false,
     "workbench.editor.pinnedTabSizing": "shrink",
     "workbench.editor.tabSizing": "shrink",
     "zenMode.hideActivityBar": false,
@@ -31,7 +33,7 @@
     "explorer.sortOrder": "default",
     "explorer.autoReveal": false,
 
-    // File Explorer Icons
+    // Icon Theme
     "workbench.iconTheme": "material-icon-theme",
     "material-icon-theme.files.associations": {
         "TODO.md": "todo",
@@ -104,7 +106,7 @@
     "terminal.integrated.rightClickBehavior": "default",
     "terminal.integrated.defaultProfile.windows": null,
     // "terminal.integrated.sendKeybindingsToShell": true,
-    "terminal.integrated.commandsToSkipShell": ["workbench.action.togglePanel", "runCommands"],
+    "terminal.integrated.commandsToSkipShell": ["workbench.action.togglePanel", "runCommands","type"],
 
 
     "typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
@@ -153,7 +155,7 @@
         "editor.tabSize": 2,
     },
     "[plaintext]": {
-        "editor.wordWrap": "bounded",
+        "editor.wordWrap": "off", // bounded
         "editor.wrappingIndent": "same",
     },
     "[json]": {
@@ -189,5 +191,5 @@
     // "editor.hover.enabled": false,
     // "editor.hover.sticky": true,
     // "editor.suggest.preview": true,
-    "editor.multiDocumentOccurrencesHighlight": true,
+    // "markdown.occurrencesHighlight.enabled": true,
 }

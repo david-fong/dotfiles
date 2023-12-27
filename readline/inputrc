@@ -70,6 +70,7 @@ set mark-symlinked-directories on
 "\C-h": backward-kill-word
 "\e/": kill-whole-line
 "\eD": kill-whole-line
+"\eh": "~"
 
 $if Gdb
 "\C-h": backward-delete-char

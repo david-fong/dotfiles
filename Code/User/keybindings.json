@@ -137,10 +137,6 @@
         "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+p",
-        "command": "workbench.action.showCommands"
-    },
-    {
         "key": "ctrl+o",
         "command": "workbench.action.showCommands"
     },
