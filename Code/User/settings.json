@@ -184,7 +184,7 @@
     },
     "emmet.preferences": {
         // "output.inlineBreak": 1
-        "profile.allowCompactBoolean": true
+        "profile.allowCompactBoolean": true,
     },
     // "editor.defaultColorDecorators": true,
     // "window.density.editorTabHeight": "compact"

@@ -1,13 +1,14 @@
 
 ```
 dconf-editor
-gnome-shell-extension-dash-to-panel (no longer on apt. install from website)
+gnome-browser-connector
 xbacklight
 xserver-xorg-video-intel
 tlp tlp-rdw
+pavucontrol
 fonts-inconsolata
 
-vim git git-lfs tig ripgrep jq reuse
+tree vim git git-lfs tig ripgrep jq reuse net-tools sqlite3 sqlitebrowser
 
 libboost-all-dev
 libssl-dev
@@ -15,10 +16,10 @@ ocl-icd-opencl-dev
 default-jdk maven
 
 gimp
-ffmpeg pavucontrol
+exif ffmpeg pavucontrol
 
 build-essential
-clang clang-tidy conan g++
+clang clang-tidy conan doxygen g++
 ninja-build make
 linux-tools-generic
 ```
@@ -35,6 +36,10 @@ intellij-idea-community
 node
 zoom-client
 ```
+
+gnome extensions:
+dash-to-panel@jderose9.github.com
+
 
 - [](https://help.ubuntu.com/stable/ubuntu-help/power-batterylife.html.en)
 
@@ -53,9 +58,12 @@ zoom-client
 
 - [](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
 https://askubuntu.com/q/67758
+https://askubuntu.com/q/223018
 
 - [](https://www.youtube.com/watch?v=KA6A3oeocHY&ab_channel=MentalOutlaw)
 - [](https://github.com/StevenBlack/hosts)
+
+https://stackoverflow.com/q/70782793/11107541 https://askubuntu.com/q/293546/1624654
 
 https://askubuntu.com/q/1014187
 https://linrunner.de/tlp/usage/tlp.html#perform-a-battery-recalibration-while-on-ac-power
@@ -85,4 +93,11 @@ chrome://settings/security
 
 ```
 ln -sT /snap/code/current/usr/share/code/resources/completions/bash/code ~/.local/share/bash-completion/completions/code
+```
+
+adblock allowlist:
+```
+@@stackexchange.com$document
+@@stackoverflow.com$document
+@@||i.stack.imgur.com/*^$document
 ```

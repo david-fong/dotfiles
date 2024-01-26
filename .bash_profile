@@ -2,8 +2,16 @@
 
 # uncomment for windows
 #declare -rx XDG_CONFIG_HOME="$(cygpath "${XDG_CONFIG_HOME:-"${HOME}/.config"}")"
-#declare -rx  XDG_CACHE_HOME="$(cygpath  "${XDG_CACHE_HOME:-"${HOME}/.cache"}")"
 #declare -rx   XDG_DATA_HOME="$(cygpath   "${XDG_DATA_HOME:-"${HOME}/.local/share"}")"
+#declare -rx  XDG_STATE_HOME="$(cygpath  "${XDG_STATE_HOME:-"${HOME}/.local/state"}")"
+#declare -rx  XDG_CACHE_HOME="$(cygpath  "${XDG_CACHE_HOME:-"${HOME}/.cache"}")"
+
+# uncomment for unix
+#declare -rx XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"${HOME}/.config"}"
+#declare -rx   XDG_DATA_HOME="${XDG_DATA_HOME:-"${HOME}/.local/share"}"
+#declare -rx  XDG_STATE_HOME="${XDG_STATE_HOME:-"${HOME}/.local/state"}"
+#declare -rx  XDG_CACHE_HOME="${XDG_CACHE_HOME:-"${HOME}/.cache"}"
+
 
 # This should be useful on windows in `~/.bash_logout`:
 # if [[ "$SHLVL" = 1 ]]
