@@ -10,10 +10,17 @@ SetTitleMatchMode 2
 
 GroupAdd, RDP, Remote Desktop Connection
 
-#MenuMaskKey vkFF
+#MenuMaskKey vkFF ;or vk07
 #If not WinActive("ahk_group RDP")
 
 ; main body
+
+LAlt::return
+;*LAlt::return
+;<^LAlt::return
+;<+LAlt::return
+;<^<+LAlt::return
+
 <!k::Send {Up}
 <!m::Send {Down}
 <!j::Send {Left}
@@ -26,10 +33,10 @@ GroupAdd, RDP, Remote Desktop Connection
 <!<+m::Send +{Down}
 <!<+j::Send +{Left}
 <!<+i::Send +{Right}
-<!<+<^k::Send ^+{Up}
-<!<+<^m::Send ^+{Down}
-<!<+<^j::Send ^+{Left}
-<!<+<^i::Send ^+{Right}
+<!<^<+k::Send ^+{Up}
+<!<^<+m::Send ^+{Down}
+<!<^<+j::Send ^+{Left}
+<!<^<+i::Send ^+{Right}
 
 <!o::Send {Backspace}
 <!<^o::Send ^{Backspace}
@@ -47,6 +54,10 @@ GroupAdd, RDP, Remote Desktop Connection
 ;<!<+p::Send {_}
 
 <!s::Send !{Left}
+<!w::Send {Tab}
+<!<^w::Send ^{Tab}
+<!<+w::Send +{Tab}
+<!<^<+w::Send ^+{Tab}
 
 <!,::Send {PgUp}
 <!.::Send {PgDn}
