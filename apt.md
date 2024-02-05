@@ -57,7 +57,7 @@ dash-to-panel@jderose9.github.com
 - [](https://unix.stackexchange.com/questions/260601/understanding-setting-up-different-input-methods)
 
 - [](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
-https://askubuntu.com/q/67758
+https://askubuntu.com/q/67758 disable bluetooth on startup
 https://askubuntu.com/q/223018
 
 - [](https://www.youtube.com/watch?v=KA6A3oeocHY&ab_channel=MentalOutlaw)
@@ -67,6 +67,11 @@ https://stackoverflow.com/q/70782793/11107541 https://askubuntu.com/q/293546/162
 
 https://askubuntu.com/q/1014187
 https://linrunner.de/tlp/usage/tlp.html#perform-a-battery-recalibration-while-on-ac-power
+https://linrunner.de/tlp/installation/ubuntu.html
+```
+START_CHARGE_THRESH_BAT0=40
+STOP_CHARGE_THRESH_BAT0=50
+```
 
 edit `/etc/bashrc` and enable the bash-completions things
 

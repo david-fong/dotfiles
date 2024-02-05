@@ -57,6 +57,7 @@
 
     "workbench.editor.closeOnFileDelete": true,
     "workbench.editor.limit.enabled": true,
+    "workbench.editor.limit.perEditorGroup": true,
     "editor.snippetSuggestions": "bottom",
     "editor.linkedEditing": true,
     "editor.dragAndDrop": false,
@@ -143,7 +144,7 @@
         },
     },
 
-    "markdown.editor.pasteUrlAsFormattedLink.enabled": "smart",
+    // "markdown.editor.pasteUrlAsFormattedLink.enabled": "smartWithSelection",
     "[markdown]": {
         "editor.wordWrap": "bounded",
         "editor.wrappingIndent": "indent",
