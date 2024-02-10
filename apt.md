@@ -50,6 +50,12 @@ dash-to-panel@jderose9.github.com
 
 - [](https://medium.com/@damko/a-simple-humble-but-comprehensive-guide-to-xkb-for-linux-6f1ad5e13450)
 <https://wiki.archlinux.org/title/X_keyboard_extension>
+https://who-t.blogspot.com/2020/02/user-specific-xkb-configuration-part-1.html
+https://who-t.blogspot.com/2020/07/user-specific-xkb-configuration-part-2.html
+https://who-t.blogspot.com/2020/08/user-specific-xkb-configuration-part-3.html
+https://who-t.blogspot.com/2020/09/user-specific-xkb-configuration-putting.html
+https://github.com/xkbcommon/libxkbcommon/issues/18#issuecomment-72728366
+https://github.com/xkbcommon/libxkbcommon/issues/145
 
 - [](https://askubuntu.com/questions/103249/how-to-increase-brightness-in-smaller-steps/1080149#1080149)
 

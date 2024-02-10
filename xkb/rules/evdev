@@ -1,0 +1,3 @@
+! option = symbols
+  custom:starball = +custom(starball)
+! include %S/evdev

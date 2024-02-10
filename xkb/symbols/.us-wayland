@@ -1,0 +1,59 @@
+partial alphanumeric_keys
+xkb_symbols "starball" {
+    include "us(basic)"
+    include "ctrl(nocaps)"
+    //include "level3(alt_switch)"
+    name[Group1]= "English (starball)";
+
+    key <TLDE> { [ grave, asciitilde ] };
+    key <AE01> { [ 1, exclam ] };
+    key <AE02> { [ 2, at ] };
+    key <AE03> { [ 3, numbersign ] };
+    key <AE04> { [ 4, dollar ] };
+    key <AE05> { [ 5, percent ] };
+    key <AE06> { [ 6, asciicircum ] };
+    key <AE07> { [ 7, ampersand ] };
+    key <AE08> { [ 8, asterisk ] };
+    key <AE09> { [ 0, parenleft ] };
+    key <AE10> { [ 9, parenright ] };
+    key <AE11> { [ minus, underscore ] };
+    key <AE12> { [ equal, plus ] };
+
+    key <AD01> { [ q, Q ] };
+    key <AD02> { [ w, W, Tab ], type="ALT_NAV", repeat=yes };
+    key <AD03> { [ e, E, Escape ], type="ALT_NAV", repeat=yes };
+    key <AD04> { [ r, R ] };
+    key <AD05> { [ t, T ] };
+    key <AD06> { [ y, Y ] };
+    key <AD07> { [ u, U ] };
+    key <AD08> { [ i, I, Right ], type="ALT_NAV", repeat=yes };
+    key <AD09> { [ o, O, BackSpace ], type="ALT_NAV", repeat=yes };
+    key <AD10> { [ p, P ] };
+    key <AD11> { [ bracketleft, braceleft ] };
+    key <AD12> { [ bracketright, braceright ] };
+
+    key <AC01> { [ a, A ] };
+    key <AC02> { [ s, S, Left ], type="ALT_NAV", repeat=yes };
+    key <AC03> { [ d, D, Delete ], type="ALT_NAV", repeat=yes };
+    key <AC04> { [ f, F, Return ], type="ALT_NAV", repeat=yes };
+    key <AC05> { [ g, G ] };
+    key <AC06> { [ h, H ] };
+    key <AC07> { [ j, J, Left ], type="ALT_NAV", repeat=yes };
+    key <AC08> { [ k, K, Up ], type="ALT_NAV", repeat=yes };
+    key <AC09> { [ l, L, Home ], type="ALT_NAV", repeat=yes };
+    key <AC10> { [ semicolon, colon, End ], type="ALT_NAV", repeat=yes };
+    key <AC11> { [ apostrophe, quotedbl ] };
+
+    key <AB01> { [ z, Z ] };
+    key <AB02> { [ x, X ] };
+    key <AB03> { [ c, C ] };
+    key <AB04> { [ v, V ] };
+    key <AB05> { [ b, B ] };
+    key <AB06> { [ n, N ] };
+    key <AB07> { [ m, M, Down ], type="ALT_NAV", repeat=yes };
+    key <AB08> { [ comma, less, Prior ], type="ALT_NAV", repeat=yes };
+    key <AB09> { [ period, greater, Next ], type="ALT_NAV", repeat=yes };
+    key <AB10> { [ slash, question ] };
+
+    key <BKSL> { [ backslash, bar ] };
+};

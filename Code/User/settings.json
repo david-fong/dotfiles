@@ -86,7 +86,7 @@
     "editor.renderWhitespace": "none",
     "editor.minimap.renderCharacters": false,
     "editor.suggest.showWords": false,
-    "editor.suggestSelection": "recentlyUsedByPrefix",
+    // "editor.suggestSelection": "recentlyUsedByPrefix",
     // "editor.suggest.selectionMode": ,
     // "editor.suggest.matchOnWordStartOnly": false,
     "editor.autoClosingDelete": "always",
@@ -161,11 +161,13 @@
     },
     "[json]": {
         "editor.tabSize": 2,
+        "editor.suggestSelection": "recentlyUsedByPrefix",
     },
     "[toml]": {
         "editor.tabSize": 2,
     },
     "[cpp]": {
+        "editor.suggestOnTriggerCharacters": false,
         "editor.quickSuggestions": {
             "comments": "off",
             "strings": "off",
@@ -187,6 +189,7 @@
         // "output.inlineBreak": 1
         "profile.allowCompactBoolean": true,
     },
+    "editor.multiCursorModifier": "ctrlCmd",
     // "editor.defaultColorDecorators": true,
     // "window.density.editorTabHeight": "compact"
     // "editor.hover.enabled": false,

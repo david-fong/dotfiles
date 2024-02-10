@@ -8,7 +8,7 @@ default xkb_types "complete" {
     include "level5"
     include "extra"
     include "numpad"
-    
+
     type "ALT_NAV" {
       modifiers = Shift+Alt;
       map[Shift] = Level2;

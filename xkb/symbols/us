@@ -1,6 +1,9 @@
-xkb_symbols "basic" {
-
-    name[Group1]= "English (US)";
+partial alphanumeric_keys
+xkb_symbols "starball" {
+    include "us(basic)"
+    include "ctrl(nocaps)"
+    // include "caps(ctrl_modifier)"
+    name[Group1]= "English (starball)";
 
     key <TLDE> {	[     grave,	asciitilde	]	};
     key <AE01> {	[	  1,	exclam 		]	};
