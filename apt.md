@@ -1,3 +1,4 @@
+setxkbmap -option ctrl:nocaps
 
 ```
 dconf-editor
@@ -20,7 +21,7 @@ exif ffmpeg pavucontrol
 
 build-essential
 clang clang-tidy conan doxygen g++
-ninja-build make
+mold ninja-build make
 linux-tools-generic
 ```
 
@@ -39,6 +40,11 @@ zoom-client
 
 gnome extensions:
 dash-to-panel@jderose9.github.com
+
+
+custom keyboard shortcuts:
+`xbacklight -dec 1 -time 333 -steps 2` for shift+MonBrightnessDown
+`xbacklight -inc 1 -time 333 -steps 2` for shift+MonBrightnessUp
 
 
 - [](https://help.ubuntu.com/stable/ubuntu-help/power-batterylife.html.en)

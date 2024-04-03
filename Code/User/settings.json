@@ -54,6 +54,7 @@
     "extensions.ignoreRecommendations": false,
     "extensions.closeExtensionDetailsOnViewChange": true,
     "telemetry.telemetryLevel": "off",
+    "editor.selectionClipboard": false,
 
     "workbench.editor.closeOnFileDelete": true,
     "workbench.editor.limit.enabled": true,
@@ -100,6 +101,7 @@
     "debug.inlineValues": "auto",
     "debug.console.fontSize": 11,
 
+    "terminal.integrated.shellIntegration.enabled": false,
     "terminal.integrated.cursorStyle": "underline",
     "terminal.integrated.cursorStyleInactive": "underline",
     "terminal.integrated.cursorBlinking": true,
@@ -189,11 +191,12 @@
         // "output.inlineBreak": 1
         "profile.allowCompactBoolean": true,
     },
-    "editor.multiCursorModifier": "ctrlCmd",
+    "diffEditor.renderSideBySide": false,
     // "editor.defaultColorDecorators": true,
     // "window.density.editorTabHeight": "compact"
     // "editor.hover.enabled": false,
     // "editor.hover.sticky": true,
     // "editor.suggest.preview": true,
     // "markdown.occurrencesHighlight.enabled": true,
+    // "editor.occurrencesHighlight": "off",
 }

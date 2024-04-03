@@ -23,11 +23,11 @@ declare -a grepargs=('--line-number' '--color=auto')
 grepargs+=('--exclude-dir={.git,bin,build,dist,compile,db,incremental_db,node_modules,.yarn,.vs,obj,packages,logs}')
 if [[ -f "${XDG_CONFIG_HOME}/grep/excludefrom" ]]
     then grepargs+=('--exclude-from="${XDG_CONFIG_HOME}/grep/excludefrom"'); fi
-alias fgrep='\grep '"${grepargs[@]}"''
-alias  grep='\grep '"${grepargs[@]}"' --extended-regexp'
+alias fgr='\grep '"${grepargs[@]}"''
+alias  gr='\grep '"${grepargs[@]}"' --extended-regexp'
 unset grepargs
 
-function rgrep {
+function rgr {
     grep -r --color=always "$@" | awk -F '[:]' -v OFS=':' 'f!=$1 {f=$1; print "\n"f} f==$1 {$1=""; printf "%34s",$2; $2=""; print}';
 }
 
