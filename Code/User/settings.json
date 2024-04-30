@@ -1,202 +1,210 @@
 {
-    "workbench.colorTheme": "Monokai",
-    "workbench.preferredDarkColorTheme": "Monokai",
-    "window.newWindowDimensions": "maximized",
-    "window.zoomLevel": 1.7, // 1.7
-    "window.confirmBeforeClose": "keyboardOnly",
-    "workbench.settings.editor": "json",
-    "window.dialogStyle": "custom",
+	"workbench.colorTheme": "Monokai",
+	"workbench.preferredDarkColorTheme": "Monokai",
+	"window.newWindowDimensions": "maximized",
+	"window.zoomLevel": 1.7, // 1.7
+	"window.confirmBeforeClose": "keyboardOnly",
+	"workbench.settings.editor": "json",
+	"window.dialogStyle": "custom",
 
-    // Top Bar
-    // "window.commandCenter": false // uncomment just for web
-    "window.titleBarStyle": "custom",
-    "window.enableMenuBarMnemonics": false,
-    "window.customMenuBarAltFocus": false,
-    "workbench.commandPalette.preserveInput": true,
-    "workbench.quickOpen.preserveInput": true,
-    "workbench.quickOpen.closeOnFocusLost": false,
-    // "files.simpleDialog.enable": true
-    "window.commandCenter": false,
+	// Top Bar
+	// "window.commandCenter": false // uncomment just for web
+	"window.titleBarStyle": "custom",
+	"window.enableMenuBarMnemonics": false,
+	"window.customMenuBarAltFocus": false,
+	"workbench.commandPalette.preserveInput": true,
+	"workbench.quickOpen.preserveInput": true,
+	"workbench.quickOpen.closeOnFocusLost": false,
+	"search.experimental.quickAccess.preserveInput": true,
+	// "files.simpleDialog.enable": true
+	"window.commandCenter": false,
 
-    // Tabs
-    "workbench.editor.tabActionCloseVisibility": false,
-    "workbench.editor.pinnedTabSizing": "shrink",
-    "workbench.editor.tabSizing": "shrink",
-    "zenMode.hideActivityBar": false,
+	// Tabs
+	"workbench.editor.tabActionCloseVisibility": false,
+	"workbench.editor.pinnedTabSizing": "shrink",
+	"workbench.editor.tabSizing": "shrink",
+	"zenMode.hideActivityBar": false,
 
-    // Sidebar
-    "workbench.sideBar.location": "left",
-    "workbench.sash.size": 7,
-    "workbench.sash.hoverDelay": 0,
-    "workbench.tree.indent": 15,
-    "workbench.tree.renderIndentGuides": "always",
-    "explorer.sortOrder": "default",
-    "explorer.autoReveal": false,
+	// Sidebar
+	"workbench.sideBar.location": "left",
+	"workbench.sash.size": 7,
+	"workbench.sash.hoverDelay": 0,
+	"workbench.tree.indent": 15,
+	"workbench.tree.renderIndentGuides": "always",
+	"explorer.sortOrder": "default",
+	"explorer.autoReveal": false,
 
-    // Icon Theme
-    "workbench.iconTheme": "material-icon-theme",
-    "material-icon-theme.files.associations": {
-        "TODO.md": "todo",
-    },
-    "material-icon-theme.folders.associations": {
-        "lib": "api", "libs": "api", // I don't like the color of the lib folder icon :P
-        "defs": "constant",
-        "impl": "class",
-        "repl": "command",
-        ".templates": "template",
-        ".ts": "typescript",
-    },
-    "material-icon-theme.hidesExplorerArrows": true,
+	// Icon Theme
+	"workbench.iconTheme": "material-icon-theme",
+	"material-icon-theme.files.associations": {
+		"TODO.md": "todo",
+	},
+	"material-icon-theme.folders.associations": {
+		"lib": "api", "libs": "api", // I don't like the color of the lib folder icon :P
+		"defs": "constant",
+		"impl": "class",
+		"repl": "command",
+		".templates": "template",
+		".ts": "typescript",
+	},
+	"material-icon-theme.hidesExplorerArrows": true,
 
-    // Behaviour
-    "window.restoreWindows": "none",
-    "workbench.startupEditor": "newUntitledFile",
-    "extensions.ignoreRecommendations": false,
-    "extensions.closeExtensionDetailsOnViewChange": true,
-    "telemetry.telemetryLevel": "off",
-    "editor.selectionClipboard": false,
+	// Behaviour
+	"window.restoreWindows": "none",
+	"workbench.startupEditor": "newUntitledFile",
+	"workbench.list.defaultFindMode": "filter",
+	"extensions.ignoreRecommendations": false,
+	"extensions.closeExtensionDetailsOnViewChange": true,
+	"telemetry.telemetryLevel": "off",
 
-    "workbench.editor.closeOnFileDelete": true,
-    "workbench.editor.limit.enabled": true,
-    "workbench.editor.limit.perEditorGroup": true,
-    "editor.snippetSuggestions": "bottom",
-    "editor.linkedEditing": true,
-    "editor.dragAndDrop": false,
+	"workbench.editor.closeOnFileDelete": true,
+	"workbench.editor.limit.enabled": true,
+	"workbench.editor.limit.perEditorGroup": true,
+	"editor.selectionClipboard": false,
+	"editor.snippetSuggestions": "bottom",
+	"editor.linkedEditing": true,
+	"editor.dragAndDrop": false,
 
-    "git.enableCommitSigning": true,
-    "git.suggestSmartCommit": false,
-    "git.enableStatusBarSync": false,
-    "git.alwaysShowStagedChangesResourceGroup": true,
-    // "git.showCommitInput": false,
-    "git.confirmSync": false,
+	"git.enableCommitSigning": true,
+	"git.suggestSmartCommit": false,
+	"git.enableStatusBarSync": false,
+	"git.alwaysShowStagedChangesResourceGroup": true,
+	// "git.showCommitInput": false,
+	"git.confirmSync": false,
 
-    "editor.tabSize": 3,
-    // "editor.fontFamily": "'Fira Code', Consolas, 'Courier New', monospace",
-    // "editor.fontLigatures": "'ss03', 'ss04', 'ss06', 'ss07', 'ss08'",
-    // "editor.fontSize": 11.5,
-    // "editor.fontWeight": "500",
-    // "editor.lineHeight": 17,
-    "editor.fontSize": 14.4,
-    // "editor.fontFamily": "'Consolas Ligaturized v2', Consolas, 'Courier New', monospace",
-    // "editor.fontLigatures": "'ss03', 'ss04', 'ss06', 'ss07', 'ss08'",
-    "editor.fontFamily": "'Inconsolata', 'consolas', 'Courier New', 'Ubuntu Mono'",
+	"editor.tabSize": 3,
+	// "editor.fontFamily": "'Fira Code', Consolas, 'Courier New', monospace",
+	// "editor.fontLigatures": "'ss03', 'ss04', 'ss06', 'ss07', 'ss08'",
+	// "editor.fontSize": 11.5,
+	// "editor.fontWeight": "500",
+	// "editor.lineHeight": 17,
+	"editor.fontSize": 14.4,
+	"editor.fontWeight": "800",
+	// "editor.fontFamily": "'Consolas Ligaturized v2', Consolas, 'Courier New', monospace",
+	// "editor.fontLigatures": "'ss03', 'ss04', 'ss06', 'ss07', 'ss08'",
+	"editor.fontFamily": "'Inconsolata', 'consolas', 'Courier New', 'Ubuntu Mono'",
 
-    // "editor.glyphMargin": false,
-    "editor.cursorSurroundingLines": 3,
-    "editor.accessibilitySupport": "off",
-    "editor.renderWhitespace": "none",
-    "editor.minimap.renderCharacters": false,
-    "editor.suggest.showWords": false,
-    // "editor.suggestSelection": "recentlyUsedByPrefix",
-    // "editor.suggest.selectionMode": ,
-    // "editor.suggest.matchOnWordStartOnly": false,
-    "editor.autoClosingDelete": "always",
-    "editor.bracketPairColorization.enabled": false,
-    // "editor.selectionHighlight": false,
+	// "editor.glyphMargin": false,
+	"editor.cursorSurroundingLines": 3,
+	"editor.accessibilitySupport": "off",
+	"editor.renderWhitespace": "none",
+	"editor.minimap.renderCharacters": false,
+	"editor.suggest.showWords": false,
+	// "editor.suggestSelection": "recentlyUsedByPrefix",
+	// "editor.suggest.selectionMode": ,
+	// "editor.suggest.matchOnWordStartOnly": false,
+	"editor.autoClosingDelete": "always",
+	"editor.bracketPairColorization.enabled": false,
+	// "editor.selectionHighlight": false,
 
-    "debug.openDebug": "openOnSessionStart",
-    // "debug.console.closeOnEnd": true,
-    "debug.openExplorerOnEnd": true,
-    "debug.toolBarLocation": "docked",
-    "debug.inlineValues": "auto",
-    "debug.console.fontSize": 11,
+	"debug.openDebug": "openOnSessionStart",
+	// "debug.console.closeOnEnd": true,
+	"debug.openExplorerOnEnd": true,
+	"debug.toolBarLocation": "docked",
+	"debug.inlineValues": "auto",
+	"debug.console.fontSize": 11,
 
-    "terminal.integrated.shellIntegration.enabled": false,
-    "terminal.integrated.cursorStyle": "underline",
-    "terminal.integrated.cursorStyleInactive": "underline",
-    "terminal.integrated.cursorBlinking": true,
-    "terminal.integrated.fontSize": 11,
-    "terminal.integrated.rightClickBehavior": "default",
-    "terminal.integrated.defaultProfile.windows": null,
-    // "terminal.integrated.sendKeybindingsToShell": true,
-    "terminal.integrated.commandsToSkipShell": ["workbench.action.togglePanel", "runCommands","type"],
+	"terminal.integrated.shellIntegration.enabled": false,
+	"terminal.integrated.cursorStyle": "underline",
+	"terminal.integrated.cursorStyleInactive": "underline",
+	"terminal.integrated.cursorBlinking": true,
+	"terminal.integrated.fontSize": 11,
+	"terminal.integrated.rightClickBehavior": "default",
+	"terminal.integrated.defaultProfile.windows": null,
+	// "terminal.integrated.sendKeybindingsToShell": true,
+	"terminal.integrated.commandsToSkipShell": ["workbench.action.togglePanel", "runCommands","type"],
 
 
-    "typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
-    "typescript.disableAutomaticTypeAcquisition": true,
-    "typescript.preferences.importModuleSpecifier": "non-relative",
-    //"typescript.implementationsCodeLens.enabled": true,
+	"typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
+	"typescript.disableAutomaticTypeAcquisition": true,
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+	//"typescript.implementationsCodeLens.enabled": true,
 
-    "dart.allowAnalytics": false,
-    "dart.flutterOutline": false,
+	"dart.allowAnalytics": false,
+	"dart.flutterOutline": false,
 
-    "cSpell.language": "en-GB",
+	"cSpell.language": "en-GB",
 
-    "todo-tree.tree.labelFormat": "${after}",
-    "todo-tree.highlights.enabled": true,
-    "todo-tree.filtering.useBuiltInExcludes": "file excludes",
-    "todo-tree.general.statusBar": "tags",
-    "todo-tree.tree.showCountsInTree": true,
-    "todo-tree.tree.flat": true,
-    "todo-tree.tree.hideIconsWhenGroupedByTag": true,
-    "todo-tree.general.tags": [
-        "TODO", "[ ]", "[x]"
-    ],
-    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
+	"todo-tree.tree.labelFormat": "${after}",
+	"todo-tree.highlights.enabled": true,
+	"todo-tree.filtering.useBuiltInExcludes": "file excludes",
+	"todo-tree.general.statusBar": "tags",
+	"todo-tree.tree.showCountsInTree": true,
+	"todo-tree.tree.flat": true,
+	"todo-tree.tree.hideIconsWhenGroupedByTag": true,
+	"todo-tree.general.tags": [
+		"TODO", "[ ]", "[x]"
+	],
+	"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
 
-    // Syntax Highlighting
-    "editor.tokenColorCustomizations": {
-        "[Solarized Dark]": {
-            "textMateRules": [{
-                "scope": "variable.language.this.ts",
-                "settings": {
-                    "foreground": "#BBBBBB",
-                },
-            }],
-        },
-    },
+	// Syntax Highlighting
+	"editor.tokenColorCustomizations": {
+		"[Solarized Dark]": {
+			"textMateRules": [{
+				"scope": "variable.language.this.ts",
+				"settings": {
+					"foreground": "#BBBBBB",
+				},
+			}],
+		},
+	},
 
-    // "markdown.editor.pasteUrlAsFormattedLink.enabled": "smartWithSelection",
-    "[markdown]": {
-        "editor.wordWrap": "bounded",
-        "editor.wrappingIndent": "indent",
-        "editor.quickSuggestions": {
-            "comments": "off",
-            "strings": "off",
-            "other": "off"
-        },
-        "editor.tabSize": 2,
-    },
-    "[plaintext]": {
-        "editor.wordWrap": "off", // bounded
-        "editor.wrappingIndent": "same",
-    },
-    "[json]": {
-        "editor.tabSize": 2,
-        "editor.suggestSelection": "recentlyUsedByPrefix",
-    },
-    "[toml]": {
-        "editor.tabSize": 2,
-    },
-    "[cpp]": {
-        "editor.suggestOnTriggerCharacters": false,
-        "editor.quickSuggestions": {
-            "comments": "off",
-            "strings": "off",
-            "other": "off"
-        }, // it got annoying.
-        "editor.tabSize": 3,
-    },
+	// "markdown.editor.pasteUrlAsFormattedLink.enabled": "smartWithSelection",
+	"[markdown]": {
+		"editor.wordWrap": "bounded",
+		"editor.wrappingIndent": "indent",
+		"editor.quickSuggestions": {
+			"comments": "off",
+			"strings": "off",
+			"other": "off"
+		},
+		"editor.tabSize": 2,
+	},
+	"[plaintext]": {
+		"editor.wordWrap": "off", // bounded
+		"editor.wrappingIndent": "same",
+	},
+	"[json]": {
+		"editor.tabSize": 2,
+		"editor.suggestSelection": "recentlyUsedByPrefix",
+	},
+	"[toml]": {
+		"editor.tabSize": 2,
+	},
+	"[cpp]": {
+		"editor.suggestOnTriggerCharacters": false,
+		"editor.quickSuggestions": {
+			"comments": "off",
+			"strings": "off",
+			"other": "off"
+		}, // it got annoying.
+		"editor.tabSize": 3,
+	},
 
-    "C_Cpp.intelliSenseCacheSize": 0,
-    "C_Cpp.autoAddFileAssociations": false,
-    "cmake.emscriptenSearchDirs": ["~/code/tool/emsdk/upstream/emscripten"], // editor.action.selectHighlights addCursorsAtSearchResults selectAllSearchEditorMatches
-    "cmake.statusbar.visibility": "compact",
+	"C_Cpp.intelliSenseCacheSize": 0,
+	"C_Cpp.autoAddFileAssociations": false,
+	"cmake.emscriptenSearchDirs": ["~/code/tool/emsdk/upstream/emscripten"], // editor.action.selectHighlights addCursorsAtSearchResults selectAllSearchEditorMatches
+	// https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/cmake-options-configuration.md
 	"cmake.configureOnOpen": false,
-    "cmake.configureOnEdit": false,
-    "notebook.outline.showCodeCells": true,
-    "emmet.syntaxProfiles": {
-    },
-    "emmet.preferences": {
-        // "output.inlineBreak": 1
-        "profile.allowCompactBoolean": true,
-    },
-    "diffEditor.renderSideBySide": false,
-    // "editor.defaultColorDecorators": true,
-    // "window.density.editorTabHeight": "compact"
-    // "editor.hover.enabled": false,
-    // "editor.hover.sticky": true,
-    // "editor.suggest.preview": true,
-    // "markdown.occurrencesHighlight.enabled": true,
-    // "editor.occurrencesHighlight": "off",
+	"cmake.configureOnEdit": false,
+	"cmake.showOptionsMovedNotification": false,
+	"cmake.pinnedCommands": [ // I don't remember setting this... what is this?
+		"workbench.action.tasks.configureTaskRunner",
+		"workbench.action.tasks.runTask"
+	],
+	"notebook.outline.showCodeCells": true,
+	"emmet.syntaxProfiles": {
+	},
+	"emmet.preferences": {
+		// "output.inlineBreak": 1
+		"profile.allowCompactBoolean": true,
+	},
+	"diffEditor.renderSideBySide": false,
+	// "editor.defaultColorDecorators": true,
+	// "window.density.editorTabHeight": "compact"
+	// "editor.hover.enabled": false,
+	// "editor.hover.sticky": true,
+	// "editor.suggest.preview": true,
+	// "markdown.occurrencesHighlight.enabled": true,
+	// "editor.occurrencesHighlight": "off",
 }

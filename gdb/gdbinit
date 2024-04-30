@@ -1,6 +1,6 @@
 tui enable
-tui new-layout a {-horizontal src 1 cmd 1} 2 status 0
-layout a
+#tui new-layout a {-horizontal src 1 cmd 1} 2 status 0
+#layout a
 focus cmd
 
 set tui compact-source on
@@ -12,7 +12,10 @@ set print pretty on
 add-auto-load-safe-path /home/david/code/mine/okiidoku/cpp/tools/okiidoku.gdb.py
 add-auto-load-safe-path /home/david/code/mine/okiidoku/cpp/out/build/dev.gcc
 
+set debuginfod enabled on
+set startup-with-shell off
 #skip -gfi /usr/include/c++/*/*/*
 #skip -gfi /usr/include/c++/*/*
 #skip -gfi /usr/include/c++/*
-#b abort
+#b main
+b abort

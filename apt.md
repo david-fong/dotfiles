@@ -47,7 +47,6 @@ custom keyboard shortcuts:
 `xbacklight -inc 1 -time 333 -steps 2` for shift+MonBrightnessUp
 
 
-- [](https://help.ubuntu.com/stable/ubuntu-help/power-batterylife.html.en)
 
 - [](https://askubuntu.com/questions/147462/how-can-i-change-the-tty-colors)
 
@@ -70,19 +69,25 @@ https://github.com/xkbcommon/libxkbcommon/issues/145
 
 - [](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
 https://askubuntu.com/q/67758 disable bluetooth on startup
-https://askubuntu.com/q/223018
+https://askubuntu.com/q/223018 vim is not remembering last position
 
 - [](https://www.youtube.com/watch?v=KA6A3oeocHY&ab_channel=MentalOutlaw)
 - [](https://github.com/StevenBlack/hosts)
 
-https://stackoverflow.com/q/70782793/11107541 https://askubuntu.com/q/293546/1624654
+https://stackoverflow.com/q/70782793/11107541 Is there a way to suppress sec-ua* headers in Chrome?
+https://superuser.com/a/1497461/1749748 Is it possible to disable the HTTP referer header being passed by browsers?
+https://askubuntu.com/q/293546/1624654 How to launch google-chrome with custom parameters by default?
+--disable-features=UserAgentClientHint --no-referrers --disable-domain-reliability --metrics-recording-only
+https://github.com/GoogleChrome/chrome-launcher/blob/main/docs/chrome-flags-for-tools.md
 
-https://askubuntu.com/q/1014187
+- [](https://help.ubuntu.com/stable/ubuntu-help/power-batterylife.html.en)
+https://askubuntu.com/q/1014187 Thinkpad Battery drops at 40%
 https://linrunner.de/tlp/usage/tlp.html#perform-a-battery-recalibration-while-on-ac-power
 https://linrunner.de/tlp/installation/ubuntu.html
+in /etc/tlp.conf
 ```
-START_CHARGE_THRESH_BAT0=40
-STOP_CHARGE_THRESH_BAT0=50
+START_CHARGE_THRESH_BAT0=20
+STOP_CHARGE_THRESH_BAT0=30
 ```
 
 edit `/etc/bashrc` and enable the bash-completions things
