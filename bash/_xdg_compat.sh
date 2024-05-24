@@ -18,6 +18,7 @@ declare -rx NODE_REPL_HISTORY="${XDG_STATE_HOME}/.node_repl_history"
 declare -rx       GDBHISTFILE="${XDG_STATE_HOME}/gdb/history"
 declare -rx    PYTHON_HISTORY="${XDG_STATE_HOME}/python/history"
 alias wget='\wget --hsts-file="${XDG_CACHE_HOME}/wget-hsts"'
+declare -rx    SQLITE_HISTORY="${XDG_STATE_HOME}/sqlite_history"
 
 declare -rx       INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
 declare -rx RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/grep/ripgrep"

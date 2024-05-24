@@ -61,6 +61,8 @@ https://who-t.blogspot.com/2020/08/user-specific-xkb-configuration-part-3.html
 https://who-t.blogspot.com/2020/09/user-specific-xkb-configuration-putting.html
 https://github.com/xkbcommon/libxkbcommon/issues/18#issuecomment-72728366
 https://github.com/xkbcommon/libxkbcommon/issues/145
+TODO https://askubuntu.com/a/1216744/1624654 consider remapping alt key to something else and using that something else as the modifier?
+https://docs.gtk.org/gtk3/property.Settings.gtk-enable-mnemonics.html annoyingly, this is deprecated.
 
 - [](https://askubuntu.com/questions/103249/how-to-increase-brightness-in-smaller-steps/1080149#1080149)
 
@@ -77,8 +79,13 @@ https://askubuntu.com/q/223018 vim is not remembering last position
 https://stackoverflow.com/q/70782793/11107541 Is there a way to suppress sec-ua* headers in Chrome?
 https://superuser.com/a/1497461/1749748 Is it possible to disable the HTTP referer header being passed by browsers?
 https://askubuntu.com/q/293546/1624654 How to launch google-chrome with custom parameters by default?
---disable-features=UserAgentClientHint --no-referrers --disable-domain-reliability --metrics-recording-only
+https://developer-old.gnome.org/desktop-entry-spec/
+xdg-desktop-menu forceupdate
+ --enable-features=ReduceUserAgent --no-referrers --disable-domain-reliability --metrics-recording-only --no-pings
 https://github.com/GoogleChrome/chrome-launcher/blob/main/docs/chrome-flags-for-tools.md
+https://peter.sh/experiments/chromium-command-line-switches/
+https://chromium.googlesource.com/chromium/src/+/361ea625a796df11fb159a837a8cd3d7265873d7 `enable_referrers` preference
+https://superuser.com/a/1840964/1749748
 
 - [](https://help.ubuntu.com/stable/ubuntu-help/power-batterylife.html.en)
 https://askubuntu.com/q/1014187 Thinkpad Battery drops at 40%
@@ -89,6 +96,7 @@ in /etc/tlp.conf
 START_CHARGE_THRESH_BAT0=20
 STOP_CHARGE_THRESH_BAT0=30
 ```
+https://askubuntu.com/q/1405846/1624654 set ubuntu low power value
 
 edit `/etc/bashrc` and enable the bash-completions things
 

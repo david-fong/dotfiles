@@ -15,7 +15,6 @@
 	"workbench.commandPalette.preserveInput": true,
 	"workbench.quickOpen.preserveInput": true,
 	"workbench.quickOpen.closeOnFocusLost": false,
-	"search.experimental.quickAccess.preserveInput": true,
 	// "files.simpleDialog.enable": true
 	"window.commandCenter": false,
 
@@ -119,6 +118,7 @@
 	"typescript.disableAutomaticTypeAcquisition": true,
 	"typescript.preferences.importModuleSpecifier": "non-relative",
 	//"typescript.implementationsCodeLens.enabled": true,
+	// "js/ts.implicitProjectConfig.checkJs": true,
 
 	"dart.allowAnalytics": false,
 	"dart.flutterOutline": false,
@@ -200,6 +200,7 @@
 		"profile.allowCompactBoolean": true,
 	},
 	"diffEditor.renderSideBySide": false,
+	"search.quickAccess.preserveInput": true,
 	// "editor.defaultColorDecorators": true,
 	// "window.density.editorTabHeight": "compact"
 	// "editor.hover.enabled": false,
