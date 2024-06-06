@@ -129,8 +129,7 @@ eval "(gpg-agent --daemon)" 2> /dev/null
 #readonly -f ssh-agent
 
 
-# finalize prompt:
-source "$(dirname "${BASH_SOURCE[0]}")""/_prompt.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_prompt.sh"
 
 #xkbcomp "$HOME/.config/xkb/xkb.xkb" $DISPLAY 2>/dev/null
 # ^copy the above into /usr/share/X11/xkb/symbols/us
@@ -141,4 +140,4 @@ if [[ -x "$(command -v xset)" ]]; then
     xset r 57; xset r 58; xset r 59; xset r 60;
 fi
 
-set +eo pipefail
+#set +eo pipefail

@@ -71,6 +71,7 @@ https://docs.gtk.org/gtk3/property.Settings.gtk-enable-mnemonics.html annoyingly
 
 - [](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
 https://askubuntu.com/q/67758 disable bluetooth on startup
+  /etc/bluetooth/main.conf AutoEnable=false
 https://askubuntu.com/q/223018 vim is not remembering last position
 
 - [](https://www.youtube.com/watch?v=KA6A3oeocHY&ab_channel=MentalOutlaw)

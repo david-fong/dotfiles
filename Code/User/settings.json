@@ -77,8 +77,8 @@
 	// "editor.fontSize": 11.5,
 	// "editor.fontWeight": "500",
 	// "editor.lineHeight": 17,
-	"editor.fontSize": 14.4,
-	"editor.fontWeight": "800",
+	"editor.fontSize": 14.4, // 14.4
+	"editor.fontWeight": "800", // "800"
 	// "editor.fontFamily": "'Consolas Ligaturized v2', Consolas, 'Courier New', monospace",
 	// "editor.fontLigatures": "'ss03', 'ss04', 'ss06', 'ss07', 'ss08'",
 	"editor.fontFamily": "'Inconsolata', 'consolas', 'Courier New', 'Ubuntu Mono'",

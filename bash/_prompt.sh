@@ -1,14 +1,14 @@
 #!/bin/bash
 # https://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/bash-prompt-escape-sequences.html
-set -eo pipefail
+#set -eo pipefail
 
-if test -z "$WINELOADERNOEXEC"
+if [ -z "$WINELOADERNOEXEC" ]
 then
     GIT_EXEC_PATH="$(git --exec-path 2>/dev/null)"
     COMPLETION_PATH="${GIT_EXEC_PATH%/libexec/git-core}"
     COMPLETION_PATH="${COMPLETION_PATH%/lib/git-core}"
     COMPLETION_PATH="${COMPLETION_PATH}/share/git/completion"
-    if test -f "$COMPLETION_PATH/git-prompt.sh"
+    if [ -f "$COMPLETION_PATH/git-prompt.sh" ]
     then
         . "$COMPLETION_PATH/git-completion.bash"
         #. "$COMPLETION_PATH/git-prompt.sh"
@@ -29,9 +29,7 @@ fi
 # }
 # readonly -f __ps1_face
 PS1="\n\[\033[32m\]\u@\H \[\033[33m\]\w\[\033[36m\] (._.)\[\033[37m\]\n$\[\033[0m\] "
-#declare -rx PS1
-declare -x PS1
 
-declare -rxi PROMPT_DIRTRIM=5
+declare -i PROMPT_DIRTRIM=5
 
-set +eo pipefail
+#set +eo pipefail
