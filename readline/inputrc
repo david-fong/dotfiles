@@ -21,7 +21,7 @@ set convert-meta off
 set visible-stats off
 set colored-stats on
 set mark-directories on
-set mark-symlinked-directories on
+set mark-symlinked-directories on # hmm... careful with this... rm -r of symlink to directory with trailing slash
 
 #set keymap jimk
 

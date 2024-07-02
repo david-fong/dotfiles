@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 
+alias g='git'
 alias nom='pnpm'
 alias nomx='pnpx'
 

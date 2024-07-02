@@ -38,7 +38,7 @@ declare -a histignore=(
     'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
     'todo'
     #'./build*' './main' 'npm\ run\ start'
-    'tig' 'git\ status' 'git\ s' 'git\ a' 'git\ br' 'git\ diff' 'dit\ d'
+    'tig' 'git\ status' 'git\ s' 'g\ s' 'git\ a' 'g\ a' 'git\ br' 'g\ br' 'git\ diff' 'git\ d' 'g\ d' 'git\ dc' 'g\ dc'
 )
 export HISTIGNORE=
 for pattern in "${histignore[@]}"; do

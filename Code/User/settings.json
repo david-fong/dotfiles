@@ -10,8 +10,10 @@
 	// Top Bar
 	// "window.commandCenter": false // uncomment just for web
 	"window.titleBarStyle": "custom",
+	"window.customTitleBarVisibility": "windowed",
 	"window.enableMenuBarMnemonics": false,
 	"window.customMenuBarAltFocus": false,
+	"window.menuBarVisibility": "compact",
 	"workbench.commandPalette.preserveInput": true,
 	"workbench.quickOpen.preserveInput": true,
 	"workbench.quickOpen.closeOnFocusLost": false,
@@ -52,6 +54,7 @@
 	"window.restoreWindows": "none",
 	"workbench.startupEditor": "newUntitledFile",
 	"workbench.list.defaultFindMode": "filter",
+	"workbench.list.horizontalScrolling": true,
 	"extensions.ignoreRecommendations": false,
 	"extensions.closeExtensionDetailsOnViewChange": true,
 	"telemetry.telemetryLevel": "off",
@@ -188,10 +191,7 @@
 	"cmake.configureOnOpen": false,
 	"cmake.configureOnEdit": false,
 	"cmake.showOptionsMovedNotification": false,
-	"cmake.pinnedCommands": [ // I don't remember setting this... what is this?
-		"workbench.action.tasks.configureTaskRunner",
-		"workbench.action.tasks.runTask"
-	],
+
 	"notebook.outline.showCodeCells": true,
 	"emmet.syntaxProfiles": {
 	},
@@ -201,6 +201,10 @@
 	},
 	"diffEditor.renderSideBySide": false,
 	"search.quickAccess.preserveInput": true,
+	"cmake.pinnedCommands": [
+		"workbench.action.tasks.configureTaskRunner",
+		"workbench.action.tasks.runTask"
+	],
 	// "editor.defaultColorDecorators": true,
 	// "window.density.editorTabHeight": "compact"
 	// "editor.hover.enabled": false,
