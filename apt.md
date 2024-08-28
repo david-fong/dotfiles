@@ -1,5 +1,7 @@
 setxkbmap -option ctrl:nocaps
 
+https://apt.kitware.com/
+
 ```
 dconf-editor
 gnome-browser-connector
@@ -9,7 +11,7 @@ tlp tlp-rdw
 pavucontrol
 fonts-inconsolata
 
-tree vim git git-lfs tig ripgrep jq reuse net-tools sqlite3 sqlitebrowser
+tree nnn vim git git-lfs tig ripgrep jq reuse net-tools sqlite3 sqlitebrowser
 
 libboost-all-dev
 libssl-dev
@@ -18,8 +20,9 @@ default-jdk maven
 
 gimp
 exif ffmpeg pavucontrol
+yt-dlp
 
-build-essential
+build-essential cmake
 clang clang-tidy conan doxygen g++
 mold ninja-build make
 linux-tools-generic
@@ -28,7 +31,6 @@ linux-tools-generic
 snaps:
 ```
 audacity
-cmake
 code
 discord
 flutter
@@ -46,6 +48,8 @@ custom keyboard shortcuts:
 `xbacklight -dec 1 -time 333 -steps 2` for shift+MonBrightnessDown
 `xbacklight -inc 1 -time 333 -steps 2` for shift+MonBrightnessUp
 
+dump gnome-terminal settings:
+dconf dump /org/gnome/terminal/ > ~/.config/gnome-terminal
 
 
 - [](https://askubuntu.com/questions/147462/how-can-i-change-the-tty-colors)

@@ -56,6 +56,7 @@ set mark-symlinked-directories on # hmm... careful with this... rm -r of symlink
 "\eA": insert-comment
 
 # arrow-keys
+# TODO does this work at all / better if switching \e to \M?
 "\ej": backward-char
 "\ei": forward-char
 "\el": beginning-of-line
@@ -71,6 +72,13 @@ set mark-symlinked-directories on # hmm... careful with this... rm -r of symlink
 "\e/": kill-whole-line
 "\eD": kill-whole-line
 "\eh": "~"
+
+"\C-n": "n\C-m"
+"\C-g": "tig\C-m"
+"\C-p": " | less\C-m"
+"\e[1;5A": "popd\C-m"
+"\e[1;3D": "popd\C-m"
+"\e[1;5B": "pushd .\C-m"
 
 $if Gdb
 "\C-h": backward-delete-char

@@ -15,8 +15,7 @@ source "${XDG_CONFIG_HOME}/bash/_xdg_compat.sh"
 
 # disable sending and receiving XON/XOFF
 # (only one is actually necessary to do)
-stty stop '' -ixoff
-stty stop '' -ixon
+stty -ixoff -ixon
 
 tabs -3
 
@@ -35,10 +34,10 @@ declare -a histignore=(
     'sudo\ *' 'rm\ -rf'
     'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear'
     'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
-    'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *'
+    'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *' 'nnn' 'n'
     'todo'
     #'./build*' './main' 'npm\ run\ start'
-    'tig' 'git\ status' 'git\ s' 'g\ s' 'git\ a' 'g\ a' 'git\ br' 'g\ br' 'git\ diff' 'git\ d' 'g\ d' 'git\ dc' 'g\ dc'
+    'tig' 'git\ status' 'git\ s' 'g\ s' 's' 'git\ a\ *' 'g\ a\ *' 'git\ br' 'g\ br' 'git\ diff' 'git\ d' 'g\ d' 'git\ dc' 'g\ dc'
 )
 export HISTIGNORE=
 for pattern in "${histignore[@]}"; do
@@ -68,6 +67,8 @@ alias      alsl='"$EDITOR" "${XDG_CONFIG_HOME}/bash/_aliases__local.sh"'
 alias     vimrc='"$EDITOR" "${XDG_CONFIG_HOME}/vim/main.vim"'
 alias gitconfig='"$EDITOR" "${XDG_CONFIG_HOME}/git/config"'
 alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ noma /etc/tigrc | 20 wincmd > | wincmd p"'
+[[ -f "${XDG_CONFIG_HOME}/nnn/quitcd.bash_sh_zsh" ]] && source "${XDG_CONFIG_HOME}/nnn/quitcd.bash_sh_zsh"
+#declare -x CMAKE_BUILD_PARALLEL_LEVEL="$(($(nproc)-2>0?$(nproc)-2:1))" in local aliases
 
 
 # less command behaviour:
@@ -78,10 +79,10 @@ alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ n
 # -J : show status-column
 # -N : show line numbers (off)
 # -M : use long prompt
-# -x4: use <4> as tabstop
-# -#N: use <N> as the horizontal scroll amount
+# -x3: use <N> as tabstop
+# -#6: use <N> as the horizontal scroll amount
 # -S : chop long lines
-declare -x LESS='-+X -+F -qRJM -x4 -#4 -S'
+declare -x LESS='-+X -+F -qRJM -x3 -#6 -S'
 
 # https://github.com/mintty/mintty/issues/170#issuecomment-108889098
 # disable mouse-scrolling in mintty for the alternate screen
@@ -134,10 +135,5 @@ source "$(dirname "${BASH_SOURCE[0]}")/_prompt.sh"
 #xkbcomp "$HOME/.config/xkb/xkb.xkb" $DISPLAY 2>/dev/null
 # ^copy the above into /usr/share/X11/xkb/symbols/us
 # Note: https://bugs.freedesktop.org/show_bug.cgi?id=78661
-if [[ -x "$(command -v xset)" ]]; then
-    xset r 25; xset r 26; xset r 27; xset r 31; xset r 32; xset r 38; xset r 39;
-    xset r 40; xset r 41; xset r 43; xset r 44; xset r 45; xset r 46; xset r 47;
-    xset r 57; xset r 58; xset r 59; xset r 60;
-fi
 
 #set +eo pipefail

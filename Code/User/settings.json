@@ -8,7 +8,7 @@
 	"window.dialogStyle": "custom",
 
 	// Top Bar
-	// "window.commandCenter": false // uncomment just for web
+	"window.commandCenter": false,
 	"window.titleBarStyle": "custom",
 	"window.customTitleBarVisibility": "windowed",
 	"window.enableMenuBarMnemonics": false,
@@ -18,7 +18,6 @@
 	"workbench.quickOpen.preserveInput": true,
 	"workbench.quickOpen.closeOnFocusLost": false,
 	// "files.simpleDialog.enable": true
-	"window.commandCenter": false,
 
 	// Tabs
 	"workbench.editor.tabActionCloseVisibility": false,
@@ -140,7 +139,14 @@
 	],
 	"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
 
-	// Syntax Highlighting
+	// Highlighting
+	"workbench.colorCustomizations": {
+		"editor.findMatchBackground": "#0128",
+		"editor.findMatchHighlightForeground": "#fffe",
+		"editor.findMatchBorder": "#fffb",
+		"tab.activeBorder": "#fffb",
+		// "tab.activeBorderTop": "#fffb",
+	},
 	"editor.tokenColorCustomizations": {
 		"[Solarized Dark]": {
 			"textMateRules": [{
@@ -186,7 +192,7 @@
 
 	"C_Cpp.intelliSenseCacheSize": 0,
 	"C_Cpp.autoAddFileAssociations": false,
-	"cmake.emscriptenSearchDirs": ["~/code/tool/emsdk/upstream/emscripten"], // editor.action.selectHighlights addCursorsAtSearchResults selectAllSearchEditorMatches
+	"cmake.emscriptenSearchDirs": ["~/c/tool/emsdk/upstream/emscripten"], // editor.action.selectHighlights addCursorsAtSearchResults selectAllSearchEditorMatches
 	// https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/cmake-options-configuration.md
 	"cmake.configureOnOpen": false,
 	"cmake.configureOnEdit": false,
@@ -205,6 +211,7 @@
 		"workbench.action.tasks.configureTaskRunner",
 		"workbench.action.tasks.runTask"
 	],
+	"diffEditor.experimental.useTrueInlineView": true,
 	// "editor.defaultColorDecorators": true,
 	// "window.density.editorTabHeight": "compact"
 	// "editor.hover.enabled": false,

@@ -3,7 +3,7 @@
     path = ./config__local
     path = ./git_tigrc
 
-[includeIf "gitdir:**/code/fork/"]
+[includeIf "gitdir:**/c/fork/"]
     path = ./config__forks
 
 [core]

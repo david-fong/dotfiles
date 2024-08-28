@@ -1,7 +1,7 @@
 #!/bin/bash
 # https://wiki.archlinux.org/index.php/XDG_Base_Directory
 # https://web.archive.org/web/20180827160401/plus.google.com/+RobPikeTheHuman/posts/R58WgWwN9jp
-set -eo pipefail
+#set -eo pipefail
 
 mkdir -p "${XDG_DATA_HOME}/bash"
 mkdir -p "${XDG_STATE_HOME}/bash"
@@ -11,6 +11,7 @@ mkdir -p "${XDG_DATA_HOME}/gradle"
 mkdir -p "${XDG_CACHE_HOME}/ccache"
 mkdir -p "${XDG_CACHE_HOME}/ipython"
 alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
+[[ ! -f "${XDG_DATA_HOME}/bash-completion/completions/cmake" ]] && ln -s /snap/cmake/current/share/bash-completion/completions/* "${XDG_DATA_HOME}/bash-completion/completions"
 
 declare -rx CPM_SOURCE_CACHE="${XDG_CACHE_HOME}/CPM"
 declare -rx PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}/python"
@@ -38,4 +39,4 @@ declare -rx   CARGO_HOME="${XDG_DATA_HOME}/cargo"
 #[[ -f "${XDG_DATA_HOME}/emsdk/emsdk_env.sh" ]] && source "${XDG_DATA_HOME}/emsdk/emsdk_env.sh"
 declare -rx RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
 
-set +eo pipefail
+#set +eo pipefail

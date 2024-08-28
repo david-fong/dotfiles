@@ -4,6 +4,7 @@
 
 [tig]
     mouse = true
+    tab-size = 3
     main-options = "--all"
 
     start-on-head                   = yes

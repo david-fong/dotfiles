@@ -1,9 +1,20 @@
 #!/bin/bash
-set -eo pipefail
+#set -eo pipefail
 
+alias l='less'
 alias g='git'
+alias s='git s'
+alias d='git d'
 alias nom='pnpm'
 alias nomx='pnpx'
+alias mc='mc -u' # midnight-commander disable subshell due to startup time issues
+
+alias n='nnn-quitcd -QAen'
+# Q don't prompt on quit
+# A disable directory auto-enter on filter match
+# e use $VISUAL or fallback to $EDITOR
+## o open files on enter only
+# n start in type-to-nav mode. toggle with ^N
 
 alias greeting='clear; \echo -e "\n$(heading "$(date)")""\n"'
 alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
@@ -61,7 +72,7 @@ alias ls='\ls -CX --color=auto --group-directories-first --width=90'
 function lsa() {
     ls "$@" -o --almost-all --human-readable
 }
-alias clsa='greeting; lsa'
+alias clsa='clear'
 function lsen() {
     for extension in "$@"; do
         echo
@@ -110,4 +121,4 @@ function heading() {
 #readonly -f todo lsa lsen home heading
 #export   -f todo lsa lsen home heading
 
-set +eo pipefail
+#set +eo pipefail

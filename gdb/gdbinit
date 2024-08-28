@@ -9,8 +9,8 @@ set tui tab-width 3
 set print static-members off
 set print pretty on
 
-add-auto-load-safe-path /home/david/code/mine/okiidoku/cpp/tools/okiidoku.gdb.py
-add-auto-load-safe-path /home/david/code/mine/okiidoku/cpp/out/build/dev.gcc
+add-auto-load-safe-path /home/david/c/m/ok/cpp/tools/okiidoku.gdb.py
+add-auto-load-safe-path /home/david/c/m/ok/cpp/out/build/dev.gcc
 
 set debuginfod enabled on
 set startup-with-shell off
