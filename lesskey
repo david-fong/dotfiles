@@ -57,15 +57,17 @@ w noaction
 # this below line solves jank boundary scrolling.
 LESS_TERMCAP_vb=
 
-# TODO this isn't working. why?
+# TODO this isn't working. why? it works on version 643, but not on 590?
+# less command behaviour:
 # +X : enable startup termcap
-# -F : print to console if 1 page
+# -F : (not used) print to console if 1 page
 # -q : medium-quiet
 # -R : interpret escape-sequences
 # -J : show status-column
-# -N : show line numbers
+# -N : show line numbers (off)
 # -M : use long prompt
-# -x4: use <4> as tabstop
-LESS='-+X -+F -qRJM -x4 -#4'
-
+# -x3: use <N> as tabstop
+# -#6: use <N> as the horizontal scroll amount
+# -S : chop long lines
+LESS=-+X -+F -qRJM -x3 -#6 -S
 

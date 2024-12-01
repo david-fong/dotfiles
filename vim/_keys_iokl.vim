@@ -9,4 +9,7 @@ map  <silent> <C-DOWN> <C-E>
 imap <silent> <C-UP>   <C-O><C-Y>
 imap <silent> <C-DOWN> <C-O><C-E>
 
+map  <silent> <M-N> <N>
+imap <silent> <M-N> <C-O><N>
+
 cnoremap <silent> <M-A> <TAB>

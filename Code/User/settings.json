@@ -11,6 +11,7 @@
 	"window.commandCenter": false,
 	"window.titleBarStyle": "custom",
 	"window.customTitleBarVisibility": "windowed",
+	"window.experimentalControlOverlay": false,
 	"window.enableMenuBarMnemonics": false,
 	"window.customMenuBarAltFocus": false,
 	"window.menuBarVisibility": "compact",
@@ -218,5 +219,4 @@
 	// "editor.hover.sticky": true,
 	// "editor.suggest.preview": true,
 	// "markdown.occurrencesHighlight.enabled": true,
-	// "editor.occurrencesHighlight": "off",
 }

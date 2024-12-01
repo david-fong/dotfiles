@@ -1,6 +1,9 @@
 setxkbmap -option ctrl:nocaps
 
 https://apt.kitware.com/
+https://mpv.io/installation/
+add-apt-repository ppa:git-core/ppa (deb https://apt.fruit.je/ubuntu noble mpv)
+https://code.visualstudio.com/download (.deb)
 
 ```
 dconf-editor
@@ -20,7 +23,7 @@ default-jdk maven
 
 gimp
 exif ffmpeg pavucontrol
-yt-dlp
+mpv yt-dlp
 
 build-essential cmake
 clang clang-tidy conan doxygen g++
@@ -31,7 +34,6 @@ linux-tools-generic
 snaps:
 ```
 audacity
-code
 discord
 flutter
 gradle
@@ -43,6 +45,8 @@ zoom-client
 gnome extensions:
 dash-to-panel@jderose9.github.com
 
+https://protonvpn.com/support/linux-openvpn/
+
 
 custom keyboard shortcuts:
 `xbacklight -dec 1 -time 333 -steps 2` for shift+MonBrightnessDown
@@ -51,6 +55,7 @@ custom keyboard shortcuts:
 dump gnome-terminal settings:
 dconf dump /org/gnome/terminal/ > ~/.config/gnome-terminal
 
+<https://help.ubuntu.com/community/EnvironmentVariables#Persistent_environment_variables>
 
 - [](https://askubuntu.com/questions/147462/how-can-i-change-the-tty-colors)
 
@@ -81,6 +86,10 @@ https://askubuntu.com/q/223018 vim is not remembering last position
 - [](https://www.youtube.com/watch?v=KA6A3oeocHY&ab_channel=MentalOutlaw)
 - [](https://github.com/StevenBlack/hosts)
 
+chrome://flags/#global-media-controls-cast-start-stop
+chrome://flags/#tab-reorganization
+https://www.usa.canon.com/support/p/imageclass-mf4570dw (it manually installed libjpeg62, and some libcups/cups stuff libcupsimage2t64)
+
 https://stackoverflow.com/q/70782793/11107541 Is there a way to suppress sec-ua* headers in Chrome?
 https://superuser.com/a/1497461/1749748 Is it possible to disable the HTTP referer header being passed by browsers?
 https://askubuntu.com/q/293546/1624654 How to launch google-chrome with custom parameters by default?
@@ -91,6 +100,7 @@ https://github.com/GoogleChrome/chrome-launcher/blob/main/docs/chrome-flags-for-
 https://peter.sh/experiments/chromium-command-line-switches/
 https://chromium.googlesource.com/chromium/src/+/361ea625a796df11fb159a837a8cd3d7265873d7 `enable_referrers` preference
 https://superuser.com/a/1840964/1749748
+gsettings set org.gnome.desktop.wm.preferences focus-new-windows 'strict' # eh. I tried it and it's just too annoying.
 
 - [](https://help.ubuntu.com/stable/ubuntu-help/power-batterylife.html.en)
 https://askubuntu.com/q/1014187 Thinkpad Battery drops at 40%

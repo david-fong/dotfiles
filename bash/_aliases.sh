@@ -9,18 +9,19 @@ alias nom='pnpm'
 alias nomx='pnpx'
 alias mc='mc -u' # midnight-commander disable subshell due to startup time issues
 
-alias n='nnn-quitcd -QAen'
+alias n='nnn-quitcd -QAenH'
 # Q don't prompt on quit
 # A disable directory auto-enter on filter match
 # e use $VISUAL or fallback to $EDITOR
 ## o open files on enter only
 # n start in type-to-nav mode. toggle with ^N
+# H show hidden files
 
 alias greeting='clear; \echo -e "\n$(heading "$(date)")""\n"'
 alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
 
 alias rm='\rm -I --verbose'
-alias hd='xxd -e -g4 -c32'
+alias hd='xxd -e -g1 -c32 -R always'
 #alias jobs='jobs -l; tasklist | command grep agent'
 alias hist='history | less +G'
 #function hash() {

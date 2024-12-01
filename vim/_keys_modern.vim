@@ -1,6 +1,10 @@
 
 set whichwrap=b,s,<,>,[,]
 
+" search using ctrl+f: --------------------------
+noremap  <C-F> /
+inoremap <C-F> <C-O>/
+
 " save using ctrl+s: ----------------------------
 noremap  <silent> <C-S> :update<CR>
 vnoremap <silent> <C-S> <C-C>:update<CR>gv

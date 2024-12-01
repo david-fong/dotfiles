@@ -49,7 +49,7 @@ xkb_symbols "starball" {
     key <AB03> {	[	  c,	C		]	};
     key <AB04> {	[	  v,	V		]	};
     key <AB05> {	[	  b,	B		]	};
-    key <AB06> { type="ALT_NAV", [ n, N ] };
+    key <AB06> { [ n, N ] };
     key <AB07> { type="ALT_NAV", [ m, M ],             actions=[NoAction(),NoAction(),RedirectKey(key=<DOWN>,clearmods=Alt)], repeat=yes };
     key <AB08> { type="ALT_NAV", [ comma, less ],      actions=[NoAction(),NoAction(),RedirectKey(key=<PGUP>,clearmods=Alt)], repeat=yes };
     key <AB09> { type="ALT_NAV", [ period, greater ],  actions=[NoAction(),NoAction(),RedirectKey(key=<PGDN>,clearmods=Alt)], repeat=yes };

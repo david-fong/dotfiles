@@ -11,7 +11,7 @@ mkdir -p "${XDG_DATA_HOME}/gradle"
 mkdir -p "${XDG_CACHE_HOME}/ccache"
 mkdir -p "${XDG_CACHE_HOME}/ipython"
 alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
-[[ ! -f "${XDG_DATA_HOME}/bash-completion/completions/cmake" ]] && ln -s /snap/cmake/current/share/bash-completion/completions/* "${XDG_DATA_HOME}/bash-completion/completions"
+#[[ ! -f "${XDG_DATA_HOME}/bash-completion/completions/cmake" ]] && ln -s /snap/cmake/current/share/bash-completion/completions/* "${XDG_DATA_HOME}/bash-completion/completions"
 
 declare -rx CPM_SOURCE_CACHE="${XDG_CACHE_HOME}/CPM"
 declare -rx PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}/python"
