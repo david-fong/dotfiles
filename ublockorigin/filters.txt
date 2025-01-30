@@ -1,0 +1,2 @@
+!YouTube embed pause overlay
+youtube.com##.ytp-pause-overlay

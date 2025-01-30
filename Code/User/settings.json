@@ -120,6 +120,7 @@
 	"typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
 	"typescript.disableAutomaticTypeAcquisition": true,
 	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"typescript.format.indentSwitchCase": false,
 	//"typescript.implementationsCodeLens.enabled": true,
 	// "js/ts.implicitProjectConfig.checkJs": true,
 
@@ -142,6 +143,7 @@
 
 	// Highlighting
 	"workbench.colorCustomizations": {
+		"editor.background": "#111",
 		"editor.findMatchBackground": "#0128",
 		"editor.findMatchHighlightForeground": "#fffe",
 		"editor.findMatchBorder": "#fffb",

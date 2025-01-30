@@ -5,6 +5,35 @@ https://mpv.io/installation/
 add-apt-repository ppa:git-core/ppa (deb https://apt.fruit.je/ubuntu noble mpv)
 https://code.visualstudio.com/download (.deb)
 
+network privacy/security
+https://github.com/StevenBlack/hosts (local DNS rejections)
+  /etc/hosts
+https://one.one.one.one/family/ (outgoing DNS resolve/reject over TLS)
+https://developers.cloudflare.com/1.1.1.1/setup/linux/
+  https://man.archlinux.org/man/resolved.conf.5
+  /etc/systemd/resolve.conf: DNS= FallbackDNS=... DNSOverTLS=yes
+    can copy file :/etc/systemd/resolved.conf.d/main.conf
+  settings -> wifi -> each wifi network -> disable automatic DNS for ipv4 and ipv6
+  sudo systemctl restart systemd-resolved
+  https://developers.cloudflare.com/1.1.1.1/check/
+  https://developers.cloudflare.com/1.1.1.1/setup/#test-1111-for-families
+https://protonvpn.com (hide IP address)
+  https://protonvpn.com/support/linux-openvpn#NetworkManager
+  NOPE (network manager doesn't support autoconnect?) https://protonvpn.com/support/wireguard-linux#NetworkManager
+    download with moderate NAT, NAT-PMP, and VPN accellerator. set netshield blocker to highest
+  https://account.protonvpn.com/downloads#wireguard-configuration
+  https://account.protonvpn.com/account-password#openvpn
+  https://askubuntu.com/q/1033278 auto turn on vpn
+  https://old.reddit.com/r/selfhosted/comments/1f6pu6q/comment/ll1y1r2 TODO
+    or https://protonvpn.com/support/bittorrent-vpn
+  OPTIONAL(speed) https://protonvpn.com/support/port-forwarding-manual-setup
+    username+pmp+f2+nr
+    https://protonvpn.com/support/port-forwarding
+    https://protonvpn.com/blog/port-forwarding/
+  https://protonvpn.com/support/advanced-kill-switch
+uBlockOrigin
+https://github.com/david-fong/david-fong.github.io/tree/main/browser-exts/header-editor
+
 ```
 dconf-editor
 gnome-browser-connector
@@ -13,27 +42,31 @@ xserver-xorg-video-intel
 tlp tlp-rdw
 pavucontrol
 fonts-inconsolata
+natpmpc
 
 tree nnn vim git git-lfs tig ripgrep jq reuse net-tools sqlite3 sqlitebrowser
 
 libboost-all-dev
 libssl-dev
 ocl-icd-opencl-dev
-default-jdk maven
+# default-jdk
 
-gimp
+gimp imagemagick
 exif ffmpeg pavucontrol
-mpv yt-dlp
+yt-dlp mpv
+audacity
 
-build-essential cmake
-clang clang-tidy conan doxygen g++
-mold ninja-build make
+g++ clang
+clang-tidy doxygen
+mold
+ninja-build make
+cmake
+conan
 linux-tools-generic
 ```
 
 snaps:
 ```
-audacity
 discord
 flutter
 gradle
@@ -45,7 +78,6 @@ zoom-client
 gnome extensions:
 dash-to-panel@jderose9.github.com
 
-https://protonvpn.com/support/linux-openvpn/
 
 
 custom keyboard shortcuts:
@@ -84,10 +116,14 @@ https://askubuntu.com/q/67758 disable bluetooth on startup
 https://askubuntu.com/q/223018 vim is not remembering last position
 
 - [](https://www.youtube.com/watch?v=KA6A3oeocHY&ab_channel=MentalOutlaw)
-- [](https://github.com/StevenBlack/hosts)
 
-chrome://flags/#global-media-controls-cast-start-stop
-chrome://flags/#tab-reorganization
+chrome://flags/#global-media-controls-cast-start-stop  disabled
+chrome://flags/#allow-all-sites-to-initiate-mirroring  disabled
+chrome://flags/#tab-organization                       disabled
+chrome://flags/#multi-tab-organization                 disabled
+chrome://flags/#tab-reorganization                     disabled
+chrome://flags/#tab-reorganization-divider             disabled
+chrome://flags/#scrollable-tabstrip                    disabled
 https://www.usa.canon.com/support/p/imageclass-mf4570dw (it manually installed libjpeg62, and some libcups/cups stuff libcupsimage2t64)
 
 https://stackoverflow.com/q/70782793/11107541 Is there a way to suppress sec-ua* headers in Chrome?
@@ -108,8 +144,8 @@ https://linrunner.de/tlp/usage/tlp.html#perform-a-battery-recalibration-while-on
 https://linrunner.de/tlp/installation/ubuntu.html
 in /etc/tlp.conf
 ```
-START_CHARGE_THRESH_BAT0=20
-STOP_CHARGE_THRESH_BAT0=30
+START_CHARGE_THRESH_BAT0=36
+STOP_CHARGE_THRESH_BAT0=41
 ```
 https://askubuntu.com/q/1405846/1624654 set ubuntu low power value
 
@@ -122,12 +158,7 @@ courtesy of https://askubuntu.com/a/492343
 alias aptlistman='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n "s/^Package: //p" | sort -u) | less'
 ```
 
-chrome flags:
-```
-#omnibox-blur-with-escape
-```
-
-chrome://settings/syncSetup
+chrome://settings/syncSetup -> "Other Google Services"
 - Automatically sends usage statistics and crash reports to Google: off
 - Send URLs of pages that you visit to Google: off
 - To fix spelling errors, Chrome sends the text that you type in the browser to Google: off
@@ -135,6 +166,8 @@ chrome://settings/syncSetup
 chrome://settings/security
 - Always use secure connections: on
 - Use secure DNS: on
+chrome://settings/system
+- Continue running background apps when Chrome is closed: off
 
 ```
 ln -sT /snap/code/current/usr/share/code/resources/completions/bash/code ~/.local/share/bash-completion/completions/code

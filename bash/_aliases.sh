@@ -7,7 +7,7 @@ alias s='git s'
 alias d='git d'
 alias nom='pnpm'
 alias nomx='pnpx'
-alias mc='mc -u' # midnight-commander disable subshell due to startup time issues
+#alias mc='mc -u' # midnight-commander disable subshell due to startup time issues
 
 alias n='nnn-quitcd -QAenH'
 # Q don't prompt on quit
@@ -53,6 +53,9 @@ alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --co
 #        [[ "$jarchoice" ]] && unzip -qc "$jarchoice" META-INF/MANIFEST.MF
 #    done
 #}
+
+
+alias cmake-play-build='cmake -S . -B build --fresh -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -G "Ninja Multi-Config" -DCMAKE_CXX_COMPILER=g++'
 
 
 # spelling is hard

@@ -1,0 +1,5 @@
+chrome-extension-scheme
+moz-extension-scheme
+stackexchange.com
+stackoverflow.com
+
