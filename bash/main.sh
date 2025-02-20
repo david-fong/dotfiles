@@ -1,20 +1,17 @@
 #!/bin/bash
 # Some ideas taken from https://github.com/mrzool/bash-sensible/blob/master/sensible.bash
-#set -eo pipefail
 
 #[[ "$MINGW64_HOME"     ]] &&      MINGW64_HOME="$(cygpath "$MINGW64_HOME")"
 #[[ "$JAVA_HOME"        ]] &&         JAVA_HOME="$(cygpath "$JAVA_HOME")"
 #[[ "$GRADLE_HOME"      ]] &&       GRADLE_HOME="$(cygpath "$GRADLE_HOME")"
 #[[ "$MONGODB_HOME"     ]] &&      MONGODB_HOME="$(cygpath "$MONGODB_HOME")"
 
-source "${XDG_CONFIG_HOME}/bash/_xdg_compat.sh"
+source "${XDG_CONFIG_HOME}/bash/xdg_compat.sh"
 
 # exit if not running interactively:
 [[ "$-" =~ "i" ]] || return
 
-
 # disable sending and receiving XON/XOFF
-# (only one is actually necessary to do)
 stty -ixoff -ixon
 
 tabs -3
@@ -29,45 +26,46 @@ shopt -s checkhash globstar extglob checkwinsize
 export FUNCNEST=100
 
 
-shopt -s histappend
+shopt -s histappend cmdhist
 declare -a histignore=(
-    'sudo\ *' 'rm\ -rf'
-    'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear'
-    'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
-    'cd\ \.\.*' 'ls' 'lsa' 'clsa' 'lsen\ *' 'nnn' 'n'
-    'todo'
-    #'./build*' './main' 'npm\ run\ start'
-    'tig' 'git\ status' 'git\ s' 'g\ s' 's' 'git\ a\ *' 'g\ a\ *' 'git\ br' 'g\ br' 'git\ diff' 'git\ d' 'g\ d' 'git\ dc' 'g\ dc'
+	'sudo\ *' 'rm\ -rf'
+	'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear'
+	'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
+	'cd\ \.\.*' 'ls' 'lsa' 'lsen\ *' 'nnn' 'n'
+	'todo'
+	#'./build*' './main' 'npm\ run\ start'
+	'tig' 'git\ status' 'git\ s' 'g\ s' 's' 'git\ a\ *' 'g\ a\ *' 'git\ br' 'g\ br' 'git\ diff' 'git\ d' 'g\ d' 'git\ dc' 'g\ dc' 'gti\ *'
 )
-export HISTIGNORE=
+HISTIGNORE=
 for pattern in "${histignore[@]}"; do
-    HISTIGNORE+="$pattern"':'
+	HISTIGNORE+="$pattern"':'
 done
 unset histignore
-export HISTCONTROL=ignoredups:ignorespace:erasedups
-export HISTSIZE=2048
-export HISTFILESIZE=4096
+HISTCONTROL=ignoredups:ignorespace:erasedups
+HISTSIZE=2048
+HISTFILESIZE=4096
+HISTTIMEFORMAT='%F %T '
 #PROMPT_COMMAND='history -a' # Record each line as it gets issued
 
 
 export NODE_ENV='development'
 #PATH+=":$(cygpath "${APPDATA}")/npm"
-[[ -f "${XDG_CONFIG_HOME}/npm/completion" ]] && source "${XDG_CONFIG_HOME}/npm/completion"
+[[ -f "${XDG_CONFIG_HOME}/npm/completion" ]] && . "${XDG_CONFIG_HOME}/npm/completion"
 
 export EDITOR='vim'
-export CSCOPE_EDITOR='view'
+# CSCOPE_EDITOR='view'
 
 
-[[ -f "${XDG_CONFIG_HOME}/bash/_aliases.sh"        ]] && source "${XDG_CONFIG_HOME}/bash/_aliases.sh"
-[[ -f "${XDG_CONFIG_HOME}/bash/_aliases__local.sh" ]] && source "${XDG_CONFIG_HOME}/bash/_aliases__local.sh"
+[[ -f "${XDG_CONFIG_HOME}/bash/aliases.sh"        ]] && . "${XDG_CONFIG_HOME}/bash/aliases.sh"
+[[ -f "${XDG_CONFIG_HOME}/bash/aliases__local.sh" ]] && . "${XDG_CONFIG_HOME}/bash/aliases__local.sh"
 alias   inputrc='"$EDITOR" "${XDG_CONFIG_HOME}/readline/inputrc"'
 alias    bashrc='"$EDITOR" "${XDG_CONFIG_HOME}/bash/main.sh"'
-alias       als='"$EDITOR" "${XDG_CONFIG_HOME}/bash/_aliases.sh"'
-alias      alsl='"$EDITOR" "${XDG_CONFIG_HOME}/bash/_aliases__local.sh"'
+alias       als='"$EDITOR" "${XDG_CONFIG_HOME}/bash/aliases.sh"'
+alias      alsl='"$EDITOR" "${XDG_CONFIG_HOME}/bash/aliases__local.sh"'
 alias     vimrc='"$EDITOR" "${XDG_CONFIG_HOME}/vim/main.vim"'
 alias gitconfig='"$EDITOR" "${XDG_CONFIG_HOME}/git/config"'
 alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ noma /etc/tigrc | 20 wincmd > | wincmd p"'
-[[ -f "${XDG_CONFIG_HOME}/nnn/quitcd.bash_sh_zsh" ]] && source "${XDG_CONFIG_HOME}/nnn/quitcd.bash_sh_zsh"
+[[ -f "${XDG_CONFIG_HOME}/nnn/quitcd.bash_sh_zsh" ]] && . "${XDG_CONFIG_HOME}/nnn/quitcd.bash_sh_zsh"
 #declare -x CMAKE_BUILD_PARALLEL_LEVEL="$(($(nproc)-2>0?$(nproc)-2:1))" in local aliases
 
 
@@ -83,6 +81,7 @@ alias     tigrc='"$EDITOR" "${XDG_CONFIG_HOME}/git/git_tigrc" -c "vsplit +set\ n
 # -#6: use <N> as the horizontal scroll amount
 # -S : chop long lines
 declare -x LESS='-+X -+F -qRJM -x3 -#6 -S'
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # https://github.com/mintty/mintty/issues/170#issuecomment-108889098
 # disable mouse-scrolling in mintty for the alternate screen
@@ -116,7 +115,7 @@ complete -A enabled -E
 # startup the gpg and ssh agent:
 # make the gpg-agent cache my password for one hour.
 # https://help.github.com/en/github/authenticating-to-github/associating-an-email-with-your-gpg-key
-echo 'starting up gpg-agent daemon...'
+#echo 'starting up gpg-agent daemon...'
 export GPG_TTY=$(tty)
 eval "(gpg-agent --daemon)" 2> /dev/null
 
@@ -130,10 +129,8 @@ eval "(gpg-agent --daemon)" 2> /dev/null
 #readonly -f ssh-agent
 
 
-source "$(dirname "${BASH_SOURCE[0]}")/_prompt.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/prompt.sh"
 
 #xkbcomp "$HOME/.config/xkb/xkb.xkb" $DISPLAY 2>/dev/null
 # ^copy the above into /usr/share/X11/xkb/symbols/us
 # Note: https://bugs.freedesktop.org/show_bug.cgi?id=78661
-
-#set +eo pipefail

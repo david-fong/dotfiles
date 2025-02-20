@@ -1,6 +1,16 @@
 {
-    "files.exclude": {
-        "configstore/": true,
-    },
-    "files.trimTrailingWhitespace": true,
+	"files.readonlyInclude": {
+		"google-chrome/**/*": true,
+	},
+	"search.exclude": {
+		"**/node_modules": true,
+	},
+	"files.exclude": {
+		"configstore/": true,
+	},
+	"files.trimTrailingWhitespace": true,
+	"[shellscript]": {
+		"editor.insertSpaces": false,
+		"files.eol": "\n",
+	},
 }

@@ -142,6 +142,7 @@
 	"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
 
 	// Highlighting
+	// https://code.visualstudio.com/api/references/theme-color
 	"workbench.colorCustomizations": {
 		"editor.background": "#111",
 		"editor.findMatchBackground": "#0128",
@@ -199,7 +200,7 @@
 	// https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/cmake-options-configuration.md
 	"cmake.configureOnOpen": false,
 	"cmake.configureOnEdit": false,
-	"cmake.showOptionsMovedNotification": false,
+	"cmake.pinnedCommands": [],
 
 	"notebook.outline.showCodeCells": true,
 	"emmet.syntaxProfiles": {
@@ -210,10 +211,6 @@
 	},
 	"diffEditor.renderSideBySide": false,
 	"search.quickAccess.preserveInput": true,
-	"cmake.pinnedCommands": [
-		"workbench.action.tasks.configureTaskRunner",
-		"workbench.action.tasks.runTask"
-	],
 	"diffEditor.experimental.useTrueInlineView": true,
 	// "editor.defaultColorDecorators": true,
 	// "window.density.editorTabHeight": "compact"

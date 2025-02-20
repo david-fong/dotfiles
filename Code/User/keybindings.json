@@ -13,7 +13,8 @@
 	{ "key": "ctrl+shift+down", "command": "-editor.action.insertCursorBelow", "when": "editorTextFocus" },
 	{ "key": "shift+alt+up",    "command": "-editor.action.insertCursorAbove", "when": "editorTextFocus" },
 	{ "key": "shift+alt+down",  "command": "-editor.action.insertCursorBelow", "when": "editorTextFocus" },
-	{ "key": "shift+alt+i", "command": "-editor.action.insertCursorAtEndOfEachLineSelected", "when": "editorTextFocus" },
+	{ "key": "shift+alt+i",     "command": "-editor.action.insertCursorAtEndOfEachLineSelected", "when": "editorTextFocus" },
+	{ "key": "alt+b",           "command": "editor.action.jumpToBracket", "when": "editorTextFocus"},
 	// find / list.find
 	{ "key": "ctrl+alt+f", "command": "-list.find", "when": "(isLinux || isWindows)" },
 	{ "key": "ctrl+f",     "command":  "list.find", "when": "(isLinux || isWindows) && listFocus && listSupportsFind" },
@@ -106,4 +107,5 @@
 	//     },
 	//     "when": "editorTextFocus && !editorReadonly && !editorHasSelection"
 	// }
+	
 ]

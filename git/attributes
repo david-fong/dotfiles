@@ -1,4 +1,3 @@
-
 *.sh    diff=bash
 *.md    diff=markdown
 
@@ -16,4 +15,3 @@
 
 *.cpp   diff=cpp
 *.rs    diff=rust
-

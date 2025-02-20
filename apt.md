@@ -1,11 +1,11 @@
-setxkbmap -option ctrl:nocaps
-
 https://apt.kitware.com/
 https://mpv.io/installation/
 add-apt-repository ppa:git-core/ppa (deb https://apt.fruit.je/ubuntu noble mpv)
 https://code.visualstudio.com/download (.deb)
 
 network privacy/security
+sudo systemctl enable ufw
+  block IP ranges: https://askubuntu.com/q/851785
 https://github.com/StevenBlack/hosts (local DNS rejections)
   /etc/hosts
 https://one.one.one.one/family/ (outgoing DNS resolve/reject over TLS)
@@ -37,22 +37,21 @@ https://github.com/david-fong/david-fong.github.io/tree/main/browser-exts/header
 ```
 dconf-editor
 gnome-browser-connector
-xbacklight
-xserver-xorg-video-intel
+xbacklight xserver-xorg-video-intel
 tlp tlp-rdw
 pavucontrol
 fonts-inconsolata
-natpmpc
+natpmpc # for vpn
 
 tree nnn vim git git-lfs tig ripgrep jq reuse net-tools sqlite3 sqlitebrowser
 
 libboost-all-dev
 libssl-dev
-ocl-icd-opencl-dev
+# ocl-icd-opencl-dev
 # default-jdk
 
 gimp imagemagick
-exif ffmpeg pavucontrol
+exif ffmpeg
 yt-dlp mpv
 audacity
 
@@ -67,10 +66,10 @@ linux-tools-generic
 
 snaps:
 ```
-discord
-flutter
-gradle
-intellij-idea-community
+#discord
+#flutter
+#gradle
+#intellij-idea-community
 node
 zoom-client
 ```

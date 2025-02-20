@@ -1,4 +1,3 @@
-
 declare -r PS1="I am a prompt: "
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
@@ -7,7 +6,6 @@ declare -r PS1="I am a prompt: "
 # set delete key to space-bar:
 # this can be undone by logging out and in again.
 stty erase ' '
-
 
 stty eof 0x7f  # close terminal with backspace-key
 

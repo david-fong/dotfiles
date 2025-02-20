@@ -7,12 +7,23 @@
 /git/gitk
 /octave/
 
+# /user-dirs.dirs
+/user-dirs.locale
+/audacity/
+/fish/
+/gh/
+/lf/
+/mc/
+/sqlitebrowser/
+
 /monitors.xml
+
 /cef_user_data/
 /Code - Insiders/
 /dconf/
 /enchant/
 /eog/
+/evince/print-settings
 /evolution/
 /gedit/
 /GIMP/
@@ -31,8 +42,8 @@
 /nautilus/
 /pulse/
 /remmina/
+/simple-scan/
+/tiling-assistant/
 /totem/
 /transmission/
-/user-dirs.dirs
-/user-dirs.locale
 /yelp/
