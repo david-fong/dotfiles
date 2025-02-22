@@ -7,15 +7,13 @@ alias nom='pnpm'
 alias nomx='pnpx'
 #alias mc='mc -u' # midnight-commander disable subshell due to startup time issues
 
-alias n='nnn-quitcd -QAenH'
-# Q don't prompt on quit
-# A disable directory auto-enter on filter match
-# e use $VISUAL or fallback to $EDITOR
-## o open files on enter only
-# n start in type-to-nav mode. toggle with ^N
-# H show hidden files
+alias ls='\ls -CX --color=auto --group-directories-first --width=90'
+function lsa() {
+	ls "$@" -o --almost-all --human-readable
+}
+alias config='\cd ${XDG_CONFIG_HOME} && clear'
 
-alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
+[ -x "$(command -v nnn)" ] && alias n='nnn-quitcd'
 
 alias rm='\rm -I --verbose'
 alias hd='xxd -e -g1 -c32 -R always'
@@ -24,6 +22,12 @@ alias hist='history | less +G'
 #function hash() {
 #    command hash "$@" | sort -r
 #}
+
+function todo() {
+	local -r todopath="${HOME}/.todo.md"
+	#"$EDITOR" "$todopath" -c 'vnew +set\ noma | wincmd p'
+	"$EDITOR" "$todopath"
+}
 
 # if [[ "$OCTAVE_HOME" ]]; then alias octave='"$OCTAVE_HOME"/mingw64/bin/octave-cli --interactive'; fi
 
@@ -56,19 +60,6 @@ alias gti='git'
 alias it='git'
 alias vm='mv'
 
-function todo() {
-	local -r todopath="${HOME}/.todo.md"
-	#"$EDITOR" "$todopath" -c 'vnew +set\ noma | wincmd p'
-	"$EDITOR" "$todopath"
-}
-
-alias ls='\ls -CX --color=auto --group-directories-first --width=90'
-function lsa() {
-	ls "$@" -o --almost-all --human-readable
-}
-
-alias config='\cd ${XDG_CONFIG_HOME} && clear'
-
 function bind() {
 	if [[ -z "$*" ]]; then
 		local -r filterout="(self-insert)|(do-lowercase-version)"
@@ -77,6 +68,17 @@ function bind() {
 		command bind "$@"
 	fi
 }
+
+function secret() {
+	cd ~
+	gocryptfs ~/.secret ~/secret
+	cd secret
+	vim -i .viminfo .
+	unmount ~/secret
+	# TODO this doesn't handle when user puts vim in background with ctrl+z
+}
+
+alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
 
 # make functions unmodifiable:
 #readonly -f todo lsa

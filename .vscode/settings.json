@@ -1,13 +1,9 @@
 {
-	"files.readonlyInclude": {
-		"google-chrome/**/*": true,
-	},
-	"search.exclude": {
-		"**/node_modules": true,
-	},
-	"files.exclude": {
-		"configstore/": true,
-	},
+	"explorer.excludeGitIgnore": true,
+	"files.exclude": {},
+	// "files.readonlyInclude": {
+	// 	"google-chrome/**/*": true,
+	// },
 	"files.trimTrailingWhitespace": true,
 	"[shellscript]": {
 		"editor.insertSpaces": false,

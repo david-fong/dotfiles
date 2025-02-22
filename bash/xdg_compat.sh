@@ -9,8 +9,7 @@ mkdir -p "${XDG_DATA_HOME}/less"
 mkdir -p "${XDG_DATA_HOME}/gradle"
 mkdir -p "${XDG_CACHE_HOME}/ccache"
 mkdir -p "${XDG_CACHE_HOME}/ipython"
-alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
-#[[ ! -f "${XDG_DATA_HOME}/bash-completion/completions/cmake" ]] && ln -s /snap/cmake/current/share/bash-completion/completions/* "${XDG_DATA_HOME}/bash-completion/completions"
+[ -x "$(command -v yarn)" ] && alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 
 export CPM_SOURCE_CACHE="${XDG_CACHE_HOME}/CPM"
 export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}/python"
@@ -24,7 +23,7 @@ alias wget='\wget --hsts-file="${XDG_CACHE_HOME}/wget-hsts"'
 
 export       INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
 export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/grep/ripgrep"
-export       VIMINIT='. $XDG_CONFIG_HOME/vim/main.vim' # annoyingly, the ${} form gets interpreted (and choked-upon) by CMake Tools for reasons beyond my comprehension and patience.
+export       VIMINIT=' source $XDG_CONFIG_HOME/vim/main.vim' # annoyingly, the ${} form gets interpreted (and choked-upon) by CMake Tools for reasons beyond my comprehension and patience.
 export    TIGRC_USER="${XDG_CONFIG_HOME}/git/tigrc_colorstrings"
 export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 #export        WGETRC="${XDG_CONFIG_HOME}/wgetrc" # currently not used

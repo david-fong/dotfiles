@@ -1,49 +1,51 @@
-
 *~
 *__local
 *__local.*
 
-/configstore/
+/*
+!/README.md
+!/LICENSE
+!/.gitattributes
+!/.gitignore
+!/.vscode
+!/blank.html
+!/init.sh
+!/apt.md
+!/windows-notes.md
+!/mimeapps.list
+!/ublockorigin
+!/adblock-filters.txt
+!/dash-to-panel.txt
+!/xkb
+!/autohotkey
+!/etc
+!/readline
+!/bash
+!/lesskey
+!/nnn
+!/vim
+!/nano
+!/gnome-terminal.dump
+!/mintty
+!/Code
+!/git
+!/grep
+!/ccache
+!/gdb
+!/npm
+!/yt-dlp
+!/mpv
+!/.conan
+!/modelsim
+!/asethior.json
+
 /git/gitk
-/octave/
 
 # /user-dirs.dirs
-/user-dirs.locale
-/audacity/
-/fish/
-/gh/
-/lf/
-/mc/
-/sqlitebrowser/
-
-/monitors.xml
-
-/cef_user_data/
-/Code - Insiders/
-/dconf/
-/enchant/
-/eog/
-/evince/print-settings
-/evolution/
-/gedit/
-/GIMP/
-/gnome-control-center/
-/gnome-games/
-/gnome-initial-setup-done
-/goa-1.0/
-/google-chrome/
-/gtk-2.0/
-/gtk-3.0/
-/gtk-4.0/
-/ibus/
-/JetBrains/
-/libreoffice/
-/mimeapps.list
-/nautilus/
-/pulse/
-/remmina/
-/simple-scan/
-/tiling-assistant/
-/totem/
-/transmission/
-/yelp/
+# /user-dirs.locale
+# /audacity/
+# /fish/
+# /gh/
+# /lf/
+# /mc/
+# /sqlitebrowser/

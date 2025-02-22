@@ -84,7 +84,7 @@ custom keyboard shortcuts:
 `xbacklight -inc 1 -time 333 -steps 2` for shift+MonBrightnessUp
 
 dump gnome-terminal settings:
-dconf dump /org/gnome/terminal/ > ~/.config/gnome-terminal
+dconf dump /org/gnome/terminal/ > ~/.config/gnome-terminal.dump
 
 <https://help.ubuntu.com/community/EnvironmentVariables#Persistent_environment_variables>
 

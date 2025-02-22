@@ -13,14 +13,16 @@ export   XDG_DATA_HOME="${XDG_DATA_HOME:-"${HOME}/.local/share"}"
 export  XDG_STATE_HOME="${XDG_STATE_HOME:-"${HOME}/.local/state"}"
 export  XDG_CACHE_HOME="${XDG_CACHE_HOME:-"${HOME}/.cache"}"
 # uncomment for windows
-#declare -rx XDG_CONFIG_HOME="$(cygpath "${XDG_CONFIG_HOME:-"${HOME}/.config"}")"
-#declare -rx   XDG_DATA_HOME="$(cygpath   "${XDG_DATA_HOME:-"${HOME}/.local/share"}")"
-#declare -rx  XDG_STATE_HOME="$(cygpath  "${XDG_STATE_HOME:-"${HOME}/.local/state"}")"
-#declare -rx  XDG_CACHE_HOME="$(cygpath  "${XDG_CACHE_HOME:-"${HOME}/.cache"}")"
+#export XDG_CONFIG_HOME="$(cygpath "${XDG_CONFIG_HOME:-"${HOME}/.config"}")"
+#export   XDG_DATA_HOME="$(cygpath   "${XDG_DATA_HOME:-"${HOME}/.local/share"}")"
+#export  XDG_STATE_HOME="$(cygpath  "${XDG_STATE_HOME:-"${HOME}/.local/state"}")"
+#export  XDG_CACHE_HOME="$(cygpath  "${XDG_CACHE_HOME:-"${HOME}/.cache"}")"
 mkdir -p "${XDG_CONFIG_HOME}"
 mkdir -p "${XDG_DATA_HOME}"
 mkdir -p "${XDG_STATE_HOME}"
 mkdir -p "${XDG_CACHE_HOME}"
+
+. "${XDG_CONFIG_HOME}/bash/xdg_compat.sh"
 
 [ -x /bin/setxkbmap ] && setxkbmap -option ctrl:nocaps
 #gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier', 'lv3:ralt_alt']"
@@ -45,6 +47,20 @@ if [ "$TERM" = "linux" ]; then
 	echo -en "\e]PFFDF6E3" #white
 	clear #for background artifacting
 fi
+
+# less command behaviour:
+# +X : enable startup termcap
+# -F : (not used) print to console if 1 page
+# -q : medium-quiet
+# -R : interpret escape-sequences
+# -J : show status-column
+# -N : show line numbers (off)
+# -M : use long prompt
+# -x3: use <N> as tabstop
+# -#6: use <N> as the horizontal scroll amount
+# -S : chop long lines
+export LESS='-+X -+F -qRJM -x3 -#6 -S'
+[ -x "$(command -v lesspipe)" ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then

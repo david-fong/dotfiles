@@ -1,4 +1,3 @@
-
 # http://tiswww.case.edu/php/chet/readline/readline.html#SEC10
 $include /etc/inputrc
 
@@ -23,9 +22,10 @@ set colored-stats on
 set mark-directories on
 set mark-symlinked-directories on # hmm... careful with this... rm -r of symlink to directory with trailing slash
 
+# https://tiswww.case.edu/php/chet/readline/readline.html#Bindable-Readline-Commands
 #set keymap jimk
 
-# Unbinding Things I Don't Use™
+# unbind things I don't use:
 "\C-s": # foward-search-history
 "\C-p": # previous-history
 "\C-n": # next-history
