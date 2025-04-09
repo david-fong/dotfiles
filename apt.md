@@ -43,7 +43,7 @@ pavucontrol
 fonts-inconsolata
 natpmpc # for vpn
 
-tree nnn vim git git-lfs tig ripgrep jq reuse net-tools sqlite3 sqlitebrowser
+tree nnn vim git git-lfs tig ripgrep jq reuse net-tools whois sqlite3 sqlitebrowser
 
 libboost-all-dev
 libssl-dev

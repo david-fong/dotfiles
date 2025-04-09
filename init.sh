@@ -1,4 +1,6 @@
-cp ~/.config/bash/profile ~
+cp ~/.config/bash/profile ~/.profile
+[ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc~
+[ -f ~/.bash_profile ] && mv ~/.bash_profile ~/.bash_profile~
 
 mkdir -p ~/c
 mkdir -p ~/c/m

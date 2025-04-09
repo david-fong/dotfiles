@@ -1,2 +1,7 @@
 !YouTube embed pause overlay
 youtube.com##.ytp-pause-overlay
+youtube-nocookie.com##.ytp-pause-overlay
+
+! 7 Mar 2025 https://www.startpage.com
+www.startpage.com##.feedback-button
+www.startpage.com##footer

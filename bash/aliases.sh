@@ -55,10 +55,10 @@ alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --co
 [ -x "$(command -v cmake)" ] && alias cmake-play-build='cmake -S . -B build --fresh -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -G "Ninja Multi-Config" -DCMAKE_CXX_COMPILER=g++'
 
 # spelling is hard
-alias lag='lazygit'
-alias gti='git'
-alias it='git'
-alias vm='mv'
+#alias lag='lazygit'
+#alias gti='git'
+#alias it='git'
+#alias vm='mv'
 
 function bind() {
 	if [[ -z "$*" ]]; then

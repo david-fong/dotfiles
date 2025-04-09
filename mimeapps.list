@@ -156,6 +156,7 @@ audio/x-adpcm=mpv.desktop
 audio/m3u=mpv.desktop
 audio/vnd.wave=mpv.desktop
 application/json=vim.desktop
+text/javascript=vim.desktop
 
 [Added Associations]
 text/plain=org.gnome.gedit.desktop;
@@ -264,3 +265,4 @@ audio/x-adpcm=mpv.desktop;
 audio/m3u=mpv.desktop;
 audio/vnd.wave=mpv.desktop;
 application/json=vim.desktop;
+text/javascript=vim.desktop;

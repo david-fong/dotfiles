@@ -55,6 +55,11 @@ set mark-symlinked-directories on # hmm... careful with this... rm -r of symlink
 "\ef": accept-line
 "\eA": insert-comment
 
+# https://www.gnu.org/software/bash/manual/html_node/Miscellaneous-Commands.html
+$if Bash
+"\C-e": edit-and-execute-command
+$endif
+
 # arrow-keys
 # TODO does this work at all / better if switching \e to \M?
 "\ej": backward-char

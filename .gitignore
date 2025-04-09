@@ -28,6 +28,7 @@
 !/gnome-terminal.dump
 !/mintty
 !/Code
+!/curlrc
 !/git
 !/grep
 !/ccache

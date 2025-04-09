@@ -9,6 +9,7 @@
 
 	// Top Bar
 	"window.commandCenter": false,
+	"chat.commandCenter.enabled": false,
 	"window.titleBarStyle": "custom",
 	"window.customTitleBarVisibility": "windowed",
 	"window.experimentalControlOverlay": false,
@@ -218,4 +219,5 @@
 	// "editor.hover.sticky": true,
 	// "editor.suggest.preview": true,
 	// "markdown.occurrencesHighlight.enabled": true,
+	// "workbench.editor.editorActionsLocation": "titleBar"
 }
