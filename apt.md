@@ -1,7 +1,8 @@
 https://apt.kitware.com/
-https://mpv.io/installation/
-add-apt-repository ppa:git-core/ppa (deb https://apt.fruit.je/ubuntu noble mpv)
-https://code.visualstudio.com/download (.deb)
+https://mpv.io/installation/ (deb https://apt.fruit.je/ubuntu oracular mpv)
+add-apt-repository ppa:git-core/ppa
+add-apt-repository ppa:linrunner/tlp
+https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
 
 network privacy/security
 sudo systemctl enable ufw
@@ -35,6 +36,7 @@ uBlockOrigin
 https://github.com/david-fong/david-fong.github.io/tree/main/browser-exts/header-editor
 
 ```
+google-chrome-stable
 dconf-editor
 gnome-browser-connector
 xbacklight xserver-xorg-video-intel
@@ -57,7 +59,7 @@ audacity
 
 g++ clang
 clang-tidy doxygen
-mold
+lld mold
 ninja-build make
 cmake
 conan

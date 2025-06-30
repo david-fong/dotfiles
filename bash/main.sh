@@ -26,7 +26,7 @@ FUNCNEST=100
 
 shopt -s histappend cmdhist
 declare -a histignore=(
-	'sudo\ *' 'rm\ -rf'
+	'sudo\ *' 'rm\ -rf*' 'shred\ *'
 	'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear'
 	'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
 	'cd\ \.\.*' 'ls' 'lsa' 'lsen\ *' 'nnn' 'n'

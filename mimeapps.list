@@ -1,12 +1,12 @@
 [Default Applications]
-text/html=google-chrome.desktop
-x-scheme-handler/http=google-chrome.desktop
-x-scheme-handler/https=google-chrome.desktop
-x-scheme-handler/about=google-chrome.desktop
-x-scheme-handler/unknown=google-chrome.desktop
+text/html=brave-browser.desktop
+x-scheme-handler/http=brave-browser.desktop
+x-scheme-handler/https=brave-browser.desktop
+x-scheme-handler/about=brave-browser.desktop
+x-scheme-handler/unknown=brave-browser.desktop
 x-scheme-handler/msteams=teams.desktop
 x-scheme-handler/webcal=google-chrome.desktop
-x-scheme-handler/mailto=google-chrome.desktop
+x-scheme-handler/mailto=brave-browser.desktop
 application/xhtml+xml=google-chrome.desktop
 text/calendar=org.gnome.Calendar.desktop
 audio/x-vorbis+ogg=mpv.desktop

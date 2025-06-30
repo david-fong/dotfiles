@@ -10,7 +10,7 @@
 	// Top Bar
 	"window.commandCenter": false,
 	"chat.commandCenter.enabled": false,
-	"window.titleBarStyle": "custom",
+	"window.titleBarStyle": "custom", // necessary to always hide
 	"window.customTitleBarVisibility": "windowed",
 	"window.experimentalControlOverlay": false,
 	"window.enableMenuBarMnemonics": false,
@@ -25,6 +25,7 @@
 	"workbench.editor.tabActionCloseVisibility": false,
 	"workbench.editor.pinnedTabSizing": "shrink",
 	"workbench.editor.tabSizing": "shrink",
+	"window.density.editorTabHeight": "compact",
 	"zenMode.hideActivityBar": false,
 
 	// Sidebar
@@ -213,6 +214,7 @@
 	"diffEditor.renderSideBySide": false,
 	"search.quickAccess.preserveInput": true,
 	"diffEditor.experimental.useTrueInlineView": true,
+	"workbench.editor.empty.hint": "hidden",
 	// "editor.defaultColorDecorators": true,
 	// "window.density.editorTabHeight": "compact"
 	// "editor.hover.enabled": false,
@@ -220,4 +222,5 @@
 	// "editor.suggest.preview": true,
 	// "markdown.occurrencesHighlight.enabled": true,
 	// "workbench.editor.editorActionsLocation": "titleBar"
+	// "search.searchView.keywordSuggestions": true // uses ML
 }

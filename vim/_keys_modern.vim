@@ -11,9 +11,9 @@ vnoremap <silent> <C-S> <C-C>:update<CR>gv
 inoremap <silent> <C-S> <C-O>:update<CR>
 
 " exit using ctrl+x: ----------------------------
-noremap  <silent> <C-X> :q<CR>
-vnoremap <silent> <C-X> :q<CR>
-inoremap <silent> <C-X> <ESC>:q<CR>
+"noremap  <silent> <C-X> :q<CR>
+"vnoremap <silent> <C-X> :q<CR>
+"inoremap <silent> <C-X> <ESC>:q<CR>
 
 " close all using ctrl+q: -----------------------
 noremap  <silent> <C-Q> :qa<CR>

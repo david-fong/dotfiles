@@ -2,6 +2,12 @@
 youtube.com##.ytp-pause-overlay
 youtube-nocookie.com##.ytp-pause-overlay
 
-! 7 Mar 2025 https://www.startpage.com
 www.startpage.com##.feedback-button
 www.startpage.com##footer
+
+search.brave.com##.svelte-1tjerau.subutton
+search.brave.com##footer
+
+github.com##[class*="CopilotWorkspaceButton"]
+
+old.reddit.com###redesign-beta-optin-btn

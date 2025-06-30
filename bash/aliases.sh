@@ -5,6 +5,7 @@ alias s='git s'
 alias d='git d'
 alias nom='pnpm'
 alias nomx='pnpx'
+alias utc='date --rfc-3339=seconds -u'
 #alias mc='mc -u' # midnight-commander disable subshell due to startup time issues
 
 alias ls='\ls -CX --color=auto --group-directories-first --width=90'
