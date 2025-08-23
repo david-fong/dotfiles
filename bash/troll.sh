@@ -23,6 +23,7 @@ echo -e '\e[3 S'
 # do not echo input to the interactive shell:
 stty -echo
 
+# put these in prompt command
 echo -e '\e#8'      # fill screen with 'E's
 echo -e '\e[?5h'    # reverse video brighness
 echo -e '\e[25l'    # make cursor invisible

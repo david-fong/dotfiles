@@ -60,6 +60,9 @@
 	"extensions.ignoreRecommendations": false,
 	"extensions.closeExtensionDetailsOnViewChange": true,
 	"telemetry.telemetryLevel": "off",
+	"chat.agent.enabled": false,
+	"chat.mcp.enabled": false,
+	"chat.mcp.discovery.enabled": false,
 
 	"workbench.editor.closeOnFileDelete": true,
 	"workbench.editor.limit.enabled": true,
@@ -221,6 +224,6 @@
 	// "editor.hover.sticky": true,
 	// "editor.suggest.preview": true,
 	// "markdown.occurrencesHighlight.enabled": true,
-	// "workbench.editor.editorActionsLocation": "titleBar"
-	// "search.searchView.keywordSuggestions": true // uses ML
+	// "workbench.editor.editorActionsLocation": "titleBar",
+	// "search.searchView.keywordSuggestions": true, // uses ML
 }

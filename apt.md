@@ -35,6 +35,25 @@ https://protonvpn.com (hide IP address)
 uBlockOrigin
 https://github.com/david-fong/david-fong.github.io/tree/main/browser-exts/header-editor
 
+https://proton.me/support/installing-bridge-linux-deb-file
+https://proton.me/support/verifying-bridge-package
+
+
+https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy#h_01HE8CWCDWF5SNASMCXTTQYZB5
+
+
+https://old.reddit.com/r/DataHoarder/comments/6qf716/a_quick_datahoarder_faq/
+https://old.reddit.com/r/DataHoarder/wiki/hardware#wiki_hard_drives
+  avoid SMR (Shingled Magnetic Recording) in RAID/ZFS setups. prefer CMR (Conventional Magnetic Recording)
+https://old.reddit.com/r/DataHoarder/wiki/zfs
+https://old.reddit.com/r/DataHoarder/wiki/backups
+https://www.andyibanez.com/posts/rclone-basics-encryption/
+https://www.bestbuy.ca/en-ca/category/network-attached-storage-nas/29582
+https://www.bestbuy.ca/en-ca/category/external-hard-drives/20237
+  https://www.bestbuy.ca/en-ca/product/wd-wdbdff0020bbk-wesn-2-tb-hard-drive-external-portable/13504497
+
+https://psref.lenovo.com/syspool/Sys/PDF/ThinkPad/ThinkPad_T490/ThinkPad_T490_Spec.PDF
+
 ```
 google-chrome-stable
 dconf-editor
@@ -44,6 +63,7 @@ tlp tlp-rdw
 pavucontrol
 fonts-inconsolata
 natpmpc # for vpn
+zfsutils-linux rclone
 
 tree nnn vim git git-lfs tig ripgrep jq reuse net-tools whois sqlite3 sqlitebrowser
 
