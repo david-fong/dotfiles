@@ -12,8 +12,9 @@ https://github.com/StevenBlack/hosts (local DNS rejections)
 https://one.one.one.one/family/ (outgoing DNS resolve/reject over TLS)
 https://developers.cloudflare.com/1.1.1.1/setup/linux/
   https://man.archlinux.org/man/resolved.conf.5
-  /etc/systemd/resolve.conf: DNS= FallbackDNS=... DNSOverTLS=yes
+  /etc/systemd/resolve.conf.d/main.conf: DNS= FallbackDNS=... DNSOverTLS=yes
     can copy file :/etc/systemd/resolved.conf.d/main.conf
+    check with `resolvectl status`
   settings -> wifi -> each wifi network -> disable automatic DNS for ipv4 and ipv6
   sudo systemctl restart systemd-resolved
   https://developers.cloudflare.com/1.1.1.1/check/
@@ -39,7 +40,10 @@ https://proton.me/support/installing-bridge-linux-deb-file
 https://proton.me/support/verifying-bridge-package
 
 
+about:policy
+/etc/brave/policies/managed/GroupPolicy.json
 https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy#h_01HE8CWCDWF5SNASMCXTTQYZB5
+https://chromeenterprise.google/intl/en_ca/policies
 
 
 https://old.reddit.com/r/DataHoarder/comments/6qf716/a_quick_datahoarder_faq/
@@ -63,7 +67,7 @@ tlp tlp-rdw
 pavucontrol
 fonts-inconsolata
 natpmpc # for vpn
-zfsutils-linux rclone
+zfsutils-linux rclone p7zip-full
 
 tree nnn vim git git-lfs tig ripgrep jq reuse net-tools whois sqlite3 sqlitebrowser
 
@@ -194,9 +198,11 @@ chrome://settings/system
 ln -sT /snap/code/current/usr/share/code/resources/completions/bash/code ~/.local/share/bash-completion/completions/code
 ```
 
-adblock allowlist:
-```
-@@stackexchange.com$document
-@@stackoverflow.com$document
-@@||i.stack.imgur.com/*^$document
-```
+---
+
+thinkpad t490 repair videos
+https://pcsupport.lenovo.com/ca/en/products/laptops-and-netbooks/thinkpad-t-series-laptops/thinkpad-t490-type-20n2-20n3/selfrepair/removalsreplacements
+
+https://www.lenovo.com/ca/en/glossary/differences-between-mobile-workstation-and-laptop/
+  "mobile workstation" just means more beefy/powerful than "laptop"
+I want a thinkpad P or T series. P is "mobile workstation"s. I probably want 16 gigs of RAM with slot for expansion, and 256 gigs of SSD. pick one that allows not buying windows license (i.e. linux).

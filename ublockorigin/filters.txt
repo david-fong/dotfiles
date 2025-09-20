@@ -9,5 +9,6 @@ search.brave.com##.svelte-1tjerau.subutton
 search.brave.com##footer
 
 github.com##[class*="CopilotWorkspaceButton"]
+github.com##[class*="CopilotAgentModeButton"]
 
 old.reddit.com###redesign-beta-optin-btn

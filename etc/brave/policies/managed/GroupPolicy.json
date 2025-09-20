@@ -13,6 +13,7 @@
 	"CloudReportingEnabled": false,
 	"MetricsReportingEnabled": false,
 	"DeviceMetricsReportingEnabled": false,
+	"UrlKeyedMetricsAllowed": false,
 	"UrlKeyedAnonymizedDataCollectionEnabled": false,
 	"EnterpriseRealTimeUrlCheckMode": false,
 	"SafeBrowsingExtendedReportingEnabled": false,
@@ -37,6 +38,7 @@
 	"HelpMeWriteSettings": 1,
 	"HistorySearchSettings": 2,
 	"TabCompareSettings": 2,
+	"GeminiSettings": 1,
 
 	"AdsSettingForIntrusiveAdsSites": 2
 }

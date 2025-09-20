@@ -1,2 +1,3 @@
 @@stackexchange.com$document
 @@stackoverflow.com$document
+@@||i.stack.imgur.com/*^$document

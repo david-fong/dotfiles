@@ -48,6 +48,8 @@ if [ "$TERM" = "linux" ]; then
 	clear #for background artifacting
 fi
 
+export EDITOR='vim'
+
 # less command behaviour:
 # +X : enable startup termcap
 # -F : (not used) print to console if 1 page
@@ -62,22 +64,30 @@ fi
 export LESS='-+X -+F -qRJM -x3 -#6 -S'
 [ -x "$(command -v lesspipe)" ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# if running bash
+# if running bash...
 if [ -n "$BASH_VERSION" ]; then
 	[ -f "${XDG_CONFIG_HOME}/bash/main.sh" ] && source "${XDG_CONFIG_HOME}/bash/main.sh"
 fi
 
-if [ -d "$HOME/bin" ]; then
-	PATH="$HOME/bin:$PATH"
-fi
-if [ -d "$HOME/.local/bin" ]; then
-	PATH="$HOME/.local/bin:$PATH"
-fi
-# https://github.com/emscripten-core/emscripten/issues/4848#issuecomment-1097357775
-#. ".../emsdk/emsdk_env.sh"
 if [ -d "$HOME/c/tool/emsdk" ]; then
+	# VS Code's sourcing of startup files doesn't pick up the login-shell-only section :/
 	export EMSDK="$HOME/c/tool/emsdk"
-	PATH+=":$EMSDK:$EMSDK/upstream/emscripten"
+fi
+
+is_login=$(expr $0 : -)
+if [ $is_login = 1 ]; then
+	unset is_login
+	if [ -d "$HOME/bin" ]; then
+		PATH="$HOME/bin:$PATH"
+	fi
+	if [ -d "$HOME/.local/bin" ]; then
+		PATH="$HOME/.local/bin:$PATH"
+	fi
+	# https://github.com/emscripten-core/emscripten/issues/4848#issuecomment-1097357775
+	#. ".../emsdk/emsdk_env.sh"
+	if [ -d "$HOME/c/tool/emsdk" ]; then
+		PATH+=":$EMSDK:$EMSDK/upstream/emscripten"
+	fi
 fi
 
 # This could be useful on windows in `~/.bash_logout`:

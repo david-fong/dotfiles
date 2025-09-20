@@ -17,5 +17,6 @@ set startup-with-shell off
 #skip -gfi /usr/include/c++/*/*/*
 #skip -gfi /usr/include/c++/*/*
 #skip -gfi /usr/include/c++/*
+skip -rfu ^std::([a-zA-z0-9_]+)<.*>::~?\1 *\(
 #b main
 b abort

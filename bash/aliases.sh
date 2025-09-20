@@ -53,7 +53,7 @@ alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --co
 #    done
 #}
 
-[ -x "$(command -v cmake)" ] && alias cmake-play-build='cmake -S . -B build --fresh -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -G "Ninja Multi-Config" -DCMAKE_CXX_COMPILER=g++'
+[ -x "$(command -v cmake)" ] && alias cmake-play-build='cmake -Wdev -S . -B build --fresh -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -G "Ninja Multi-Config" -DCMAKE_CXX_COMPILER=g++'
 
 # spelling is hard
 #alias lag='lazygit'

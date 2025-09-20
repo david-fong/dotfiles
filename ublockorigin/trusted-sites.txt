@@ -1,5 +1,6 @@
 chrome-extension-scheme
 moz-extension-scheme
-stackexchange.com
-stackoverflow.com
+#stackexchange.com
+#stackoverflow.com
+sstatic.net
 
