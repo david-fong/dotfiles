@@ -112,6 +112,3 @@ eval "(gpg-agent --daemon)" 2> /dev/null
 
 source "$(dirname "${BASH_SOURCE[0]}")/prompt.sh"
 
-#xkbcomp "$HOME/.config/xkb/xkb.xkb" $DISPLAY 2>/dev/null
-# ^copy the above into /usr/share/X11/xkb/symbols/us
-# Note: https://bugs.freedesktop.org/show_bug.cgi?id=78661

@@ -9,26 +9,33 @@
       <variantList>
         <variant>
           <configItem>
-            <name>starball</name>
-            <shortDescription>starball</shortDescription>
-            <description>English (starball)</description>
+            <name>davidfong</name>
+            <shortDescription>df</shortDescription>
+            <description>English (DF X11 sys)</description>
+          </configItem>
+        </variant>
+      </variantList>
+    </layout>
+    <layout>
+      <configItem>
+        <name>custom</name>
+      </configItem>
+      <variantList>
+        <variant>
+          <configItem>
+            <name>davidfong_x</name>
+            <shortDescription>df:x</shortDescription>
+            <description>English (DF X11)</description>
+          </configItem>
+        </variant>
+        <variant>
+          <configItem>
+            <name>davidfong_w</name>
+            <shortDescription>df:w</shortDescription>
+            <description>English (DF Wayland)</description>
           </configItem>
         </variant>
       </variantList>
     </layout>
   </layoutList>
-  <optionList>
-    <group allowMultipleSelection="true">
-      <configItem>
-        <name>custom</name>
-        <description>custom options</description>
-      </configItem>
-      <option>
-        <configItem>
-          <name>custom:starball</name>
-          <description>This option does something great</description>
-        </configItem>
-      </option>
-    </group>
-  </optionList>
 </xkbConfigRegistry>

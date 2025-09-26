@@ -54,6 +54,7 @@
 	"material-icon-theme.hidesExplorerArrows": true,
 
 	// Behaviour
+	"keyboard.dispatch": "keyCode", // for wayland libxkbcommon
 	"window.restoreWindows": "none",
 	"workbench.startupEditor": "newUntitledFile",
 	"workbench.list.defaultFindMode": "filter",
