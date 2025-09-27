@@ -1,6 +1,6 @@
 // seems like wayland can read from here, but X11 needs me to copy this to /usr/share/.../types/complete
 default xkb_types "complete" {
-  virtual_modifiers Alt, LevelThree;
+  virtual_modifiers Alt, LevelThree, LevelFive;
 
   include "basic"
   include "mousekeys"
@@ -19,10 +19,10 @@ default xkb_types "complete" {
     preserve[Shift+Alt] = Shift;
     level_name[Level1] = "Base";
     level_name[Level2] = "Caps";
-    level_name[Level3] = "Arrows";
+    level_name[Level3] = "Custom";
   };
 
-  type "LVL3_CUSTOM" {
+  type "DF_LVL3" {
     modifiers = Shift + LevelThree;
     map[None]             = Level1;
     map[Shift]            = Level2;
@@ -34,7 +34,7 @@ default xkb_types "complete" {
     level_name[Level3] = "Custom";
   };
 
-  type "LVL4_CUSTOM" {
+  type "DF_LVL4" {
     modifiers = Shift + LevelThree;
     map[None]             = Level1;
     map[Shift]            = Level2;
@@ -45,5 +45,29 @@ default xkb_types "complete" {
     level_name[Level2] = "Shift";
     level_name[Level3] = "Custom";
     level_name[Level4] = "Custom";
+  };
+
+  type "DF_LVL5" {
+    modifiers = Shift + LevelFive;
+    map[None]             = Level1;
+    map[Shift]            = Level2;
+    map[LevelFive]        = Level5;
+    map[Shift+LevelFive]  = Level5;
+    preserve[Shift+LevelFive] = Shift;
+    level_name[Level1] = "Base";
+    level_name[Level2] = "Shift";
+    level_name[Level5] = "Custom";
+  };
+
+  type "DF_LVL6" {
+    modifiers = Shift + LevelFive;
+    map[None]             = Level1;
+    map[Shift]            = Level2;
+    map[LevelFive]        = Level5;
+    map[Shift+LevelFive]  = Level6;
+    level_name[Level1] = "Base";
+    level_name[Level2] = "Shift";
+    level_name[Level5] = "Custom";
+    level_name[Level6] = "Custom";
   };
 };

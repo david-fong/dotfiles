@@ -126,7 +126,9 @@ fun fact- chord `ctrl+shift+u, <unicode hex>` to enter unicode
 - [](https://askubuntu.com/questions/1025765/how-to-map-alt-hjkl-keys-to-arrow-keys)
 - [](https://askubuntu.com/a/257497)
 
+<https://github.com/xkbcommon/libxkbcommon/blob/master/doc/keymap-text-format-v1-v2.md>
 <https://xkbcommon.org/doc/current/user-configuration.html#compatibility>
+<https://github.com/xkbcommon/libxkbcommon/blob/master/src/ks_tables.h>
 - [](https://medium.com/@damko/a-simple-humble-but-comprehensive-guide-to-xkb-for-linux-6f1ad5e13450)
 <https://wiki.archlinux.org/title/X_keyboard_extension>
 <https://who-t.blogspot.com/2020/09/user-specific-xkb-configuration-putting.html>
@@ -139,6 +141,10 @@ TODO https://askubuntu.com/a/1216744/1624654 consider remapping alt key to somet
 https://docs.gtk.org/gtk3/property.Settings.gtk-enable-mnemonics.html annoyingly, this is deprecated.
 <https://wiki.archlinux.org/title/X_keyboard_extension#Caps_hjkl_as_vimlike_arrow_keys>
 (outdated): https://help.ubuntu.com/community/Custom%20keyboard%20layout%20definitions
+
+https://wiki.archlinux.org/title/Xorg/Keyboard_configuration#Using_localectl
+https://www.x.org/releases/X11R7.5/doc/input/XKB-Config.html
+https://www.charvolant.org/doug/xkb/html/node4.html#SECTION00041000000000000000
 
 https://bugs.freedesktop.org/show_bug.cgi?id=78661#c6
 https://github.com/xkbcommon/libxkbcommon/issues/145

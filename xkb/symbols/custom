@@ -59,72 +59,13 @@ xkb_symbols "davidfong_x" {
 };
 
 
-// 5
-// uses level3(alt_switch), LVL4_CUSTOM
-// works at a basic level. ignores shift in custom layer. writes chars in VS Code
-partial alphanumeric_keys modifier_keys
-xkb_symbols "davidfong_w5" {
-    include "us(basic)"
-    include "ctrl(nocaps)"
-    include "level3(alt_switch)"
-    name[Group1]= "English (DF)";
 
-    key <TLDE> { [ NoSymbol, NoSymbol ] };
-    key <AE01> { [ NoSymbol, NoSymbol ] };
-    key <AE02> { [ NoSymbol, NoSymbol ] };
-    key <AE03> { [ NoSymbol, NoSymbol ] };
-    key <AE04> { [ NoSymbol, NoSymbol ] };
-    key <AE05> { [ NoSymbol, NoSymbol ] };
-    key <AE06> { [ NoSymbol, NoSymbol ] };
-    key <AE07> { [ NoSymbol, NoSymbol ] };
-    key <AE08> { [ NoSymbol, NoSymbol ] };
-    key <AE09> { [ NoSymbol, NoSymbol ] };
-    key <AE10> { [ NoSymbol, NoSymbol ] };
-    key <AE11> { [ NoSymbol, NoSymbol ] };
-    key <AE12> { [ NoSymbol, NoSymbol ] };
 
-    key <AD01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD02> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Tab, Tab ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AD03> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Escape, Escape ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AD04> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD07> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD08> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Right, Right ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AD09> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, BackSpace, BackSpace ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AD10> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD11> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD12> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
 
-    key <AC01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC02> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Left, Left ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Alt)], repeat=yes };
-    key <AC03> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Delete, Delete ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AC04> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Return, Return ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AC05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC07> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Left, Left ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AC08> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Up, Up ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AC09> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Home, Home ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AC10> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, End, End ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AC11> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <AB01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB02> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB03> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB04> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB07> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Down ], repeat=yes };
-    key <AB08> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Prior, Prior ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AB09> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Next, Next ], actions=[NoAction(),NoAction(),NoAction(),SetMods(modifiers=Shift)], repeat=yes };
-    key <AB10> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <BKSL> { [ NoSymbol, NoSymbol ] };
-};
 
 // 4
-// uses level3(alt_switch), type=LVL4_CUSTOM
-// works at a basic level. ignores shift in custom layer. writes chars in VS Code
+// uses level3(alt_switch), type=DF_LVL4
+// custom level works. shift works. writes chars in VS Code. chromium thinks alt isn't consumed.
 partial alphanumeric_keys modifier_keys
 xkb_symbols "davidfong_w4" {
     include "us(basic)"
@@ -132,65 +73,73 @@ xkb_symbols "davidfong_w4" {
     include "level3(alt_switch)"
     name[Group1]= "English (DF)";
 
-    key <TLDE> { [ NoSymbol, NoSymbol ] };
-    key <AE01> { [ NoSymbol, NoSymbol ] };
-    key <AE02> { [ NoSymbol, NoSymbol ] };
-    key <AE03> { [ NoSymbol, NoSymbol ] };
-    key <AE04> { [ NoSymbol, NoSymbol ] };
-    key <AE05> { [ NoSymbol, NoSymbol ] };
-    key <AE06> { [ NoSymbol, NoSymbol ] };
-    key <AE07> { [ NoSymbol, NoSymbol ] };
-    key <AE08> { [ NoSymbol, NoSymbol ] };
-    key <AE09> { [ NoSymbol, NoSymbol ] };
-    key <AE10> { [ NoSymbol, NoSymbol ] };
-    key <AE11> { [ NoSymbol, NoSymbol ] };
-    key <AE12> { [ NoSymbol, NoSymbol ] };
-
-    key <AD01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD02> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Tab, Tab ], repeat=yes };
-    key <AD03> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Escape, Escape ], repeat=yes };
-    key <AD04> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD07> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD08> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Right, Right ], repeat=yes };
-    key <AD09> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, BackSpace, BackSpace ], repeat=yes };
-    key <AD10> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD11> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD12> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <AC01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC02> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Left, Left ], repeat=yes };
-    key <AC03> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Delete, Delete ], repeat=yes };
-    key <AC04> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Return, Return ], repeat=yes };
-    key <AC05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC07> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Left, Left ], repeat=yes };
-    key <AC08> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Up, Up ], repeat=yes };
-    key <AC09> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Home, Home ], repeat=yes };
-    key <AC10> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, End, End ], repeat=yes };
-    key <AC11> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <AB01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB02> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB03> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB04> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB07> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Down, Down ], repeat=yes };
-    key <AB08> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Prior, Prior ], repeat=yes };
-    key <AB09> { type="LVL4_CUSTOM", [ NoSymbol, NoSymbol, Next, Next ], repeat=yes };
-    key <AB10> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <BKSL> { [ NoSymbol, NoSymbol ] };
+    key.type = "DF_LVL4";
+    key <AD02> { [ NoSymbol, NoSymbol, Tab      , Tab       ], repeat=yes };
+    key <AD03> { [ NoSymbol, NoSymbol, Escape   , Escape    ], repeat=yes };
+    key <AD08> { [ NoSymbol, NoSymbol, Right    , Right     ], repeat=yes };
+    key <AD09> { [ NoSymbol, NoSymbol, BackSpace, BackSpace ], repeat=yes };
+    key <AC02> { [ NoSymbol, NoSymbol, Left     , Left      ], repeat=yes };
+    key <AC03> { [ NoSymbol, NoSymbol, Delete   , Delete    ], repeat=yes };
+    key <AC04> { [ NoSymbol, NoSymbol, Return   , Return    ], repeat=yes };
+    key <AC07> { [ NoSymbol, NoSymbol, Left     , Left      ], repeat=yes };
+    key <AC08> { [ NoSymbol, NoSymbol, Up       , Up        ], repeat=yes };
+    key <AC09> { [ NoSymbol, NoSymbol, Home     , Home      ], repeat=yes };
+    key <AC10> { [ NoSymbol, NoSymbol, End      , End       ], repeat=yes };
+    key <AB07> { [ NoSymbol, NoSymbol, Down     , Down      ], repeat=yes };
+    key <AB08> { [ NoSymbol, NoSymbol, Prior    , Prior     ], repeat=yes };
+    key <AB09> { [ NoSymbol, NoSymbol, Next     , Next      ], repeat=yes };
 };
 
 // 3
-// TODO: try making a version that uses level 5 instead of level 3 and see how chromium reacts
-// uses level3(alt_switch), type=LVL3_CUSTOM
-// works at a basic level. shift works! writes chars in VS Code / chromium :(
+// alt->level5, type=DF_LVL5
+// custom level works. shift works.
+// TODO: if ever try moving letters, like switching T and F, can try to retain ctrl shortcut positions with a type that uses Control for layer 3 and preserves Control
 partial alphanumeric_keys modifier_keys
 xkb_symbols "davidfong_w" {
+    include "us(basic)"
+    include "ctrl(nocaps)"
+    name[Group1]= "English (DF)";
+
+    replace key <LALT> { type="DF_LVL5", [ ISO_Level5_Shift, ISO_Level5_Shift, NoSymbol, NoSymbol, Alt_L ] };
+    replace key <RALT> { type="DF_LVL5", [ ISO_Level5_Shift, ISO_Level5_Shift, NoSymbol, NoSymbol, Alt_R ] };
+    // consider adding double-shifts to go ISO_Next/Prev_Group? `include "group(shifts_toggle)"`
+
+    // org.gnome.desktop.wm.keybindings switch-windows ['<Alt>Tab', '<Mod3>XF86ApplicationRight']
+    // org.gnome.desktop.wm.keybindings switch-windows-backward ['<Shift><Alt>Tab', '<Shift><Mod3>XF86ApplicationLeft']
+    // org.gnome.desktop.wm.keybindings switch-to-workspace-left ['<Super>Page_Up', '<Super><Alt>Left', '<Control><Alt>Left', '<Mod3>Prev_Virtual_Screen']
+    // org.gnome.desktop.wm.keybindings switch-to-workspace-right ['<Super>Page_Down', '<Super><Alt>Right', '<Control><Alt>Right', '<Mod3>Next_Virtual_Screen']
+    key <TAB>  { type="DF_LVL6", [ Tab, Tab, NoSymbol, NoSymbol, XF86ApplicationRight, XF86ApplicationLeft ] };
+
+    //key.repeat = yes
+    key.type = "DF_LVL5";
+    key <AD01> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86ApplicationRight ] }; // q
+    key <AD02> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Tab       ] }; // w
+    key <AD03> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Escape    ] }; // e     🚫
+    key <AD04> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Prev_Virtual_Screen ] }; // r
+    key <AC05> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Next_Virtual_Screen ] }; // g
+    key <AC03> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Delete    ] }; // d     🗑️
+    key <AC04> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Return    ] }; // f     ✅
+
+    key <AC06> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, BackSpace ] }; // h     🗑️
+    key <AD09> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Up        ] }; // o     ⬆️
+    key <SPCE> { [ space   , space   , space   , space   , Down      ] }; // space ⬇️
+    key <AC07> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Left      ] }; // j     ⬅️
+    key <AD08> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Right     ] }; // i     ➡️
+    key <AB06> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Home      ] }; // n     ⏪
+    key <AB07> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Home      ] }; // m     ⏪
+    key <AC10> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, End       ] }; // ;     ⏩
+    key <AD10> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Prior     ] }; // p     ⤴️
+    key <AC11> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Next      ] }; // '     ⤵️
+    key <AC08> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Down      ] }; // k     ⬇️
+    //key <AB08> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, NoSymbol  ] }; // ,
+    //key <AB09> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, NoSymbol  ] }; // .
+    //key <AC09> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, NoSymbol  ] }; // l
+};
+// 3.0
+// uses inlined level3(alt_switch), type=DF_LVL3
+// level 3 works. shift works. chromium thinks alt isn't consumed.
+partial alphanumeric_keys modifier_keys
+xkb_symbols "davidfong_w3.0" {
     include "us(basic)"
     include "ctrl(nocaps)"
     // include "level3(alt_switch)"
@@ -202,63 +151,27 @@ xkb_symbols "davidfong_w" {
     override modifier_map Mod1  { <RTSH>, Alt_R };
     override modifier_map Mod5  { <LVL3>, ISO_Level3_Shift };
 
-    key <TLDE> { [ NoSymbol, NoSymbol ] };
-    key <AE01> { [ NoSymbol, NoSymbol ] };
-    key <AE02> { [ NoSymbol, NoSymbol ] };
-    key <AE03> { [ NoSymbol, NoSymbol ] };
-    key <AE04> { [ NoSymbol, NoSymbol ] };
-    key <AE05> { [ NoSymbol, NoSymbol ] };
-    key <AE06> { [ NoSymbol, NoSymbol ] };
-    key <AE07> { [ NoSymbol, NoSymbol ] };
-    key <AE08> { [ NoSymbol, NoSymbol ] };
-    key <AE09> { [ NoSymbol, NoSymbol ] };
-    key <AE10> { [ NoSymbol, NoSymbol ] };
-    key <AE11> { [ NoSymbol, NoSymbol ] };
-    key <AE12> { [ NoSymbol, NoSymbol ] };
+    key <TAB>  { type="DF_LVL3", [ Tab, Tab, Tab ], virtualMods=Alt, actions=[NoAction(),NoAction(),SetMods(modifiers=Alt)], repeat=yes };
 
-    key <TAB>  { type="LVL3_CUSTOM", [ Tab, Tab, Tab ], virtualMods=Alt, actions=[NoAction(),NoAction(),SetMods(modifiers=Alt)], repeat=yes };
-
-    key <AD01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD02> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Tab     ], repeat=yes };
-    key <AD03> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Escape  ], repeat=yes };
-    key <AD04> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD07> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD08> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Right     ], repeat=yes };
-    key <AD09> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, BackSpace ], repeat=yes };
-    key <AD10> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD11> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD12> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <AC01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC02> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Left   ], repeat=yes };
-    key <AC03> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Delete ], repeat=yes };
-    key <AC04> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Return ], repeat=yes };
-    key <AC05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC07> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Left   ], repeat=yes };
-    key <AC08> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Up     ], repeat=yes };
-    key <AC09> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Home   ], repeat=yes };
-    key <AC10> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, End    ], repeat=yes };
-    key <AC11> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <AB01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB02> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB03> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB04> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB07> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Down   ], repeat=yes };
-    key <AB08> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Prior  ], repeat=yes };
-    key <AB09> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, Next   ], repeat=yes };
-    key <AB10> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <BKSL> { [ NoSymbol, NoSymbol ] };
+    key.type = "DF_LVL3";
+    key <AD02> { [ NoSymbol, NoSymbol, Tab       ], repeat=yes };
+    key <AD03> { [ NoSymbol, NoSymbol, Escape    ], repeat=yes };
+    key <AD08> { [ NoSymbol, NoSymbol, Right     ], repeat=yes };
+    key <AD09> { [ NoSymbol, NoSymbol, BackSpace ], repeat=yes };
+    key <AC02> { [ NoSymbol, NoSymbol, Left      ], repeat=yes };
+    key <AC03> { [ NoSymbol, NoSymbol, Delete    ], repeat=yes };
+    key <AC04> { [ NoSymbol, NoSymbol, Return    ], repeat=yes };
+    key <AC07> { [ NoSymbol, NoSymbol, Left      ], repeat=yes };
+    key <AC08> { [ NoSymbol, NoSymbol, Up        ], repeat=yes };
+    key <AC09> { [ NoSymbol, NoSymbol, Home      ], repeat=yes };
+    key <AC10> { [ NoSymbol, NoSymbol, End       ], repeat=yes };
+    key <AB07> { [ NoSymbol, NoSymbol, Down      ], repeat=yes };
+    key <AB08> { [ NoSymbol, NoSymbol, Prior     ], repeat=yes };
+    key <AB09> { [ NoSymbol, NoSymbol, Next      ], repeat=yes };
 };
 
 // 2
-// uses level3(alt_switch), RedirectKey, and optionally VoidSymbol (same outcome either way)
+// `level3(alt_switch)`, `RedirectKey`, and optionally VoidSymbol (same outcome either way)
 // doesn't work
 partial alphanumeric_keys modifier_keys
 xkb_symbols "davidfong_w2" {
@@ -267,62 +180,27 @@ xkb_symbols "davidfong_w2" {
     include "level3(alt_switch)"
     name[Group1]= "English (DF)";
 
-    key <TLDE> { [ NoSymbol, NoSymbol ] };
-    key <AE01> { [ NoSymbol, NoSymbol ] };
-    key <AE02> { [ NoSymbol, NoSymbol ] };
-    key <AE03> { [ NoSymbol, NoSymbol ] };
-    key <AE04> { [ NoSymbol, NoSymbol ] };
-    key <AE05> { [ NoSymbol, NoSymbol ] };
-    key <AE06> { [ NoSymbol, NoSymbol ] };
-    key <AE07> { [ NoSymbol, NoSymbol ] };
-    key <AE08> { [ NoSymbol, NoSymbol ] };
-    key <AE09> { [ NoSymbol, NoSymbol ] };
-    key <AE10> { [ NoSymbol, NoSymbol ] };
-    key <AE11> { [ NoSymbol, NoSymbol ] };
-    key <AE12> { [ NoSymbol, NoSymbol ] };
+    key <AD02> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<TAB>)], repeat=yes };
+    key <AD03> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<ESC>)], repeat=yes };
+    key <AD08> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<RGHT>)], repeat=yes };
+    key <AD09> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<BKSP>)], repeat=yes };
 
-    key <AD01> { [ NoSymbol, NoSymbol ] };
-    key <AD02> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<TAB>)], repeat=yes };
-    key <AD03> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<ESC>)], repeat=yes };
-    key <AD04> { [ NoSymbol, NoSymbol ] };
-    key <AD05> { [ NoSymbol, NoSymbol ] };
-    key <AD06> { [ NoSymbol, NoSymbol ] };
-    key <AD07> { [ NoSymbol, NoSymbol ] };
-    key <AD08> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<RGHT>)], repeat=yes };
-    key <AD09> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<BKSP>)], repeat=yes };
-    key <AD10> { [ NoSymbol, NoSymbol ] };
-    key <AD11> { [ NoSymbol, NoSymbol ] };
-    key <AD12> { [ NoSymbol, NoSymbol ] };
+    key <AC02> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<LEFT>)], repeat=yes };
+    key <AC03> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<DELE>)], repeat=yes };
+    key <AC04> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<RTRN>)], repeat=yes };
+    key <AC07> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<LEFT>)], repeat=yes };
+    key <AC08> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<UP>)], repeat=yes };
+    key <AC09> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<HOME>)], repeat=yes };
+    key <AC10> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<END>)], repeat=yes };
 
-    key <AC01> { [ NoSymbol, NoSymbol ] };
-    key <AC02> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<LEFT>)], repeat=yes };
-    key <AC03> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<DELE>)], repeat=yes };
-    key <AC04> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<RTRN>)], repeat=yes };
-    key <AC05> { [ NoSymbol, NoSymbol ] };
-    key <AC06> { [ NoSymbol, NoSymbol ] };
-    key <AC07> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<LEFT>)], repeat=yes };
-    key <AC08> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<UP>)], repeat=yes };
-    key <AC09> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<HOME>)], repeat=yes };
-    key <AC10> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<END>)], repeat=yes };
-    key <AC11> { [ NoSymbol, NoSymbol ] };
-
-    key <AB01> { [ NoSymbol, NoSymbol ] };
-    key <AB02> { [ NoSymbol, NoSymbol ] };
-    key <AB03> { [ NoSymbol, NoSymbol ] };
-    key <AB04> { [ NoSymbol, NoSymbol ] };
-    key <AB05> { [ NoSymbol, NoSymbol ] };
-    key <AB06> { [ NoSymbol, NoSymbol ] };
-    key <AB07> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<DOWN>)], repeat=yes };
-    key <AB08> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<PGUP>)], repeat=yes };
-    key <AB09> { type="LVL3_CUSTOM", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<PGDN>)], repeat=yes };
-    key <AB10> { [ NoSymbol, NoSymbol ] };
-
-    key <BKSL> { [ NoSymbol, NoSymbol ] };
+    key <AB07> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<DOWN>)], repeat=yes };
+    key <AB08> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<PGUP>)], repeat=yes };
+    key <AB09> { type="DF_LVL3", [ NoSymbol, NoSymbol, VoidSymbol ], actions=[NoAction(),NoAction(),RedirectKey(key=<PGDN>)], repeat=yes };
 };
 
 // 1
 // uses level3(alt_switch), type=FOUR_LEVEL and key name
-// works at a basic level. ignores shift in custom layer. writes chars in VS Code
+// level 3 works. shift gets consumed (but VS Code picks it up anyway).
 partial alphanumeric_keys modifier_keys
 xkb_symbols "davidfong_w1" {
     include "us(basic)"
@@ -330,118 +208,48 @@ xkb_symbols "davidfong_w1" {
     include "level3(alt_switch)"
     name[Group1]= "English (DF)";
 
-    key <TLDE> { [ NoSymbol, NoSymbol ] };
-    key <AE01> { [ NoSymbol, NoSymbol ] };
-    key <AE02> { [ NoSymbol, NoSymbol ] };
-    key <AE03> { [ NoSymbol, NoSymbol ] };
-    key <AE04> { [ NoSymbol, NoSymbol ] };
-    key <AE05> { [ NoSymbol, NoSymbol ] };
-    key <AE06> { [ NoSymbol, NoSymbol ] };
-    key <AE07> { [ NoSymbol, NoSymbol ] };
-    key <AE08> { [ NoSymbol, NoSymbol ] };
-    key <AE09> { [ NoSymbol, NoSymbol ] };
-    key <AE10> { [ NoSymbol, NoSymbol ] };
-    key <AE11> { [ NoSymbol, NoSymbol ] };
-    key <AE12> { [ NoSymbol, NoSymbol ] };
-
-    key <AD01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD02> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Tab ], repeat=yes };
-    key <AD03> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Escape ], repeat=yes };
-    key <AD04> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD07> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD08> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Right ], repeat=yes };
-    key <AD09> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, BackSpace ], repeat=yes };
-    key <AD10> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD11> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AD12> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <AC01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC02> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Left ], repeat=yes };
-    key <AC03> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Delete ], repeat=yes };
-    key <AC04> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Return ], repeat=yes };
-    key <AC05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AC07> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Left ], repeat=yes };
-    key <AC08> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Up ], repeat=yes };
-    key <AC09> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Home ], repeat=yes };
-    key <AC10> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, End ], repeat=yes };
-    key <AC11> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <AB01> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB02> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB03> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB04> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB05> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB06> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-    key <AB07> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Down ], repeat=yes };
-    key <AB08> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Prior ], repeat=yes };
-    key <AB09> { type="FOUR_LEVEL", [ NoSymbol, NoSymbol, Next ], repeat=yes };
-    key <AB10> { type="TWO_LEVEL",   [ NoSymbol, NoSymbol ] };
-
-    key <BKSL> { [ NoSymbol, NoSymbol ] };
+    key.type = "FOUR_LEVEL";
+    key <AD02> { [ NoSymbol, NoSymbol, Tab      , Tab       ], repeat=yes };
+    key <AD03> { [ NoSymbol, NoSymbol, Escape   , Escape    ], repeat=yes };
+    key <AD08> { [ NoSymbol, NoSymbol, Right    , Right     ], repeat=yes };
+    key <AD09> { [ NoSymbol, NoSymbol, BackSpace, BackSpace ], repeat=yes };
+    key <AC02> { [ NoSymbol, NoSymbol, Left     , Left      ], repeat=yes };
+    key <AC03> { [ NoSymbol, NoSymbol, Delete   , Delete    ], repeat=yes };
+    key <AC04> { [ NoSymbol, NoSymbol, Return   , Return    ], repeat=yes };
+    key <AC07> { [ NoSymbol, NoSymbol, Left     , Left      ], repeat=yes };
+    key <AC08> { [ NoSymbol, NoSymbol, Up       , Up        ], repeat=yes };
+    key <AC09> { [ NoSymbol, NoSymbol, Home     , Home      ], repeat=yes };
+    key <AC10> { [ NoSymbol, NoSymbol, End      , End       ], repeat=yes };
+    key <AB07> { [ NoSymbol, NoSymbol, Down     , Down      ], repeat=yes };
+    key <AB08> { [ NoSymbol, NoSymbol, Prior    , Prior     ], repeat=yes };
+    key <AB09> { [ NoSymbol, NoSymbol, Next     , Next      ], repeat=yes };
 };
 
 // 0
 // uses type=ALT_NAV and key name. no level(alt_switch)
-// works at a basic level. ignores shift in custom layer. supports alt+tab. does nothing in VS Code
+// level 3 works. shift works. supports alt+tab. chromium thinks alt isn't consumed.
 partial alphanumeric_keys modifier_keys
 xkb_symbols "davidfong_w0" {
     include "us(basic)"
     include "ctrl(nocaps)"
     //include "level3(alt_switch)"
     name[Group1]= "English (DF)";
+    //replace modifier_map Mod1 { <RTSH> };
+    //replace modifier_map Mod3 { <LALT>, <RALT> };
 
-    key <TLDE> { [ NoSymbol, NoSymbol ] };
-    key <AE01> { [ NoSymbol, NoSymbol ] };
-    key <AE02> { [ NoSymbol, NoSymbol ] };
-    key <AE03> { [ NoSymbol, NoSymbol ] };
-    key <AE04> { [ NoSymbol, NoSymbol ] };
-    key <AE05> { [ NoSymbol, NoSymbol ] };
-    key <AE06> { [ NoSymbol, NoSymbol ] };
-    key <AE07> { [ NoSymbol, NoSymbol ] };
-    key <AE08> { [ NoSymbol, NoSymbol ] };
-    key <AE09> { [ NoSymbol, NoSymbol ] };
-    key <AE10> { [ NoSymbol, NoSymbol ] };
-    key <AE11> { [ NoSymbol, NoSymbol ] };
-    key <AE12> { [ NoSymbol, NoSymbol ] };
-
-    key <AD01> { [ NoSymbol, NoSymbol ] };
-    key <AD02> { [ NoSymbol, NoSymbol, Tab ], type="ALT_NAV", repeat=yes };
-    key <AD03> { [ NoSymbol, NoSymbol, Escape ], type="ALT_NAV", repeat=yes };
-    key <AD04> { [ NoSymbol, NoSymbol ] };
-    key <AD05> { [ NoSymbol, NoSymbol ] };
-    key <AD06> { [ NoSymbol, NoSymbol ] };
-    key <AD07> { [ NoSymbol, NoSymbol ] };
-    key <AD08> { [ NoSymbol, NoSymbol, Right ], type="ALT_NAV", repeat=yes };
-    key <AD09> { [ NoSymbol, NoSymbol, BackSpace ], type="ALT_NAV", repeat=yes };
-    key <AD10> { [ NoSymbol, NoSymbol ] };
-    key <AD11> { [ NoSymbol, NoSymbol ] };
-    key <AD12> { [ NoSymbol, NoSymbol ] };
-
-    key <AC01> { [ NoSymbol, NoSymbol ] };
-    key <AC02> { [ NoSymbol, NoSymbol, Left ], type="ALT_NAV", repeat=yes };
-    key <AC03> { [ NoSymbol, NoSymbol, Delete ], type="ALT_NAV", repeat=yes };
-    key <AC04> { [ NoSymbol, NoSymbol, Return ], type="ALT_NAV", repeat=yes };
-    key <AC05> { [ NoSymbol, NoSymbol ] };
-    key <AC06> { [ NoSymbol, NoSymbol ] };
-    key <AC07> { [ NoSymbol, NoSymbol, Left ], type="ALT_NAV", repeat=yes };
-    key <AC08> { [ NoSymbol, NoSymbol, Up ], type="ALT_NAV", repeat=yes };
-    key <AC09> { [ NoSymbol, NoSymbol, Home ], type="ALT_NAV", repeat=yes };
-    key <AC10> { [ NoSymbol, NoSymbol, End ], type="ALT_NAV", repeat=yes };
-    key <AC11> { [ NoSymbol, NoSymbol ] };
-
-    key <AB01> { [ NoSymbol, NoSymbol ] };
-    key <AB02> { [ NoSymbol, NoSymbol ] };
-    key <AB03> { [ NoSymbol, NoSymbol ] };
-    key <AB04> { [ NoSymbol, NoSymbol ] };
-    key <AB05> { [ NoSymbol, NoSymbol ] };
-    key <AB06> { [ NoSymbol, NoSymbol ] };
-    key <AB07> { [ NoSymbol, NoSymbol, Down ], type="ALT_NAV", repeat=yes };
-    key <AB08> { [ NoSymbol, NoSymbol, Prior ], type="ALT_NAV", repeat=yes };
-    key <AB09> { [ NoSymbol, NoSymbol, Next ], type="ALT_NAV", repeat=yes };
-    key <AB10> { [ NoSymbol, NoSymbol ] };
-
-    key <BKSL> { [ NoSymbol, NoSymbol ] };
+    key.type = "ALT_NAV";
+    key <AD02> { [ NoSymbol, NoSymbol, Tab       ], repeat=yes };
+    key <AD03> { [ NoSymbol, NoSymbol, Escape    ], repeat=yes };
+    key <AD08> { [ NoSymbol, NoSymbol, Right     ], repeat=yes };
+    key <AD09> { [ NoSymbol, NoSymbol, BackSpace ], repeat=yes };
+    key <AC02> { [ NoSymbol, NoSymbol, Left      ], repeat=yes };
+    key <AC03> { [ NoSymbol, NoSymbol, Delete    ], repeat=yes };
+    key <AC04> { [ NoSymbol, NoSymbol, Return    ], repeat=yes };
+    key <AC07> { [ NoSymbol, NoSymbol, Left      ], repeat=yes };
+    key <AC08> { [ NoSymbol, NoSymbol, Up        ], repeat=yes };
+    key <AC09> { [ NoSymbol, NoSymbol, Home      ], repeat=yes };
+    key <AC10> { [ NoSymbol, NoSymbol, End       ], repeat=yes };
+    key <AB07> { [ NoSymbol, NoSymbol, Down      ], repeat=yes };
+    key <AB08> { [ NoSymbol, NoSymbol, Prior     ], repeat=yes };
+    key <AB09> { [ NoSymbol, NoSymbol, Next      ], repeat=yes };
 };
