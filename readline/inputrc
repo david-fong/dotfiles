@@ -77,6 +77,7 @@ $endif
 "\e/": kill-whole-line
 "\eD": kill-whole-line
 "\eh": "~"
+"\C-[[H": "~/"
 
 "\C-n": "n\C-m"
 "\C-g": "tig\C-m"

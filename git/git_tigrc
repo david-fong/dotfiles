@@ -21,6 +21,8 @@
     log-view-line-number-display    = yes
 
 [tig "bind"]
+    generic = <Ctrl-Q> quit
+    generic = <Ctrl-F> search
     generic = <Ctrl-I> none
     generic = <Ctrl-I> scroll-line-up
     generic = <Ctrl-O> scroll-line-down

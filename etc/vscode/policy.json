@@ -1,0 +1,10 @@
+{
+    "ChatAgentExtensionTools": false,
+    "ChatAgentMode": false,
+    "ChatMCP": "none",
+    "ChatToolsAutoApprove": false,
+    "McpGalleryServiceUrl": "",
+    "ChatToolsTerminalEnableAutoApprove": false,
+    "EnableFeedback": false,
+    "TelemetryLevel": "off"
+}

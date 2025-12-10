@@ -1,4 +1,5 @@
 [
+	// https://code.visualstudio.com/docs/configure/keybindings#_keyboard-rules
 	// back-forward navigation
 	{ "key": "alt+right",    "command":  "workbench.action.navigateForward" },
 	{ "key": "ctrl+shift+-", "command": "-workbench.action.navigateForward" },
@@ -107,4 +108,14 @@
 	//     },
 	//     "when": "editorTextFocus && !editorReadonly && !editorHasSelection"
 	// }
+	{
+		"key": "f5",
+		"when": "cmake:enableFullFeatureSet && inCMakeProject && !cmake:hideDebugCommand && !inDebugMode",
+		"command": "runCommands",
+		"args": { "commands": [
+			"debug.openView",
+			"cmake.debugTarget",
+			"workbench.debug.action.focusRepl",
+		]},
+	},
 ]

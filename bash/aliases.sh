@@ -44,7 +44,8 @@ function rgr {
 	grep -r --color=always "$@" | awk -F '[:]' -v OFS=':' 'f!=$1 {f=$1; print "\n"f} f==$1 {$1=""; printf "%34s",$2; $2=""; print}';
 }
 
-alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto'
+alias diff='\diff --side-by-side --suppress-common-lines --width="$COLUMNS" --color=auto --tabsize=3'
+# (`--tabsize` set to 3 because that's what I pass to `tabs` to configure tab width for the terminal)
 #function manifest() {
 #    local -ra choices="$(find -type f -name "*.jar")"
 #    [[ "${#choices}" -le 0 ]] && return 1

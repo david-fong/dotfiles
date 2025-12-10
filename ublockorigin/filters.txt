@@ -12,3 +12,8 @@ github.com##[class*="CopilotWorkspaceButton"]
 github.com##[class*="CopilotAgentModeButton"]
 
 old.reddit.com###redesign-beta-optin-btn
+
+stackoverflow.com/stackheartbeat
+stackoverflow.com/stackevent
+stackoverflow.com/posts/*/ivc
+stackoverflow.com/js-true.gif

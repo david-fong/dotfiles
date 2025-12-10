@@ -69,7 +69,7 @@
 		"claude-desktop": false,
 		"windsurf": false,
 		"cursor-global": false,
-		"cursor-workspace": false,
+		"cursor-workspace": false
 	},
 
 	"workbench.editor.closeOnFileDelete": true,
@@ -112,12 +112,21 @@
 	"editor.bracketPairColorization.enabled": false,
 	// "editor.selectionHighlight": false,
 
-	"debug.openDebug": "openOnSessionStart",
-	// "debug.console.closeOnEnd": true,
-	"debug.openExplorerOnEnd": true,
+	"debug.focusWindowOnBreak": false,
+	// "accessibility.signals.onDebugBreak": {
+	// 	"sound": "auto",
+	// 	"announcement": "auto"
+	// },
 	"debug.toolBarLocation": "docked",
+	"debug.openDebug": "openOnDebugBreak",
+	"debug.openExplorerOnEnd": true,
+	// "debug.focusEditorOnBreak": false,
 	"debug.inlineValues": "auto",
-	"debug.console.fontSize": 11,
+	"debug.closeReadonlyTabsOnEnd": true,
+	"debug.internalConsoleOptions": "openOnSessionStart",
+	"debug.console.fontSize": 12,
+	"debug.console.acceptSuggestionOnEnter": "on",
+	"debug.console.closeOnEnd": true,
 
 	"terminal.integrated.shellIntegration.enabled": false,
 	"terminal.integrated.cursorStyle": "underline",
@@ -130,7 +139,7 @@
 	"terminal.integrated.commandsToSkipShell": ["workbench.action.togglePanel", "runCommands","type"],
 
 
-	"typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
+	// "typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
 	"typescript.disableAutomaticTypeAcquisition": true,
 	"typescript.preferences.importModuleSpecifier": "non-relative",
 	"typescript.format.indentSwitchCase": false,
@@ -187,6 +196,11 @@
 		"editor.tabSize": 2,
 		"editor.colorDecorators": false,
 	},
+	"[plaintext][markdown][restructuredtext][json][jsonc][jsonl][xml][yaml][ignore][ini][git-commit][git-rebase][search-result][Log][log][css]": {
+		// "editor.glyphMargin": false,
+		// "editor.minimap.autohide": "scroll",
+		// "editor.showFoldingControls": "never"
+	},
 	"[plaintext]": {
 		"editor.wordWrap": "off", // bounded
 		"editor.wrappingIndent": "same",
@@ -216,6 +230,30 @@
 	"cmake.configureOnEdit": false,
 	// "cmake.automaticReconfigure": false,
 	"cmake.pinnedCommands": [],
+	"cmake.options.statusBarVisibility": "hidden",
+	"cmake.options.advanced": {
+		"configurePreset": {
+			"statusBarVisibility": "visible",
+		},
+		"buildPreset": {
+			"statusBarVisibility": "visible",
+		},
+		"build": {
+			"statusBarVisibility": "icon",
+		},
+		// "buildTarget": {
+		// 	"statusBarVisibility": "visible",
+		// },
+		"launchTarget": {
+			"statusBarVisibility": "visible",
+		},
+		"debug": {
+			"statusBarVisibility": "icon",
+		},
+		"launch": {
+			"statusBarVisibility": "icon",
+		},
+	},
 
 	"notebook.outline.showCodeCells": true,
 	"emmet.syntaxProfiles": {

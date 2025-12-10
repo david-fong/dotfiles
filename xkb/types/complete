@@ -70,4 +70,20 @@ default xkb_types "complete" {
     level_name[Level5] = "Custom";
     level_name[Level6] = "Custom";
   };
+
+  type "DF_LVL5_CTRL6" {
+    modifiers = Shift + LevelFive + Control;
+    map[None]             = Level1;
+    map[Shift]            = Level2;
+    map[LevelFive]        = Level5;
+    map[Shift+LevelFive]  = Level5;
+    map[LevelFive+Control]       = Level6;
+    map[Shift+LevelFive+Control] = Level6;
+    preserve[Shift+LevelFive] = Shift;
+    preserve[Shift+LevelFive+Control] = Shift+Control;
+    level_name[Level1] = "Base";
+    level_name[Level2] = "Shift";
+    level_name[Level5] = "Custom";
+    level_name[Level6] = "Custom";
+  };
 };

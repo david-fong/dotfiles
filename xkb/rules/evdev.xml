@@ -9,8 +9,8 @@
       <variantList>
         <variant>
           <configItem>
-            <name>davidfong</name>
-            <shortDescription>df</shortDescription>
+            <name>davidfong_x11</name>
+            <shortDescription>df:x</shortDescription>
             <description>English (DF X11 sys)</description>
           </configItem>
         </variant>
@@ -21,13 +21,6 @@
         <name>custom</name>
       </configItem>
       <variantList>
-        <variant>
-          <configItem>
-            <name>davidfong_x</name>
-            <shortDescription>df:x</shortDescription>
-            <description>English (DF X11)</description>
-          </configItem>
-        </variant>
         <variant>
           <configItem>
             <name>davidfong_w</name>

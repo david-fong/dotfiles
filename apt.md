@@ -66,7 +66,6 @@ about:policy
 google-chrome-stable
 dconf-editor
 gnome-browser-connector
-xbacklight xserver-xorg-video-intel
 tlp tlp-rdw
 pavucontrol
 fonts-inconsolata
@@ -74,7 +73,7 @@ fonts-inconsolata
 natpmpc # for vpn
 zfsutils-linux rclone p7zip-full
 
-tree nnn vim git git-lfs tig ripgrep jq reuse net-tools whois sqlite3 sqlitebrowser
+tree nnn lf vim git git-lfs tig ripgrep jq reuse net-tools whois sqlite3 sqlitebrowser
 
 libboost-all-dev
 libssl-dev
@@ -93,6 +92,7 @@ ninja-build make
 cmake
 conan
 linux-tools-generic
+python3-typeshed
 ```
 
 snaps:
@@ -119,6 +119,8 @@ dconf dump /org/gnome/terminal/ > ~/.config/gnome-terminal.dump
 
 - [](https://askubuntu.com/questions/147462/how-can-i-change-the-tty-colors)
 
+ptyxis themes: wombat, peppermint, vibrant ink, argonaut, one half black, hardcore, website
+
 ## keyboard
 
 fun fact- chord `ctrl+shift+u, <unicode hex>` to enter unicode
@@ -126,21 +128,22 @@ fun fact- chord `ctrl+shift+u, <unicode hex>` to enter unicode
 - [](https://askubuntu.com/questions/1025765/how-to-map-alt-hjkl-keys-to-arrow-keys)
 - [](https://askubuntu.com/a/257497)
 
-<https://github.com/xkbcommon/libxkbcommon/blob/master/doc/keymap-text-format-v1-v2.md>
+<https://xkbcommon.org/doc/current/keymap-text-format-v1-v2.html>
+  (source: <https://github.com/xkbcommon/libxkbcommon/blob/master/doc/keymap-text-format-v1-v2.md>)
 <https://xkbcommon.org/doc/current/user-configuration.html#compatibility>
 <https://github.com/xkbcommon/libxkbcommon/blob/master/src/ks_tables.h>
-- [](https://medium.com/@damko/a-simple-humble-but-comprehensive-guide-to-xkb-for-linux-6f1ad5e13450)
+  https://www.x.org/releases/current/doc/kbproto/xkbproto.html
 <https://wiki.archlinux.org/title/X_keyboard_extension>
-<https://who-t.blogspot.com/2020/09/user-specific-xkb-configuration-putting.html>
-  https://who-t.blogspot.com/2020/02/user-specific-xkb-configuration-part-1.html
-  https://who-t.blogspot.com/2020/07/user-specific-xkb-configuration-part-2.html
-  https://who-t.blogspot.com/2020/08/user-specific-xkb-configuration-part-3.html
+xkb tutorials:
+  <https://who-t.blogspot.com/2020/09/user-specific-xkb-configuration-putting.html>
+    https://who-t.blogspot.com/2020/02/user-specific-xkb-configuration-part-1.html
+    https://who-t.blogspot.com/2020/07/user-specific-xkb-configuration-part-2.html
+    https://who-t.blogspot.com/2020/08/user-specific-xkb-configuration-part-3.html
+  (a bit outdated) [An Unreliable Guide to XKB Configuration](https://www.charvolant.org/doug/xkb/html/index.html)
+  (a bit outdated and maybe not the best guide) https://medium.com/@damko/a-simple-humble-but-comprehensive-guide-to-xkb-for-linux-6f1ad5e13450
+  (outdated): https://help.ubuntu.com/community/Custom%20keyboard%20layout%20definitions
 https://github.com/xkbcommon/libxkbcommon/issues/18#issuecomment-72728366
 https://github.com/xkbcommon/libxkbcommon/issues/145
-TODO https://askubuntu.com/a/1216744/1624654 consider remapping alt key to something else and using that something else as the modifier?
-https://docs.gtk.org/gtk3/property.Settings.gtk-enable-mnemonics.html annoyingly, this is deprecated.
-<https://wiki.archlinux.org/title/X_keyboard_extension#Caps_hjkl_as_vimlike_arrow_keys>
-(outdated): https://help.ubuntu.com/community/Custom%20keyboard%20layout%20definitions
 
 https://wiki.archlinux.org/title/Xorg/Keyboard_configuration#Using_localectl
 https://www.x.org/releases/X11R7.5/doc/input/XKB-Config.html
@@ -226,6 +229,12 @@ alias aptlistman='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/
 ```
 
 ## data
+
+```
+/etc/systemd/journald.conf
+# https://askubuntu.com/a/1276078
+SystemMaxUse=128M
+```
 
 <https://old.reddit.com/r/DataHoarder/comments/6qf716/a_quick_datahoarder_faq/>
 <https://old.reddit.com/r/DataHoarder/wiki/hardware#wiki_hard_drives>

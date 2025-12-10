@@ -24,9 +24,6 @@ mkdir -p "${XDG_CACHE_HOME}"
 
 . "${XDG_CONFIG_HOME}/bash/xdg_compat.sh"
 
-#[ -x /bin/setxkbmap ] && setxkbmap -option ctrl:nocaps
-#gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier', 'lv3:ralt_alt']"
-
 # # https://askubuntu.com/q/147462
 if [ "$TERM" = "linux" ]; then
 	echo -en "\e]P000181E" #black
@@ -50,23 +47,10 @@ fi
 
 export EDITOR='vim'
 
-# less command behaviour:
-# +X : enable startup termcap
-# -F : (not used) print to console if 1 page
-# -q : medium-quiet
-# -R : interpret escape-sequences
-# -J : show status-column
-# -N : show line numbers (off)
-# -M : use long prompt
-# -x3: use <N> as tabstop
-# -#6: use <N> as the horizontal scroll amount
-# -S : chop long lines
-export LESS='-+X -+F -qRJM -x3 -#6 -S'
-[ -x "$(command -v lesspipe)" ] && eval "$(SHELL=/bin/sh lesspipe)"
-
 # if running bash...
 if [ -n "$BASH_VERSION" ]; then
 	[ -f "${XDG_CONFIG_HOME}/bash/main.sh" ] && source "${XDG_CONFIG_HOME}/bash/main.sh"
+	[ -x "$(command -v lesspipe)" ] && eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
 if [ -d "$HOME/c/tool/emsdk" ]; then

@@ -6,7 +6,7 @@ set cursorline "'show' the cursor line
 hi FoldColumn       ctermbg=none
 hi CursorLine                       cterm=none
 hi CursorLineNr     ctermfg=white   cterm=bold
-hi LineNr           ctermfg=darkgrey
+hi LineNr           ctermfg=blue
 
 hi SpecialKey       ctermfg=darkgrey
 hi Comment          ctermfg=darkgrey

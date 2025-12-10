@@ -7,16 +7,15 @@ set tui compact-source on
 set tui tab-width 3
 
 set print static-members off
+set print array on
 set print pretty on
-
-add-auto-load-safe-path /home/david/c/m/ok/cpp/tools/okiidoku.gdb.py
-add-auto-load-safe-path /home/david/c/m/ok/cpp/out/build/dev.gcc
 
 set debuginfod enabled on
 set startup-with-shell off
-#skip -gfi /usr/include/c++/*/*/*
-#skip -gfi /usr/include/c++/*/*
 #skip -gfi /usr/include/c++/*
-skip -rfu ^std::([a-zA-z0-9_]+)<.*>::~?\1 *\(
+skip -rfu '^std::'
+
+set breakpoint pending on
 #b main
 b abort
+b __sanitizer::Die

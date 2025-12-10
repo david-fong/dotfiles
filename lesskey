@@ -2,22 +2,6 @@
 
 #command
 
-^Q  quit
-^F  forw-search
-\kU back-scroll
-\kD forw-scroll
-
-
-# iokl
-k  back-line
-K  back-line-force
-^K back-scroll
-m  forw-line
-M  forw-line-force
-^M forw-scroll
-j  left-scroll
-i  right-scroll
-
 # disabled back-line
 y  noaction
 ^Y noaction
@@ -27,10 +11,9 @@ Y  noaction
 # disabled forw-line
 \r noaction
 \n noaction
-#j  noaction
+j  noaction
 e  noaction
 ^E noaction
-#n noaction
 ^N noaction
 
 # disabled forw-screen
@@ -51,6 +34,21 @@ w noaction
 
 # TODO turn off more things that I won't use.
 
+^Q  quit
+^F  forw-search
+\kU back-scroll
+\kD forw-scroll
+
+# iokl
+j  back-line
+J  back-line-force
+^J back-scroll
+\40 forw-line
+^\40 forw-scroll
+i  back-screen
+o  forw-screen
+k  left-scroll
+l  right-scroll
 
 #env
 
@@ -60,14 +58,15 @@ LESS_TERMCAP_vb=
 # TODO this isn't working. why? it works on version 643, but not on 590?
 # less command behaviour:
 # +X : enable startup termcap
-# -F : (not used) print to console if 1 page
+# -F : print to console if 1 page
 # -q : medium-quiet
 # -R : interpret escape-sequences
 # -J : show status-column
 # -N : show line numbers (off)
 # -M : use long prompt
+# -i : ignore case in searches that are lowercase
 # -x3: use <N> as tabstop
 # -#6: use <N> as the horizontal scroll amount
 # -S : chop long lines
-LESS=-+X -+F -qRJM -x3 -#6 -S
+LESS=-+X -F -qRJMi -x3 --shift=6 -S --use-color
 
