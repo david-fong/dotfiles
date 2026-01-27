@@ -27,7 +27,7 @@ fi
 # 	echo "${FACES[$RANDOM % ${#FACES[@]}]}"
 # }
 # readonly -f __ps1_face
-PS1='\n\[\033[32m\]\u@\H \[\033[33m\]\w\[\033[36m\] (._.)\[\033[37m\]\n$\[\033[0m\] '
+PS1='\n\[\033[32m\]\u@\H \[\033[33m\]\w\[\033[36m\] (._.)\[\033[37m\]$\n\[\033[0m\]'
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then

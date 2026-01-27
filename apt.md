@@ -2,7 +2,9 @@
 <https://mpv.io/installation/> (`deb https://apt.fruit.je/ubuntu oracular mpv`)
 `add-apt-repository ppa:git-core/ppa`
 `add-apt-repository ppa:linrunner/tlp`
+`add-apt-repository ppa:tomtomtom/yt-dlp` # https://github.com/yt-dlp/yt-dlp/wiki/Installation#apt
 <https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64>
+<https://docs.conda.io/projects/conda/en/stable/user-guide/install/rpm-debian.html>
 
 ## network privacy/security
 
@@ -15,7 +17,7 @@
 <https://one.one.one.one/family/> (outgoing DNS resolve/reject over TLS)
 <https://developers.cloudflare.com/1.1.1.1/setup/linux/>
   <https://man.archlinux.org/man/resolved.conf.5>
-  /etc/systemd/resolve.conf.d/main.conf: DNS= FallbackDNS=... DNSOverTLS=yes
+  /etc/systemd/resolved.conf.d/main.conf: DNS= FallbackDNS=... DNSOverTLS=yes
     can copy file :/etc/systemd/resolved.conf.d/main.conf
     check with `resolvectl status`
   settings -> wifi -> each wifi network -> disable automatic DNS for ipv4 and ipv6
@@ -63,13 +65,14 @@ about:policy
 ## system packages
 
 ```
-google-chrome-stable
+google-chrome-stable brave brave-keyring # is the keyring needed?
 dconf-editor
 gnome-browser-connector
 tlp tlp-rdw
 pavucontrol
 fonts-inconsolata
 #wireguard
+#network-manager-openconnect-gnome # open substitute for cisco anyconnect. using to connect to ubc vpn.
 natpmpc # for vpn
 zfsutils-linux rclone p7zip-full
 
@@ -92,7 +95,12 @@ ninja-build make
 cmake
 conan
 linux-tools-generic
-python3-typeshed
+python3-typeshed # installed for GDB API types
+
+# for ubc 2026 work, installed to run playwright:
+libicu76 libxml2-16 libavif16 libmanette-0.2-0
+docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin # for docker
+libreoffice-base libreoffice-sdbc-postgresql # for postgres
 ```
 
 snaps:

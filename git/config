@@ -34,10 +34,12 @@
     s = "status -sb"
     d = "diff --word-diff=color"
     dc = "diff --word-diff=color --cached"
+    df = "diff --name-only origin/main"
     f = "fetch --all --prune"
     a = "add -u"
     tg = "tag --sign"
     sw = "switch"
+    ca = "commit --amend"
 
 [submodule]
     recurse = 1

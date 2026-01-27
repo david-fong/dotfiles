@@ -20,6 +20,7 @@ set clipboard=unnamed
 set ignorecase
 set smartcase
 set incsearch
+set wildignorecase
 
 set title
 set splitright

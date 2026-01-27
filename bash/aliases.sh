@@ -1,6 +1,7 @@
 #!/bin/bash
 alias l='less'
 alias g='git'
+complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
 alias s='git s'
 alias d='git d'
 alias nom='pnpm'
@@ -79,6 +80,7 @@ function secret() {
 	unmount ~/secret
 	# TODO this doesn't handle when user puts vim in background with ctrl+z
 }
+alias newpassword='openssl rand 256 | tr -dc A-Za-z0-9 | cut -c -30'
 
 alias cyclelogin='\exec "$0" "$@" --init-file ~/.bash_profile'
 

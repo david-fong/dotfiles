@@ -105,6 +105,7 @@
 	"editor.renderWhitespace": "none",
 	"editor.minimap.renderCharacters": false,
 	"editor.suggest.showWords": false,
+	"editor.suggestOnTriggerCharacters": false,
 	// "editor.suggestSelection": "recentlyUsedByPrefix",
 	// "editor.suggest.selectionMode": ,
 	// "editor.suggest.matchOnWordStartOnly": false,
@@ -127,6 +128,10 @@
 	"debug.console.fontSize": 12,
 	"debug.console.acceptSuggestionOnEnter": "on",
 	"debug.console.closeOnEnd": true,
+	"[sql]": {
+		"editor.glyphMargin": false,
+		// "editor.showFoldingControls": "never",
+	},
 
 	"terminal.integrated.shellIntegration.enabled": false,
 	"terminal.integrated.cursorStyle": "underline",
@@ -266,6 +271,8 @@
 	"search.quickAccess.preserveInput": true,
 	"diffEditor.experimental.useTrueInlineView": true,
 	"workbench.editor.empty.hint": "hidden",
+	"git.blame.editorDecoration.enabled": false,
+	"git.blame.statusBarItem.enabled": false,
 	// "editor.defaultColorDecorators": true,
 	// "window.density.editorTabHeight": "compact"
 	// "editor.hover.enabled": false,

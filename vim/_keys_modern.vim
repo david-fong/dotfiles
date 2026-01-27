@@ -40,6 +40,9 @@ inoremap <silent> <ESC>P <C-O>P
 "   nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 " endif
 
+:vnoremap <TAB> >gv
+:vnoremap <S-TAB> <gv
+
 
 " text wrapping: --------------------------------
 if exists('+linebreak')
