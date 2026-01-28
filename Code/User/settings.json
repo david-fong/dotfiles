@@ -76,9 +76,19 @@
 	"workbench.editor.limit.enabled": true,
 	"workbench.editor.limit.perEditorGroup": true,
 	"editor.selectionClipboard": false,
-	"editor.snippetSuggestions": "bottom",
 	"editor.linkedEditing": true,
 	"editor.dragAndDrop": false,
+
+	"editor.cursorSurroundingLines": 3,
+	// "editor.glyphMargin": false,
+	"editor.renderWhitespace": "none",
+	"editor.lineDecorationsWidth": 0,
+	"editor.minimap.renderCharacters": false,
+	"[sql]": {
+		"editor.glyphMargin": false,
+		// "editor.showFoldingControls": "never",
+	},
+	"editor.minimap.autohide": "mouseover",
 
 	"git.enableCommitSigning": true,
 	"git.suggestSmartCommit": false,
@@ -99,16 +109,13 @@
 	// "editor.fontLigatures": "'ss03', 'ss04', 'ss06', 'ss07', 'ss08'",
 	"editor.fontFamily": "'Inconsolata', 'consolas', 'Courier New', 'Ubuntu Mono'",
 
-	// "editor.glyphMargin": false,
-	"editor.cursorSurroundingLines": 3,
 	"editor.accessibilitySupport": "off",
-	"editor.renderWhitespace": "none",
-	"editor.minimap.renderCharacters": false,
 	"editor.suggest.showWords": false,
 	"editor.suggestOnTriggerCharacters": false,
 	// "editor.suggestSelection": "recentlyUsedByPrefix",
 	// "editor.suggest.selectionMode": ,
 	// "editor.suggest.matchOnWordStartOnly": false,
+	"editor.snippetSuggestions": "bottom",
 	"editor.autoClosingDelete": "always",
 	"editor.bracketPairColorization.enabled": false,
 	// "editor.selectionHighlight": false,
@@ -128,10 +135,6 @@
 	"debug.console.fontSize": 12,
 	"debug.console.acceptSuggestionOnEnter": "on",
 	"debug.console.closeOnEnd": true,
-	"[sql]": {
-		"editor.glyphMargin": false,
-		// "editor.showFoldingControls": "never",
-	},
 
 	"terminal.integrated.shellIntegration.enabled": false,
 	"terminal.integrated.cursorStyle": "underline",
@@ -273,6 +276,10 @@
 	"workbench.editor.empty.hint": "hidden",
 	"git.blame.editorDecoration.enabled": false,
 	"git.blame.statusBarItem.enabled": false,
+
+	"claudeCode.preferredLocation": "panel",
+	"claudeCode.useCtrlEnterToSend": true,
+	"claudeCode.enableNewConversationShortcut": false,
 	// "editor.defaultColorDecorators": true,
 	// "window.density.editorTabHeight": "compact"
 	// "editor.hover.enabled": false,
