@@ -14,17 +14,49 @@
 <https://github.com/StevenBlack/hosts> (local DNS rejections)
   /etc/hosts
 
+https://dnsleaktest.com/
 <https://one.one.one.one/family/> (outgoing DNS resolve/reject over TLS)
-<https://developers.cloudflare.com/1.1.1.1/setup/linux/>
+<https://developers.cloudflare.com/1.1.1.1/setup/linux/#systemd-resolved>
   <https://man.archlinux.org/man/resolved.conf.5>
   /etc/systemd/resolved.conf.d/main.conf: DNS= FallbackDNS=... DNSOverTLS=yes
     can copy file :/etc/systemd/resolved.conf.d/main.conf
     check with `resolvectl status`
-  settings -> wifi -> each wifi network -> disable automatic DNS for ipv4 and ipv6
-  sudo systemctl restart systemd-resolved
+      https://github.com/systemd/systemd/issues/17330
+    edit with `sudoedit /etc/systemd/resolved.conf.d/main.conf && sudo systemctl restart systemd-resolved; resolvectl status`
+    `sudo systemctl restart systemd-resolved; resolvectl status`
+    `sudo systemd-analyze cat-config systemd/resolved.conf` to view all resolved.conf files together?
+  https://wiki.gnome.org/Projects/NetworkManager/DNS
+  <!-- settings -> wifi -> each wifi network -> disable automatic DNS for ipv4 and ipv6
+    alternatively (same result, different UI :/), in network manager IPv4/IPv6 settings, my (possibly wrong) understanding is that Method: "Automatic (DHCP|VPN)" means it will handle DNS, but if you select "Automatic (DHCP|VPN), addresses only", it won't handle DNS. So I generally turn the DNS off, except for VPNs I trust that handle DNS.
+    or alternatively, `nmcli con mod "$connectionName" ipv4.ignore-auto-dns yes` (and similar for ipv6) and then `sudo service NetworkManager restart` -->
+  `man nm-system-settings.conf`
+  ```
+  nmcli con mod "$wifi" connection.dns-over-tls yes
+  nmcli con mod "$wifi" ipv4.ignore-auto-dns yes
+  nmcli con mod "$wifi" ipv6.ignore-auto-dns yes
+  nmcli con mod "$wifi" ipv4.dns 1.1.1.2,1.0.0.2
+  nmcli con mod "$wifi" ipv6.dns 2606:4700:4700::1112,2606:4700:4700::1002
+  # doesn't actually enable dns over tls for protonvpn, but should be okay, since it's going through the vpn tunnel:
+  nmcli con mod tun0  connection.dns-over-tls yes
+  nmcli con mod "$vpn"  connection.dns-over-tls yes
+  nmcli con mod "$vpn"  ipv4.dns-search '~'
+  nmcli con mod "$vpn"  ipv6.dns-search '~'
+  # now, be in total control for my search domains ('~' := everything). don't let any other connection have a say:
+  nmcli con mod "$vpn"  ipv4.dns-priority '-1'
+  nmcli con mod "$vpn"  ipv6.dns-priority '-1'
+  sudo service NetworkManager restart
+  ```
   <https://developers.cloudflare.com/1.1.1.1/check/>
+    test by opening <https://one.one.one.one/help>
   <https://developers.cloudflare.com/1.1.1.1/setup/#test-1111-for-families>
+    test by opening <https://malware.testcategory.com/>
+[DNS over HTTPS is slightly better than ovre TLS for privacy](https://www.cloudflare.com/learning/dns/dns-over-tls/#:~:text=than%20physical%20connections.-,Which%20is%20better,-%2C%20DoT%20or%20DoH), but [systemd-resolved doesn't support it yet](https://github.com/systemd/systemd/issues/8639).
+  > Like DoT, DoH ensures that attackers can't forge or alter DNS traffic. DoH traffic looks like other HTTPS traffic – e.g. normal user-driven interactions with websites and web apps – from a network administrator's perspective.
 
+testing dnssec: https://wander.science/projects/dns/dnssec-resolver-test/
+testing dns over tls: `\sudo tcpdump -ni wlp0s20f3 -p port 53 or port 853` and look for 853, and absence of 53.
+
+https://protonvpn.com/what-is-my-ip-address
 https://protonvpn.com (hide IP address)
   <https://protonvpn.com/support/linux-openvpn#NetworkManager>
   <https://protonvpn.com/support/wireguard-linux#NetworkManager>
@@ -50,6 +82,7 @@ https://protonvpn.com (hide IP address)
   <https://protonvpn.com/support/advanced-kill-switch>
   <https://proton.me/support/installing-bridge-linux-deb-file>
   <https://proton.me/support/verifying-bridge-package>
+  `ip route` (lower "metric" means higher priority)
 
 uBlockOrigin
 
@@ -61,6 +94,7 @@ about:policy
 /etc/brave/policies/managed/GroupPolicy.json
 <https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy#h_01HE8CWCDWF5SNASMCXTTQYZB5>
 <https://chromeenterprise.google/intl/en_ca/policies>
+in settings, set webrtc IP handling policy to "Default public Interface only" https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#webrtc
 
 ## system packages
 
@@ -122,6 +156,10 @@ custom keyboard shortcuts:
 
 dump gnome-terminal settings:
 dconf dump /org/gnome/terminal/ > ~/.config/gnome-terminal.dump
+dconf load /org/gnome/terminal/ < ~/.config/gnome-terminal.dump
+
+nmcli connection modify docker0 ipv4.never-default yes
+nmcli connection modify docker0 ipv6.never-default yes
 
 <https://help.ubuntu.com/community/EnvironmentVariables#Persistent_environment_variables>
 
@@ -224,11 +262,7 @@ https://askubuntu.com/q/1405846/1624654 set ubuntu low power value
 
 ## completions
 
-edit `/etc/bashrc` and enable the bash-completions things
-
-```
-ln -sT /snap/code/current/usr/share/code/resources/completions/bash/code ~/.local/share/bash-completion/completions/code
-```
+edit `/etc/bash.bashrc` and enable the bash-completions things
 
 a command to list manually installed packages:
 courtesy of https://askubuntu.com/a/492343
