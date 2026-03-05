@@ -27,12 +27,13 @@ FUNCNEST=100
 shopt -s histappend cmdhist
 declare -a histignore=(
 	'sudo\ *' 'rm\ -rf*' 'shred\ *'
-	'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear'
+	'fg' 'fg\ *' 'hist' 'history' 'hash' 'bind' 'clear' 'popd'
 	'config' 'inputrc' 'bashrc' 'als' 'alsl' 'vimrc' 'gitconfig' 'tigrc'
 	'cd\ \.\.*' 'ls' 'lsa' 'lsen\ *' 'nnn' 'n'
 	'todo'
 	#'./build*' './main' 'npm\ run\ start'
 	'tig' 'git\ status' 'git\ s' 'g\ s' 's' 'git\ a\ *' 'g\ a\ *' 'git\ br' 'g\ br' 'git\ diff' 'git\ d' 'g\ d' 'git\ dc' 'g\ dc' 'git\ df' 'g\ df' 'gti\ *' 'git\ ca' 'g\ ca'
+	'git stash drop' 'g stash drop'
 )
 HISTIGNORE=
 for pattern in "${histignore[@]}"; do

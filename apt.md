@@ -246,6 +246,7 @@ chrome://settings/security
 - Use secure DNS: on
 chrome://settings/system
 - Continue running background apps when Chrome is closed: off
+https://myactivity.google.com/product/gemini -> turn off "keep activity"
 
 ## power config
 

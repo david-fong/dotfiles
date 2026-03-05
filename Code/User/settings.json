@@ -84,9 +84,13 @@
 	"editor.renderWhitespace": "none",
 	"editor.lineDecorationsWidth": 0,
 	"editor.minimap.renderCharacters": false,
-	"[sql]": {
+	"[sql][log]": {
 		"editor.glyphMargin": false,
 		// "editor.showFoldingControls": "never",
+	},
+	"[log]": {
+		"editor.lineNumbers": "off",
+		"editor.showFoldingControls": "never",
 	},
 	"editor.minimap.autohide": "mouseover",
 
@@ -148,10 +152,10 @@
 
 
 	// "typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd",
-	"typescript.disableAutomaticTypeAcquisition": true,
-	"typescript.preferences.importModuleSpecifier": "non-relative",
-	"typescript.format.indentSwitchCase": false,
-	//"typescript.implementationsCodeLens.enabled": true,
+	"js/ts.tsserver.automaticTypeAcquisition.enabled": false,
+	"js/ts.preferences.importModuleSpecifier": "non-relative",
+	"js/ts.format.indentSwitchCase": false,
+	// "js/ts.implementationsCodeLens.enabled": true,
 	// "js/ts.implicitProjectConfig.checkJs": true,
 
 	"dart.allowAnalytics": false,
@@ -288,4 +292,7 @@
 	// "markdown.occurrencesHighlight.enabled": true,
 	// "workbench.editor.editorActionsLocation": "titleBar",
 	// "search.searchView.keywordSuggestions": true, // uses ML
+	"yaml.schemas": {
+		// "https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json": ["docker-compose.yml"]
+	}
 }

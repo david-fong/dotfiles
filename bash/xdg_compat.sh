@@ -29,6 +29,7 @@ export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 #export        WGETRC="${XDG_CONFIG_HOME}/wgetrc" # currently not used
 #export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/startup.py"
 # PYTHONHOME+=":${XDG_CONFIG_HOME}/python/"
+export        CONDARC="${XDG_CONFIG_HOME}/conda/condarc.yml" # not sure why this is needed... https://docs.conda.io/projects/conda/en/stable/user-guide/configuration/use-condarc.html#searching-for-condarc
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 export CONAN_USER_HOME="${XDG_CONFIG_HOME}"
 
