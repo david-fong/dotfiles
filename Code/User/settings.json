@@ -62,6 +62,7 @@
 	"extensions.ignoreRecommendations": false,
 	"extensions.closeExtensionDetailsOnViewChange": true,
 	"telemetry.telemetryLevel": "off",
+	"telemetry.feedback.enabled": false,
 	"chat.disableAIFeatures": true,
 	"chat.agent.enabled": false,
 	"chat.mcp.access": "none",

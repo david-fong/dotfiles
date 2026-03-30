@@ -21,6 +21,8 @@ mkdir -p -m700 ~/.ssh
 [ -f ~/.ssh/config ] || echo 'AddKeysToAgent=yes' > ~/.ssh/config
 chmod 600 ~/.ssh/*
 chmod 644 ~/.ssh/*.pub
+[ -f ~/.ssh/authorized_keys ] && chmod 644 ~/.ssh/authorized_keys
+#chmod -R go-rwx ~/Documents/secret*
 
 # https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy#h_01HE8CWCDWF5SNASMCXTTQYZB5
 # https://chromeenterprise.google/intl/en_ca/policies

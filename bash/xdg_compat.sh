@@ -17,7 +17,7 @@ export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}/python"
 export          HISTFILE="${XDG_STATE_HOME}/bash/history"
 export NODE_REPL_HISTORY="${XDG_STATE_HOME}/.node_repl_history"
 export       GDBHISTFILE="${XDG_STATE_HOME}/gdb/history"
-export    PYTHON_HISTORY="${XDG_STATE_HOME}/python/history"
+export    PYTHON_HISTORY="${XDG_STATE_HOME}/python/history"; mkdir -p "$PYTHON_HISTORY"
 export    SQLITE_HISTORY="${XDG_STATE_HOME}/sqlite_history"
 alias wget='\wget --hsts-file="${XDG_CACHE_HOME}/wget-hsts"'
 

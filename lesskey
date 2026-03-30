@@ -68,5 +68,5 @@ LESS_TERMCAP_vb=
 # -x3: use <N> as tabstop
 # -#6: use <N> as the horizontal scroll amount
 # -S : chop long lines
-LESS=-+X -F -qRJMi -x3 --shift=6 -S --use-color
+LESS=-+X -F -qRJMi -x3 --shift=6 -S --use-color --no-vbell
 
