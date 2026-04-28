@@ -6,6 +6,8 @@
 <https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64>
 <https://docs.conda.io/projects/conda/en/stable/user-guide/install/rpm-debian.html>
 
+add "Defaults !pwfeedback" to /etc/sudoers.d/david. edit the file using "sudo visudo -f /etc/sudoers.d/david" <- important (it does syntax verification)
+
 ## network privacy/security
 
 `sudo systemctl enable ufw`
@@ -132,7 +134,6 @@ linux-tools-generic
 python3-typeshed # installed for GDB API types
 
 # for ubc 2026 work, installed to run playwright:
-libicu76 libxml2-16 libavif16 libmanette-0.2-0
 docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin # for docker
 libreoffice-base libreoffice-sdbc-postgresql # for postgres
 ```

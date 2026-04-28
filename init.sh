@@ -5,16 +5,20 @@ cp ~/.config/bash/profile ~/.profile
 mkdir -p ~/c
 mkdir -p ~/c/m
 
-#gsettings set org.gnome.desktop.input-sources xkb-options "['ctrl:nocaps']"
-#gsettings set org.gnome.desktop.wm.keybindings panel-run-dialog ['<Super>r']
-#org.gnome.desktop.wm.keybindings switch-windows ['<Alt>Tab', '<Mod3>XF86ApplicationRight']
-#org.gnome.desktop.wm.keybindings switch-windows-backward ['<Shift><Alt>Tab', '<Shift><Mod3>XF86ApplicationLeft']
-#org.gnome.desktop.wm.keybindings switch-to-workspace-left ['<Super>Page_Up', '<Super><Alt>Left', '<Control><Alt>Left', '<Mod3>Prev_Virtual_Screen']
-#org.gnome.desktop.wm.keybindings switch-to-workspace-right ['<Super>Page_Down', '<Super><Alt>Right', '<Control><Alt>Right', '<Mod3>Next_Virtual_Screen']
-#org.gnome.mutter.wayland.keybindings switch-to-session-1 ['<Primary><Alt>F1', '<mod3>XF86Switch_VT_1']
-#org.gnome.mutter.wayland.keybindings switch-to-session-2 ['<Primary><Alt>F2', '<mod3>XF86Switch_VT_2']
-#org.gnome.mutter.wayland.keybindings switch-to-session-3 ['<Primary><Alt>F3', '<mod3>XF86Switch_VT_3']
-#org.gnome.mutter.wayland.keybindings switch-to-session-4 ['<Primary><Alt>F4', '<mod3>XF86Switch_VT_4']
+if [ -x /usr/bin/gsettings ]; then
+	gsettings set org.gnome.desktop.input-sources xkb-options "['ctrl:nocaps']"
+	gsettings set org.gnome.desktop.wm.keybindings panel-run-dialog "['<Super>r']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab', '<Mod3>XF86ApplicationRight']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Alt>Tab', '<Shift><Mod3>XF86ApplicationLeft']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Super>Page_Up', '<Super><Alt>Left', '<Control><Alt>Left', '<Mod3>Prev_Virtual_Screen']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Super>Page_Down', '<Super><Alt>Right', '<Control><Alt>Right', '<Mod3>Next_Virtual_Screen']"
+	gsettings set org.gnome.mutter.wayland.keybindings switch-to-session-1 "['<Primary><Alt>F1', '<mod3>XF86Switch_VT_1']"
+	gsettings set org.gnome.mutter.wayland.keybindings switch-to-session-2 "['<Primary><Alt>F2', '<mod3>XF86Switch_VT_2']"
+	gsettings set org.gnome.mutter.wayland.keybindings switch-to-session-3 "['<Primary><Alt>F3', '<mod3>XF86Switch_VT_3']"
+	gsettings set org.gnome.mutter.wayland.keybindings switch-to-session-4 "['<Primary><Alt>F4', '<mod3>XF86Switch_VT_4']"
+fi
+
+[ -x dconf ] && [ -x /usr/bin/gnome-terminal ] && dconf load /org/gnome/terminal/ < ~/.config/gnome-terminal.dump
 
 # https://superuser.com/a/215506
 mkdir -p -m700 ~/.ssh
