@@ -100,6 +100,8 @@ in settings, set webrtc IP handling policy to "Default public Interface only" ht
 
 ## system packages
 
+note: uninstall clang 21 after 22 becomes default. same with lld-21
+
 ```
 google-chrome-stable brave brave-keyring # is the keyring needed?
 dconf-editor
@@ -189,7 +191,7 @@ xkb tutorials:
   (a bit outdated) [An Unreliable Guide to XKB Configuration](https://www.charvolant.org/doug/xkb/html/index.html)
   (a bit outdated and maybe not the best guide) https://medium.com/@damko/a-simple-humble-but-comprehensive-guide-to-xkb-for-linux-6f1ad5e13450
   (outdated): https://help.ubuntu.com/community/Custom%20keyboard%20layout%20definitions
-https://github.com/xkbcommon/libxkbcommon/issues/18#issuecomment-72728366
+https://github.com/xkbcommon/libxkbcommon/issues/18#issuecomment-3998744241
 https://github.com/xkbcommon/libxkbcommon/issues/145
 
 https://wiki.archlinux.org/title/Xorg/Keyboard_configuration#Using_localectl

@@ -1,8 +1,13 @@
-// note that in GNOME settings, if the x11 system-level stuff is place lower in the list than this, weird things happen :/
+// IMPORTANT: note that in GNOME settings, if the x11 system-level stuff is placed
+// lower in the list than this, weird things happen.
+// i.e. in settings > keyboard > input sources, en and ja need to go higher in the
+// list that any of the stuff from here.
+//
 // alt->level5, type=DF_LVL5
 // custom level works. shift works.
 // TODO: if ever try moving letters, like switching T and F, can try to retain ctrl shortcut positions with a type that uses Control for layer 3 and preserves Control
 // TODO: make an emoji group! :D regional indicators in level 0 and reaction emoji in other levels
+// TODO: try using actions[Group1] = [ SetMods(modifiers=Control,Alt) ]
 default partial alphanumeric_keys modifier_keys
 xkb_symbols "davidfong_w" {
 	include "us(basic)"
@@ -10,7 +15,7 @@ xkb_symbols "davidfong_w" {
 	name[Group1] = "English (DF)";
 
 	replace key <LALT> { type="DF_LVL5", [ ISO_Level5_Shift, ISO_Level5_Shift, NoSymbol, NoSymbol, Alt_L ] };
-	replace key <RALT> { type="DF_LVL5", [ ISO_Level5_Shift, ISO_Level5_Shift, NoSymbol, NoSymbol, Alt_R ] };
+	// replace key <RALT> { type="DF_LVL5", [ ISO_Level5_Shift, ISO_Level5_Shift, NoSymbol, NoSymbol, Alt_R ] };
 	// consider adding double-shifts to go ISO_Next/Prev_Group? `include "group(shifts_toggle)"`
 	// https://raw.githubusercontent.com/xkbcommon/libxkbcommon/refs/heads/master/src/ks_tables.h
 
@@ -20,48 +25,119 @@ xkb_symbols "davidfong_w" {
 	// org.gnome.desktop.wm.keybindings switch-to-workspace-right ['<Super>Page_Down', '<Super><Alt>Right', '<Control><Alt>Right', '<Mod3>Next_Virtual_Screen']
 	key <TAB>  { type="DF_LVL6", [ Tab, Tab, NoSymbol, NoSymbol, XF86ApplicationRight, XF86ApplicationLeft ] };
 
-	key.type = "DF_LVL5";
+	key.type = "DF_3:L5";
+	key.repeat = no;
+	include "srvr_ctrl(fkey2vt)"
+	// key <FK01> { [ F1, F1, XF86Switch_VT_1 ] };
+	// key <FK02> { [ {}, {}, XF86Switch_VT_2 ] };
+	// key <FK03> { [ {}, {}, XF86Switch_VT_3 ] };
+	// key <FK04> { [ {}, {}, XF86Switch_VT_4 ] };
+	// key <FK05> { [ {}, {}, XF86Switch_VT_5 ] };
+	// key <FK06> { [ {}, {}, XF86Switch_VT_6 ] };
+	// key <FK07> { [ {}, {}, XF86Switch_VT_7 ] };
+	// key <FK08> { [ {}, {}, XF86Switch_VT_8 ] };
+	// key <FK09> { [ {}, {}, XF86Switch_VT_9 ] };
+	// key <FK10> { [ {}, {}, XF86Switch_VT_10 ] };
+	// key <FK11> { [ {}, {}, XF86Switch_VT_11 ] };
+	// key <FK12> { [ {}, {}, XF86Switch_VT_12 ] };
+
+	key.type = "DF_3:L5";
+	key.repeat = yes;
+	key <AD01> { [ {}, {}, XF86ApplicationRight ] }; // q
+	key <AD02> { [ {}, {}, Tab       ] }; // w
+	key <AD03> { [ {}, {}, Escape    ] }; // e
+	key <AD04> { [ {}, {}, Prev_Virtual_Screen ] }; // r
+	key <AC05> { [ {}, {}, Next_Virtual_Screen ] }; // g
+	key <AC02> { [ {}, {}, BackSpace ] }; // s
+	key <AC03> { [ {}, {}, Delete    ] }; // d
+	key <AC04> { [ {}, {}, Return    ] }; // f
+
+	key.type = "DF_3:L5";
+	key.repeat = yes;
+	key <AD09> { [ {}, {}, BackSpace ] }; // o
+	key <AB07> { [ {}, {}, Up        ] }; // m
+	key <SPCE> { [ space, space, Down ] }; // space
+	key <AC07> { [ {}, {}, Left      ] }; // j
+	key <AD08> { [ {}, {}, Right     ] }; // i
+	key <AC06> { [ {}, {}, Home      ] }; // h
+	key <AB06> { [ {}, {}, Home      ] }; // n
+	key <AC10> { [ {}, {}, End       ] }; // ;
+	key <AC08> { [ {}, {}, Prior     ] }; // k
+	key <AC09> { [ {}, {}, Next      ] }; // l
+	//key <AD10> { [ {}, {}, {} ] }; // p
+	//key <AC11> { [ {}, {}, {} ] }; // '
+	//key <AB08> { [ {}, {}, {} ] }; // ,
+	//key <AB09> { [ {}, {}, Right    ] }; // .
+};
+
+
+
+
+
+partial alphanumeric_keys modifier_keys
+xkb_symbols "davidfong_w_b" {
+	include "us(basic)"
+	include "ctrl(nocaps)"
+	name[Group1] = "English (DF B)";
+
+	replace key <LALT> { type="DF_LVL5", [ ISO_Level5_Shift, ISO_Level5_Shift, NoSymbol, NoSymbol, Alt_L ] };
+	// replace key <RALT> { type="DF_LVL5", [ ISO_Level5_Shift, ISO_Level5_Shift, NoSymbol, NoSymbol, Alt_R ] };
+	// consider adding double-shifts to go ISO_Next/Prev_Group? `include "group(shifts_toggle)"`
+	// https://raw.githubusercontent.com/xkbcommon/libxkbcommon/refs/heads/master/src/ks_tables.h
+
+	// org.gnome.desktop.wm.keybindings switch-windows ['<Alt>Tab', '<Mod3>XF86ApplicationRight']
+	// org.gnome.desktop.wm.keybindings switch-windows-backward ['<Shift><Alt>Tab', '<Shift><Mod3>XF86ApplicationLeft']
+	// org.gnome.desktop.wm.keybindings switch-to-workspace-left ['<Super>Page_Up', '<Super><Alt>Left', '<Control><Alt>Left', '<Mod3>Prev_Virtual_Screen']
+	// org.gnome.desktop.wm.keybindings switch-to-workspace-right ['<Super>Page_Down', '<Super><Alt>Right', '<Control><Alt>Right', '<Mod3>Next_Virtual_Screen']
+	key <TAB>  { type="DF_LVL6", [ Tab, Tab, NoSymbol, NoSymbol, XF86ApplicationRight, XF86ApplicationLeft ] };
+
+	key.type = "DF_3:L5";
 	key.repeat = no;
 	include "srvr_ctrl(fkey2vt)"
 	// key <FK01> { [ F1, F1, F1, F1, XF86Switch_VT_1 ] };
-	// key <FK02> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_2 ] };
-	// key <FK03> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_3 ] };
-	// key <FK04> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_4 ] };
-	// key <FK05> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_5 ] };
-	// key <FK06> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_6 ] };
-	// key <FK07> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_7 ] };
-	// key <FK08> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_8 ] };
-	// key <FK09> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_9 ] };
-	// key <FK10> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_10 ] };
-	// key <FK11> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_11 ] };
-	// key <FK12> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86Switch_VT_12 ] };
+	// key <FK02> { [ {}, {}, XF86Switch_VT_2 ] };
+	// key <FK03> { [ {}, {}, XF86Switch_VT_3 ] };
+	// key <FK04> { [ {}, {}, XF86Switch_VT_4 ] };
+	// key <FK05> { [ {}, {}, XF86Switch_VT_5 ] };
+	// key <FK06> { [ {}, {}, XF86Switch_VT_6 ] };
+	// key <FK07> { [ {}, {}, XF86Switch_VT_7 ] };
+	// key <FK08> { [ {}, {}, XF86Switch_VT_8 ] };
+	// key <FK09> { [ {}, {}, XF86Switch_VT_9 ] };
+	// key <FK10> { [ {}, {}, XF86Switch_VT_10 ] };
+	// key <FK11> { [ {}, {}, XF86Switch_VT_11 ] };
+	// key <FK12> { [ {}, {}, XF86Switch_VT_12 ] };
 
-	key.type = "DF_LVL5";
+	key.type = "DF_3:L5";
 	key.repeat = yes;
-	key <AD01> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, XF86ApplicationRight ] }; // q
-	key <AD02> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Tab       ] }; // w
-	key <AD03> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Escape    ] }; // e
-	key <AD04> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Prev_Virtual_Screen ] }; // r
-	key <AC05> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Next_Virtual_Screen ] }; // g
-	key <AC02> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, BackSpace ] }; // s
-	key <AC03> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Delete    ] }; // d
-	key <AC04> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Return    ] }; // f
+	key <AD01> { [ {}, {}, XF86ApplicationRight ] }; // q
+	key <AD02> { [ {}, {}, Tab       ] }; // w
+	key <AD03> { [ {}, {}, Escape    ] }; // e
+	key <AD04> { [ {}, {}, Prev_Virtual_Screen ] }; // r
+	key <AC05> { [ {}, {}, Next_Virtual_Screen ] }; // g
+	key <AC01> { [ {}, {}, Left      ], virtualMods=Alt, actions=[{},{},SetMods(modifiers=Alt)] }; // a
+	key <AC02> { [ {}, {}, BackSpace ] }; // s
+	key <AC03> { [ {}, {}, Delete    ] }; // d
+	key <AC04> { [ t , T , Return, f ], type="DF_3:L5_4:C" }; // f
+	key <AD05> { [ f,  F , {}    , t ], type="DF_3:L5_4:C" }; // t
 
-	key.type = "DF_LVL5";
-	key <AD09> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, BackSpace ] }; // o
-	key <AB07> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Up        ] }; // m
-	key <SPCE> { [ space   , space   , NoSymbol, NoSymbol, Down      ] }; // space
-	key <AC07> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Left      ] }; // j
-	key <AD08> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Right     ] }; // i
-	key <AC06> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Home      ] }; // h
-	key <AB06> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Home      ] }; // n
-	key <AC10> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, End       ] }; // ;
-	key <AC08> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Prior     ] }; // k
-	key <AC09> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Next      ] }; // l
-	//key <AD10> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, NoSymbol ] }; // p
-	//key <AC11> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, NoSymbol ] }; // '
-	//key <AB08> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, NoSymbol ] }; // ,
-	key <AB09> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Right     ] }; // .
+	key.type = "DF_3:L5";
+	key.repeat = yes;
+	key <AD09> { [ {}, {}, BackSpace ] }; // o
+	key <AB07> { [ {}, {}, Up        ] }; // m
+	key <SPCE> { [ space, space, Down ] }; // space
+	key <AC07> { [ h , H , Left      ] }; // j
+	key <AD08> { [ {}, {}, Right     ] }; // i
+	key <AC06> { [ y , Y , Home      ] }; // h
+	key <AD06> { [ j , J , {}        ] }; // y
+	key <AB06> { [ {}, {}, Home      ] }; // n
+	key <AC10> { [ {}, {}, End       ] }; // ;
+	key <AC08> { [ {}, {}, Prior     ] }; // k
+	key <AC09> { [ {}, {}, Next      ] }; // l
+	key <AC10> { [ apostrophe, quotedbl, {} ] }; // ;
+	key <AC11> { [ semicolon , colon   , {} ] }; // '
+	//key <AD10> { [ {}, {}, {} ] }; // p
+	//key <AB08> { [ {}, {}, {} ] }; // ,
+	//key <AB09> { [ {}, {}, Right    ] }; // .
 };
 
 
@@ -135,20 +211,21 @@ xkb_symbols "davidfong_w3.0" {
 	key <TAB>  { type="DF_LVL3", [ Tab, Tab, Tab ], virtualMods=Alt, actions=[NoAction(),NoAction(),SetMods(modifiers=Alt)], repeat=yes };
 
 	key.type = "DF_LVL3";
-	key <AD02> { [ NoSymbol, NoSymbol, Tab       ], repeat=yes };
-	key <AD03> { [ NoSymbol, NoSymbol, Escape    ], repeat=yes };
-	key <AD08> { [ NoSymbol, NoSymbol, Right     ], repeat=yes };
-	key <AD09> { [ NoSymbol, NoSymbol, BackSpace ], repeat=yes };
-	key <AC02> { [ NoSymbol, NoSymbol, Left      ], repeat=yes };
-	key <AC03> { [ NoSymbol, NoSymbol, Delete    ], repeat=yes };
-	key <AC04> { [ NoSymbol, NoSymbol, Return    ], repeat=yes };
-	key <AC07> { [ NoSymbol, NoSymbol, Left      ], repeat=yes };
-	key <AC08> { [ NoSymbol, NoSymbol, Up        ], repeat=yes };
-	key <AC09> { [ NoSymbol, NoSymbol, Home      ], repeat=yes };
-	key <AC10> { [ NoSymbol, NoSymbol, End       ], repeat=yes };
-	key <AB07> { [ NoSymbol, NoSymbol, Down      ], repeat=yes };
-	key <AB08> { [ NoSymbol, NoSymbol, Prior     ], repeat=yes };
-	key <AB09> { [ NoSymbol, NoSymbol, Next      ], repeat=yes };
+	key.repeat = yes;
+	key <AD02> { [ NoSymbol, NoSymbol, Tab       ] };
+	key <AD03> { [ NoSymbol, NoSymbol, Escape    ] };
+	key <AD08> { [ NoSymbol, NoSymbol, Right     ] };
+	key <AD09> { [ NoSymbol, NoSymbol, BackSpace ] };
+	key <AC02> { [ NoSymbol, NoSymbol, Left      ] };
+	key <AC03> { [ NoSymbol, NoSymbol, Delete    ] };
+	key <AC04> { [ NoSymbol, NoSymbol, Return    ] };
+	key <AC07> { [ NoSymbol, NoSymbol, Left      ] };
+	key <AC08> { [ NoSymbol, NoSymbol, Up        ] };
+	key <AC09> { [ NoSymbol, NoSymbol, Home      ] };
+	key <AC10> { [ NoSymbol, NoSymbol, End       ] };
+	key <AB07> { [ NoSymbol, NoSymbol, Down      ] };
+	key <AB08> { [ NoSymbol, NoSymbol, Prior     ] };
+	key <AB09> { [ NoSymbol, NoSymbol, Next      ] };
 };
 
 // 1

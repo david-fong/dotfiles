@@ -5,7 +5,11 @@
 	"window.zoomLevel": 1.7, // 1.7
 	"window.confirmBeforeClose": "keyboardOnly",
 	"workbench.settings.editor": "json",
+	"workbench.editor.useModal": "off", // it's just too weird
 	"window.dialogStyle": "custom",
+	"workbench.list.mouseWheelScrollSensitivity": 2.0,
+	"editor.mouseWheelScrollSensitivity": 2.0,
+	"terminal.integrated.mouseWheelScrollSensitivity": 2.0,
 
 	// Top Bar
 	"window.commandCenter": false,
@@ -79,6 +83,7 @@
 	"editor.selectionClipboard": false,
 	"editor.linkedEditing": true,
 	"editor.dragAndDrop": false,
+	"editor.hover.delay": 512,
 
 	"editor.cursorSurroundingLines": 3,
 	// "editor.glyphMargin": false,
@@ -101,6 +106,7 @@
 	"git.alwaysShowStagedChangesResourceGroup": true,
 	// "git.showCommitInput": false,
 	"git.confirmSync": false,
+	"git.addAICoAuthor": "off",
 
 	"editor.tabSize": 3,
 	// "editor.fontFamily": "'Fira Code', Consolas, 'Courier New', monospace",
