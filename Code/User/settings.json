@@ -10,6 +10,7 @@
 	"workbench.list.mouseWheelScrollSensitivity": 2.0,
 	"editor.mouseWheelScrollSensitivity": 2.0,
 	"terminal.integrated.mouseWheelScrollSensitivity": 2.0,
+	"workbench.notifications.position": "top-right",
 
 	// Top Bar
 	"window.commandCenter": false,
@@ -90,9 +91,14 @@
 	"editor.renderWhitespace": "none",
 	"editor.lineDecorationsWidth": 0,
 	"editor.minimap.renderCharacters": false,
-	"[sql][log]": {
+	"[sql][log][html]": {
 		"editor.glyphMargin": false,
 		// "editor.showFoldingControls": "never",
+	},
+	"[plaintext][markdown][restructuredtext][json][jsonc][jsonl][xml][yaml][ignore][ini][git-commit][git-rebase][search-result][Log][log][css]": {
+		"editor.glyphMargin": false,
+		"editor.minimap.autohide": "scroll",
+		// "editor.showFoldingControls": "never"
 	},
 	"[log]": {
 		"editor.lineNumbers": "off",
@@ -214,11 +220,6 @@
 		},
 		"editor.tabSize": 2,
 		"editor.colorDecorators": false,
-	},
-	"[plaintext][markdown][restructuredtext][json][jsonc][jsonl][xml][yaml][ignore][ini][git-commit][git-rebase][search-result][Log][log][css]": {
-		// "editor.glyphMargin": false,
-		// "editor.minimap.autohide": "scroll",
-		// "editor.showFoldingControls": "never"
 	},
 	"[plaintext]": {
 		"editor.wordWrap": "off", // bounded
