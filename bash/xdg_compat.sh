@@ -32,6 +32,7 @@ export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 export        CONDARC="${XDG_CONFIG_HOME}/conda/condarc.yml" # not sure why this is needed... https://docs.conda.io/projects/conda/en/stable/user-guide/configuration/use-condarc.html#searching-for-condarc
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 export CONAN_USER_HOME="${XDG_CONFIG_HOME}"
+export CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/claude"
 
 export GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
 export       CARGO_HOME="${XDG_DATA_HOME}/cargo"

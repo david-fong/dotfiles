@@ -5,6 +5,7 @@ General practice:
 - Cite sources for factual claims
 - Be thorough when refactoring. Use tools like grep to search for things that need updating, or language specific code parsing tools / ad-hoc scripts.
 - Read permissions and common, allowed commands from `<project-root>/.claude/settings.local.json`.
+- `gh pr edit` is broken (errors on the deprecated classic-Projects `projectCards` GraphQL field, leaving the PR unchanged). Edit PR title/body with `gh api -X PATCH repos/<owner>/<repo>/pulls/<n> -F body=@file.md` / `-f title=...`. `gh pr create` and `gh issue create/edit` are fine.
 
 ## Bash: long-output commands
 

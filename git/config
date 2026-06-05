@@ -25,6 +25,7 @@
 
 [alias]
     ls = "ls-tree --full-tree --abbrev=7 -r HEAD"
+    lsu = "clean -d --force -x --dry-run"
     graph = "log --oneline --graph --all --decorate --color=always"
     gra = "!echo; tput rmam; git graph -n20 | head -n20; tput smam"
     logg = "log --graph --decorate --stat --find-renames"
@@ -40,6 +41,7 @@
     tg = "tag --sign"
     sw = "switch"
     ca = "commit --amend"
+    board = "!~/.config/git/list_milestone_issues.py"
 
 [submodule]
     recurse = 1
