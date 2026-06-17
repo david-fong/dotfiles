@@ -69,12 +69,18 @@ _REVIEW_GLYPH = {"changes_requested": "🚧", "approved": "✅"}
 _BEHIND_GLYPH = "🍂"  # head branch is out of date with its base
 _DRAFT_GLYPH = "📝"  # PR is still a draft
 _TEAM_GLYPH = "👥"  # issue assigned to more than one person
-_WIDE_GLYPHS = (*_REVIEW_GLYPH.values(), _BEHIND_GLYPH, _DRAFT_GLYPH, _TEAM_GLYPH)
+_NO_REVIEWER_GLYPH = "🚨"  # ready PR (not draft) with no reviewer assigned
+_WIDE_GLYPHS = (
+    *_REVIEW_GLYPH.values(),
+    _BEHIND_GLYPH,
+    _DRAFT_GLYPH,
+    _TEAM_GLYPH,
+    _NO_REVIEWER_GLYPH,
+)
 
-# Stand-in for a PR number that recurs brighter lower down: a plain
-# downward arrow pointing at the leading (bottom-most) row, deliberately
-# the text arrow (U+2193), not the emoji ⬇.
-_DUP_PR = "↓"
+# Stand-in for a PR number that recurs brighter lower down: a down
+# arrowhead (U+2304) pointing at the leading (bottom-most) row.
+_DUP_PR = "⌄"
 
 
 def display_width(text: str) -> int:
@@ -93,6 +99,10 @@ class PullRequest:
     review: str | None  # "changes_requested" / "approved" / None
     behind: bool  # head branch is out of date with its base
     branch_url: str | None  # link target for the status badge
+    branch: str | None = (
+        None  # head branch name (badge tooltip); default for old caches
+    )
+    has_reviewer: bool = True  # any requested/actual reviewer; True for old caches
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -137,7 +147,9 @@ class Board:
 
     Each option is a {"name", "color"} dict.
     """
-    milestone: Milestone | None
+    milestones: list[Milestone]
+    """The milestones in view (one, or current + following), in time order
+    (earliest first). Each renderer arranges its own display order."""
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -222,8 +234,13 @@ def relative_day_phrase(target: datetime.date) -> str:
     return f"in {days} days" if days > 0 else f"{-days} days ago"
 
 
-def format_milestone(ms: Milestone, *, use_links: bool, use_colour: bool) -> str:
-    """Two-line milestone header (title, due date, progress)."""
+def format_milestone(
+    ms: Milestone, *, use_links: bool, use_colour: bool, current: bool = True
+) -> str:
+    """Two-line milestone header (title, due date, progress).
+
+    Bolded only when `current`, so a following milestone reads quieter.
+    """
     title = hyperlink(ms.title, ms.html_url, enabled=use_links)
     closed, total = ms.closed_issues, ms.open_issues + ms.closed_issues
     pct = f"{round(100 * closed / total)}%" if total else "—"
@@ -233,7 +250,7 @@ def format_milestone(ms: Milestone, *, use_links: bool, use_colour: bool) -> str
         meta = f"Due {due.isoformat()} ({relative_day_phrase(due)})  ·  {progress}"
     else:
         meta = f"No due date  ·  {progress}"
-    if use_colour:
+    if use_colour and current:
         title, meta = f"{_BOLD}{title}{_RESET}", f"{_BOLD}{meta}{_RESET}"
     return f"{title}\n{meta}"
 
@@ -254,10 +271,11 @@ def status_cell(
     hyperlink (so clicking the status opens its PR); extra PRs each get
     their own link. When `emphasise` is set, a "backlog"/"todo" status
     is bolded to flag unstarted current work. Any PR number in
-    `dim_prs` is replaced by a downward arrow — a PR shows its real
-    number only at its lowest (bottom-most) row, with the arrows above
-    pointing down to it; such a row also has its status (dot and word)
-    dimmed, so a same-PR block reads as one unit led by its bottom row.
+    `dim_prs` is replaced by a downward arrow — within a contiguous run
+    of rows sharing a PR, only the bottom row shows the real number and
+    the arrows above point down to it; an arrow row also has its status
+    (dot and word) dimmed, so the run reads as one unit led by its bottom
+    row.
     """
     lowered = (row.status or "-").lower()
     base = _STATUS_LABELS.get(lowered, lowered)
@@ -286,14 +304,17 @@ def status_cell(
         pr_state = pr.state.lower()  # open / closed / merged
         # The status already conveys open/merged; only flag a closed PR.
         suffix = " (closed)" if pr_state == "closed" else ""
-        # Signals for still-open PRs: draft, then review state, then
-        # stale branch. Only the leading (bottom-most) render carries
-        # them; the arrow rows above drop the badge entirely as noise.
+        # Signals for still-open PRs: draft (or, if ready but unreviewed,
+        # a warning), then review state, then stale branch. Only the
+        # leading (bottom-most) render carries them; the arrow rows above
+        # drop the badge entirely as noise.
         dup = pr.number in dim_prs
         glyphs = []
         if pr_state == "open" and not dup:
             if pr.is_draft:
                 glyphs.append(_DRAFT_GLYPH)
+            elif not pr.has_reviewer:
+                glyphs.append(_NO_REVIEWER_GLYPH)
             review = _REVIEW_GLYPH.get(pr.review or "")
             if review:
                 glyphs.append(review)
@@ -368,6 +389,20 @@ _GH_DOT = {
     "RED": 196,
     "PINK": 211,
     "PURPLE": 141,
+}
+
+# Board option colour → coloured-circle emoji, for markdown (which has
+# no ANSI colour). No pink circle exists, so PINK uses the pink flower
+# 💮 to stay distinct from both RED's 🔴 and PURPLE's 🟣.
+_MD_DOT = {
+    "GRAY": "⚪",
+    "BLUE": "🔵",
+    "GREEN": "🟢",
+    "YELLOW": "🟡",
+    "ORANGE": "🟠",
+    "RED": "🔴",
+    "PINK": "💮",
+    "PURPLE": "🟣",
 }
 
 
@@ -554,6 +589,8 @@ _ISSUE_BOARD_FIELDS = f"""
     nodes {{
       number url state isDraft mergeStateStatus
       headRefName headRepository {{ url }}
+      reviewRequests {{ totalCount }}
+      reviews {{ totalCount }}
       latestOpinionatedReviews(first: 10) {{ nodes {{ state }} }}
     }}
   }}
@@ -600,6 +637,9 @@ def extract_project_values(issue: dict, project: int) -> Issue:
             review = None
         repo = pr["headRepository"]
         branch_url = f"{repo['url']}/tree/{pr['headRefName']}" if repo else None
+        has_reviewer = (
+            pr["reviewRequests"]["totalCount"] > 0 or pr["reviews"]["totalCount"] > 0
+        )
         prs.append(
             PullRequest(
                 number=pr["number"],
@@ -609,6 +649,8 @@ def extract_project_values(issue: dict, project: int) -> Issue:
                 review=review,
                 behind=pr["mergeStateStatus"] == "BEHIND",
                 branch_url=branch_url,
+                branch=pr["headRefName"],
+                has_reviewer=has_reviewer,
             )
         )
     return Issue(
@@ -632,17 +674,19 @@ def fetch_board(
     owner: str,
     name: str,
     project: int,
-    milestone_title: str,
+    milestone_titles: list[str],
     assignee_login: str | None,
     state: str,
 ) -> Board:
-    """One round-trip: issues, single-select options, and milestone.
+    """One round-trip: issues, single-select options, and milestone(s).
 
     Folds what used to be four `gh` calls (issue list, project fields,
     batched project values, milestone REST) into a single GraphQL
-    request. Issues come from the milestone's live `issues` connection
-    (real-time, unlike the search index), filtered server-side by
-    assignee/state, with board fields inline.
+    request. Each milestone is looked up by exact title via its own
+    aliased connection; issues come from the milestone's live `issues`
+    connection (real-time, unlike the search index), filtered server-side
+    by assignee/state, with board fields inline. Issues from every
+    milestone are merged into one board.
     """
     states = {"open": "[OPEN]", "closed": "[CLOSED]"}.get(state, "[OPEN, CLOSED]")
     if assignee_login:
@@ -651,15 +695,33 @@ def fetch_board(
     else:
         login_decl = ""
         issue_args = f"first: 100, states: {states}"
-    variables: dict[str, Any] = dict(
-        owner=owner, name=name, project=project, ms=milestone_title
+
+    # One aliased milestone lookup per title. `first: 3` leaves room for
+    # the title search to return near-matches we filter out client-side,
+    # while keeping the node-cost budget safe for up to a couple of them.
+    ms_fields = f"""
+        title description url state dueOn
+        openIssues: issues(states: OPEN) {{ totalCount }}
+        closedIssues: issues(states: CLOSED) {{ totalCount }}
+        matched: issues({issue_args}) {{
+          pageInfo {{ hasNextPage }}
+          nodes {{ {_ISSUE_BOARD_FIELDS} }}
+        }}
+    """
+    ms_var_decls = "".join(f", $ms{i}: String!" for i in range(len(milestone_titles)))
+    ms_blocks = "\n".join(
+        f"m{i}: milestones(query: $ms{i}, first: 3) {{ nodes {{ {ms_fields} }} }}"
+        for i in range(len(milestone_titles))
     )
+    variables: dict[str, Any] = dict(owner=owner, name=name, project=project)
     if assignee_login:
         variables["login"] = assignee_login
+    for i, title in enumerate(milestone_titles):
+        variables[f"ms{i}"] = title
 
     data = graphql(
         f"""
-        query($owner: String!, $name: String!, $project: Int!, $ms: String!{login_decl}) {{
+        query($owner: String!, $name: String!, $project: Int!{login_decl}{ms_var_decls}) {{
           organization(login: $owner) {{
             projectV2(number: $project) {{
               fields(first: 50) {{
@@ -668,17 +730,7 @@ def fetch_board(
             }}
           }}
           repository(owner: $owner, name: $name) {{
-            milestones(query: $ms, first: 5) {{
-              nodes {{
-                title description url state dueOn
-                openIssues: issues(states: OPEN) {{ totalCount }}
-                closedIssues: issues(states: CLOSED) {{ totalCount }}
-                matched: issues({issue_args}) {{
-                  pageInfo {{ hasNextPage }}
-                  nodes {{ {_ISSUE_BOARD_FIELDS} }}
-                }}
-              }}
-            }}
+            {ms_blocks}
           }}
         }}
         """,
@@ -690,47 +742,53 @@ def fetch_board(
         for n in root["organization"]["projectV2"]["fields"]["nodes"]
         if n.get("name")
     }
-    ms_node = next(
-        (
-            m
-            for m in root["repository"]["milestones"]["nodes"]
-            if m["title"] == milestone_title
-        ),
-        None,
-    )
-    if ms_node is None:
-        return Board(issues=[], options=options, milestone=None)
-    if ms_node["matched"]["pageInfo"]["hasNextPage"]:
-        print(
-            "warning: more than 100 matching issues; only the first 100 were fetched.",
-            file=sys.stderr,
+    repo = root["repository"]
+    milestones: list[Milestone] = []
+    issues: list[Issue] = []
+    for i, title in enumerate(milestone_titles):
+        ms_node = next((m for m in repo[f"m{i}"]["nodes"] if m["title"] == title), None)
+        if ms_node is None:
+            continue
+        if ms_node["matched"]["pageInfo"]["hasNextPage"]:
+            print(
+                f"warning: milestone {title!r} has more than 100 matching issues; "
+                "only the first 100 were fetched.",
+                file=sys.stderr,
+            )
+        milestones.append(
+            Milestone(
+                title=ms_node["title"],
+                description=ms_node["description"],
+                html_url=ms_node["url"],
+                state=ms_node["state"],
+                due_on=ms_node["dueOn"],
+                open_issues=ms_node["openIssues"]["totalCount"],
+                closed_issues=ms_node["closedIssues"]["totalCount"],
+            )
         )
-    milestone = Milestone(
-        title=ms_node["title"],
-        description=ms_node["description"],
-        html_url=ms_node["url"],
-        state=ms_node["state"],
-        due_on=ms_node["dueOn"],
-        open_issues=ms_node["openIssues"]["totalCount"],
-        closed_issues=ms_node["closedIssues"]["totalCount"],
-    )
-    issues = [extract_project_values(n, project) for n in ms_node["matched"]["nodes"]]
-    return Board(issues=issues, options=options, milestone=milestone)
+        issues.extend(
+            extract_project_values(n, project) for n in ms_node["matched"]["nodes"]
+        )
+    return Board(issues=issues, options=options, milestones=milestones)
 
 
-def fetch_current_milestone_title(owner: str, name: str) -> str | None:
-    """Title of the open milestone whose due date is nearest today.
+def fetch_milestone_window(owner: str, name: str) -> list[str]:
+    """Titles of the current open milestone and the one following it.
 
-    Returns None if there is none. GitHub can't surface the active
-    milestone server-side (null due dates sort first, and there's no
-    due-date predicate), so we fetch the open milestones' due dates and
-    choose client-side. Cheap — no issue/project traversal.
+    "Current" is the open milestone whose due date is nearest today.
+    "Following" is the next one by milestone number (creation order),
+    since the upcoming milestone often has no due date yet — ordering by
+    due date alone would miss it. Returns `[current, following]`,
+    `[current]` if current is the last, or `[]` if none have a due date.
+    GitHub can't surface the active milestone server-side (null due dates
+    sort first, no due-date predicate), so we choose client-side. Cheap —
+    no issue/project traversal.
     """
     data = graphql(
         """
         query($owner: String!, $name: String!) {
           repository(owner: $owner, name: $name) {
-            milestones(first: 100, states: OPEN) { nodes { title dueOn } }
+            milestones(first: 100, states: OPEN) { nodes { number title dueOn } }
           }
         }
         """,
@@ -738,15 +796,20 @@ def fetch_current_milestone_title(owner: str, name: str) -> str | None:
         name=name,
     )
     today = datetime.date.today()
+    nodes = data["data"]["repository"]["milestones"]["nodes"]
     dated = [
-        (
-            abs((datetime.datetime.fromisoformat(m["dueOn"]).date() - today).days),
-            m["title"],
-        )
-        for m in data["data"]["repository"]["milestones"]["nodes"]
+        (abs((datetime.datetime.fromisoformat(m["dueOn"]).date() - today).days), m)
+        for m in nodes
         if m["dueOn"]
     ]
-    return min(dated)[1] if dated else None
+    if not dated:
+        return []
+    current = min(dated)[1]
+    titles = [current["title"]]
+    later = [m for m in nodes if m["number"] > current["number"]]
+    if later:
+        titles.append(min(later, key=lambda m: m["number"])["title"])
+    return titles
 
 
 def _cache_path(key: str) -> str:
@@ -771,17 +834,19 @@ def read_board_cache(key: str, ttl: int) -> Board | None:
             data = json.load(fh)
     except (OSError, json.JSONDecodeError):
         return None
-    ms = data["milestone"]
 
     def revive(issue: dict) -> Issue:
         prs = [PullRequest(**pr) for pr in issue.pop("prs", [])]
         return Issue(**issue, prs=prs)
 
-    return Board(
-        issues=[revive(issue) for issue in data["issues"]],
-        options=data["options"],
-        milestone=Milestone(**ms) if ms else None,
-    )
+    try:
+        return Board(
+            issues=[revive(issue) for issue in data["issues"]],
+            options=data["options"],
+            milestones=[Milestone(**m) for m in data["milestones"]],
+        )
+    except (KeyError, TypeError):
+        return None  # cache predates a schema change; treat as a miss
 
 
 def write_board_cache(key: str, board: Board) -> None:
@@ -793,6 +858,113 @@ def write_board_cache(key: str, board: Board) -> None:
             json.dump(asdict(board), fh)
     except OSError:
         pass  # caching is best-effort; never fail the run over it
+
+
+def md_escape(text: str) -> str:
+    """Neutralise table/link-breaking chars; collapse whitespace.
+
+    Deliberately minimal — only `\\ | [ ] < >` — so prose like
+    "fix(api):" stays readable.
+    """
+    text = " ".join(text.split())
+    text = text.replace("\\", "\\\\")
+    for ch in "|[]<>":
+        text = text.replace(ch, "\\" + ch)
+    return text
+
+
+def md_title(text: str) -> str:
+    """Escape a markdown link title (the "…" hover tooltip)."""
+    text = " ".join(text.split())
+    return text.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def render_markdown(
+    milestones: list[Milestone],
+    groups: list[list[Issue]],
+    status_colours: dict[str, str],
+) -> str:
+    """Render the milestone(s) as a top-down GitHub-Flavored Markdown doc.
+
+    A `##` header per milestone, then a `###` heading + table per
+    iteration group (already in display order). Unlike the terminal view
+    there's no dim/arrow dedup: every row carries its full, self-contained
+    PR links.
+    """
+
+    def pr_refs(row: Issue) -> str:
+        parts = []
+        for pr in row.prs:
+            suffix = " (closed)" if pr.state.lower() == "closed" else ""
+            tip = md_title(f"{pr.state.lower()} pull request")
+            ref = f'[#{pr.number}{md_escape(suffix)}]({pr.url} "{tip}")'
+            # (glyph, human description) for each still-open signal.
+            signals: list[tuple[str, str]] = []
+            if pr.state.lower() == "open":
+                if pr.is_draft:
+                    signals.append((_DRAFT_GLYPH, "draft"))
+                elif not pr.has_reviewer:
+                    signals.append((_NO_REVIEWER_GLYPH, "no reviewer assigned"))
+                if pr.review and (g := _REVIEW_GLYPH.get(pr.review)):
+                    signals.append((g, pr.review.replace("_", " ")))
+                if pr.behind:
+                    signals.append((_BEHIND_GLYPH, "stale branch"))
+            if signals:
+                badge = "".join(g for g, _ in signals)
+                if pr.branch_url:
+                    desc = ", ".join(d for _, d in signals)
+                    btip = md_title(f"{desc} · {pr.branch}" if pr.branch else desc)
+                    ref += f' [{badge}]({pr.branch_url} "{btip}")'
+                else:
+                    ref += f" {badge}"
+            parts.append(ref)
+        return " ".join(parts)
+
+    def row_line(row: Issue) -> str:
+        prio = row.priority or "--"
+        prio_md = f"**{prio}**" if prio == "P0" else prio
+        dot = _MD_DOT.get(status_colours.get(row.status or "") or "", "⚪")
+        label = (row.status or "-").lower()
+        label = _STATUS_LABELS.get(label, label)
+        team = " 👥" if row.assignee_count > 1 else ""
+        status = " ".join(filter(None, [f"{dot} {label}{team}", pr_refs(row)]))
+        size = row.size or "-"
+        est = f"{row.estimate:g}" if row.estimate is not None else "-"
+        title = md_escape(row.title)
+        if row.status == "Done":
+            title = f"~~{title}~~"
+        issue = f"[#{row.number} {title}]({row.url})"
+        return f"| {prio_md} | {status} | {size} | {est} | {issue} |"
+
+    out: list[str] = []
+    # Top-down: headers in time order, current milestone first.
+    for ms in milestones:
+        closed, total = ms.closed_issues, ms.open_issues + ms.closed_issues
+        pct = f"{round(100 * closed / total)}%" if total else "—"
+        progress = f"{closed}/{total} closed ({pct})"
+        if ms.due_on:
+            due = datetime.datetime.fromisoformat(ms.due_on).date()
+            meta = f"Due {due.isoformat()} ({relative_day_phrase(due)}) · {progress}"
+        else:
+            meta = f"No due date · {progress}"
+        out += [f"## [{md_escape(ms.title)}]({ms.html_url})", "", meta, ""]
+
+    for g in groups:
+        head = g[0]
+        current = is_current_iteration(head.iteration_start, head.iteration_duration)
+        span = iteration_date_range(
+            head.iteration_start, head.iteration_duration, current=current
+        )
+        name = head.iteration or "No iteration"
+        out += [
+            f"### {name}" + (f" ({span})" if span else ""),
+            "",
+            "| Prio | Status | Sz | Est | Issue |",
+            "|:--|:--|:--|:--|:--|",
+            *(row_line(row) for row in g),
+            "",
+        ]
+    return "\n".join(out).rstrip() + "\n"
 
 
 def main() -> None:
@@ -833,6 +1005,11 @@ def main() -> None:
         help="Emit the full result as JSON instead of a table",
     )
     parser.add_argument(
+        "--markdown",
+        action="store_true",
+        help="Emit a top-down Markdown report instead of a terminal table",
+    )
+    parser.add_argument(
         "--no-hyperlink",
         action="store_true",
         help="Print bare URLs instead of OSC 8 terminal hyperlinks",
@@ -859,7 +1036,7 @@ def main() -> None:
         [
             args.repo,
             str(args.project),
-            args.milestone or "<current>",
+            args.milestone or "<current+following>",
             str(assignee_login),
             args.state,
         ]
@@ -867,20 +1044,22 @@ def main() -> None:
 
     board = read_board_cache(cache_key, args.cache_ttl)
     if board is None:
-        # Default to the current open milestone (one cheap extra
-        # lookup), then a single GraphQL round-trip fetches the
-        # matching issues (with board fields inline), the project's
-        # options, and the milestone.
+        # With an explicit --milestone, fetch just that one; otherwise a
+        # cheap lookup picks the current open milestone and the one
+        # following it. A single GraphQL round-trip then fetches the
+        # matching issues (board fields inline), project options, and the
+        # milestone(s).
         try:
-            milestone_title = args.milestone or fetch_current_milestone_title(
-                owner, name
-            )
-            if not milestone_title:
+            if args.milestone:
+                titles = [args.milestone]
+            else:
+                titles = fetch_milestone_window(owner, name)
+            if not titles:
                 sys.exit(
                     "No --milestone given and no open milestone with a due date found."
                 )
             board = fetch_board(
-                owner, name, args.project, milestone_title, assignee_login, args.state
+                owner, name, args.project, titles, assignee_login, args.state
             )
             write_board_cache(cache_key, board)
         except RateLimitError:
@@ -896,7 +1075,7 @@ def main() -> None:
                     "no cached result for this query yet — retry after the reset.\n"
                 )
             sys.exit(1)
-    options, milestone = board.options, board.milestone
+    options, milestones = board.options, board.milestones
 
     priority_rank = {
         o["name"]: i for i, o in enumerate(options.get(ProjectField.PRIORITY, []))
@@ -942,36 +1121,37 @@ def main() -> None:
         # status (Backlog > Todo > In progress > In Review > Done, board
         # order). Within a status:
         #
-        #   - Not-yet-done rows: PR-less issues before PR'd ones (the
-        #     table prints bottom-up, so PR-less work — what still needs
-        #     a PR — lands most visible near the prompt); then same-PR
-        #     blocks by their priority profile, then PR number. (Backlog
-        #     and Todo rarely have PRs, so this mostly orders In progress
-        #     and In Review.)
-        #   - Done rows: the issue's own priority leads, ahead of PR
-        #     presence/grouping — shipped work is scanned by importance.
+        #   - Done rows order by priority *profile*, keeping a PR's issues
+        #     together as one block (a PR-less issue is its own singleton),
+        #     then by PR number, then own priority within the block — so
+        #     shipped work scans by importance without scattering a PR's
+        #     issues across tiers.
+        #   - Not-yet-done rows put PR-less issues first (the table prints
+        #     bottom-up, so PR-less work — what still needs a PR — lands
+        #     most visible near the prompt), each by its own priority (not
+        #     a group); then PR'd blocks by priority profile, PR number,
+        #     and own priority within the block.
         #
-        # Then, in both cases, the row's own priority (P0 first) and
-        # estimate (descending; no estimate last).
+        # Every tail ends with estimate (descending; none last) then number.
         start = row.iteration_start or "9999-99-99"
         status_key = status_rank.get(row.status or "", len(status_rank) + 1)
+        tail = (-row.estimate if row.estimate is not None else float("inf"), row.number)
         pr_key = pr_number(row)
         has_pr = pr_key != float("inf")
         if has_pr:
             mag = magnitude(group_counts[(row.iteration_start, row.status, pr_key)])
         else:
-            # A PR-less row is its own singleton block.
+            # Singleton so a PR-less Done row interleaves with PR blocks by
+            # priority (Done groups by PR; other statuses keep PR-less first).
             single = [0] * n_prio
             if (rank := priority_rank.get(row.priority or "")) is not None:
                 single[rank] = 1
             mag = magnitude(single)
-        est_key = -row.estimate if row.estimate is not None else float("inf")
-        pr_first = 1 if has_pr else 0
         if row.status == "Done":
-            rest: tuple = (own_prio(row), pr_first, mag, pr_key)
-        else:
-            rest = (pr_first, mag, pr_key, own_prio(row))
-        return (start, status_key, *rest, est_key, row.number)
+            return (start, status_key, mag, pr_key, own_prio(row), *tail)
+        if has_pr:
+            return (start, status_key, 1, mag, pr_key, own_prio(row), *tail)
+        return (start, status_key, 0, own_prio(row), *tail)
 
     rows = sorted(board.issues, key=sort_key)
 
@@ -979,7 +1159,7 @@ def main() -> None:
         # JSON is the raw fetched set (it already honours --state); no extra
         # filtering so it stays a faithful export.
         payload = {
-            "milestone": asdict(milestone) if milestone else None,
+            "milestones": [asdict(m) for m in milestones],
             "issues": [asdict(row) for row in rows],
         }
         print(json.dumps(payload, indent=2))
@@ -997,6 +1177,43 @@ def main() -> None:
 
     if not rows:
         print("No matching issues.")
+        return
+
+    # Group rows into contiguous iterations (rows are already start-sorted)
+    # and classify each group relative to today; both the table and the
+    # Markdown renderer order their output from this.
+    row_groups: list[list[Issue]] = []
+    for row in rows:
+        if not row_groups or row_groups[-1][0].iteration_start != row.iteration_start:
+            row_groups.append([])
+        row_groups[-1].append(row)
+
+    current_g = noiter_g = None
+    future: list[list[Issue]] = []
+    past: list[list[Issue]] = []
+    for g in row_groups:
+        head_row = g[0]
+        if head_row.iteration_start is None:
+            noiter_g = g
+        elif is_current_iteration(
+            head_row.iteration_start, head_row.iteration_duration
+        ):
+            current_g = g
+        elif is_past_iteration(head_row.iteration_start, head_row.iteration_duration):
+            past.append(g)
+        else:
+            future.append(g)
+
+    if args.markdown:
+        # Top-down reading order: current first, then upcoming iterations
+        # (soonest first), unscheduled, then past (most recent first).
+        md_groups = (
+            ([current_g] if current_g else [])
+            + sorted(future, key=lambda g: g[0].iteration_start or "")
+            + ([noiter_g] if noiter_g else [])
+            + sorted(past, key=lambda g: g[0].iteration_start or "", reverse=True)
+        )
+        print(render_markdown(milestones, md_groups, status_colours), end="")
         return
 
     # OSC 8 hyperlinks and ANSI colour render in supporting
@@ -1033,6 +1250,8 @@ def main() -> None:
             # Shipped: black title, kept at normal intensity so the
             # row-wide dim doesn't fade it into the background.
             title = f"{_UNDIM}{_DARK_GREY}{title}{_RESET}"
+        elif use_colour and row.priority == "P2":
+            title = f"{_DIM}{title}{_RESET}"  # low priority recedes
         label = f"#{str(row.number).ljust(num_width)} {title}"
         if use_colour and raw_status == "In Review":
             label = f"{_DIM}{label}{_RESET}"  # de-emphasise issues awaiting review
@@ -1049,33 +1268,11 @@ def main() -> None:
             issue=hyperlink(label, row.url, enabled=use_links),
         )
 
-    # Group rows into contiguous iterations (already start-sorted), then
-    # order the groups top→bottom: future iterations (latest start on top,
+    # Order the groups top→bottom: future iterations (latest start on top,
     # so the soonest-ahead sits lowest), then no-iteration, then the
     # current iteration, then past iterations at the very bottom (newest
     # higher, oldest lowest). Most-relevant work ends up most visible when
     # reading up from the prompt.
-    row_groups: list[list[Issue]] = []
-    for row in rows:
-        if not row_groups or row_groups[-1][0].iteration_start != row.iteration_start:
-            row_groups.append([])
-        row_groups[-1].append(row)
-
-    current_g = noiter_g = None
-    future: list[list[Issue]] = []
-    past: list[list[Issue]] = []
-    for g in row_groups:
-        head_row = g[0]
-        if head_row.iteration_start is None:
-            noiter_g = g
-        elif is_current_iteration(
-            head_row.iteration_start, head_row.iteration_duration
-        ):
-            current_g = g
-        elif is_past_iteration(head_row.iteration_start, head_row.iteration_duration):
-            past.append(g)
-        else:
-            future.append(g)
     future.sort(key=lambda g: g[0].iteration_start or "", reverse=True)
     past.sort(key=lambda g: g[0].iteration_start or "", reverse=True)
     ordered_rows = (
@@ -1085,15 +1282,20 @@ def main() -> None:
         + past
     )
 
-    # Walk the final visual order bottom→top: a PR shows bright only at
-    # its lowest occurrence; every higher repeat has its "#NNN" dimmed.
+    # Walk the final visual order bottom→top. A PR shows its real number
+    # at the bottom of each *contiguous* run of rows sharing it; rows
+    # directly above in that run collapse to an arrow. Adjacency (rather
+    # than a global "lowest occurrence") means a PR split across far-apart
+    # rows — e.g. a Done block reordered by priority — keeps its number on
+    # each fragment instead of leaving a lone arrow pointing at a distant
+    # row.
     visual = [row for g in ordered_rows for row in reversed(g)]
     dim_by_number: dict[int, frozenset[int]] = {}
-    seen: set[int] = set()
+    below_nums: set[int] = set()
     for row in reversed(visual):
-        nums = [pr.number for pr in row.prs]
-        dim_by_number[row.number] = frozenset(n for n in nums if n in seen)
-        seen.update(nums)
+        nums = {pr.number for pr in row.prs}
+        dim_by_number[row.number] = frozenset(nums & below_nums)
+        below_nums = nums
 
     # Pre-render each row's cells, remembering the status column's visible
     # width (it varies with appended PR refs) so every column stays aligned.
@@ -1149,13 +1351,17 @@ def main() -> None:
         lines += [render_row(c) for c in reversed(g)]
         lines += [section_label(g[0]), ""]
     lines.append(column_header)
-    if milestone:
-        lines += [
-            "",
-            *format_milestone(
-                milestone, use_links=use_links, use_colour=use_colour
-            ).split("\n"),
-        ]
+    # Bottom-up: milestone headers sit below the table in reverse time
+    # order, so the current one lands closest to the prompt. Only the
+    # current milestone (earliest in time order) is bolded.
+    for ms in reversed(milestones):
+        block = format_milestone(
+            ms,
+            use_links=use_links,
+            use_colour=use_colour,
+            current=ms is milestones[0],
+        )
+        lines += ["", *block.split("\n")]
     print("\n".join(lines))
 
 
