@@ -29,12 +29,18 @@ import subprocess
 import sys
 import tempfile
 import time
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from enum import StrEnum
-from typing import Any
+from typing import Any, Final, NewType
 
-DEFAULT_REPO = "detektra/detektra"  # fallback when not run inside a git repo
-DEFAULT_PROJECT = 13  # "Detektra Product Development"
+DEFAULT_REPO: Final = "detektra/detektra"  # fallback when not run inside a git repo
+DEFAULT_PROJECT: Final = 13  # "Detektra Product Development"
+
+# A GitHub user login, distinguished from arbitrary strings.
+Login = NewType("Login", str)
+
+# A milestone title, used as its identity (filter/cache key).
+MilestoneTitle = NewType("MilestoneTitle", str)
 
 
 class ProjectField(StrEnum):
@@ -48,29 +54,30 @@ class ProjectField(StrEnum):
 
 
 # OSC 8 terminal hyperlink: \033]8;;URL\033\\ TEXT \033]8;;\033\\
-_OSC8 = "\033]8;;{url}\033\\{text}\033]8;;\033\\"
+_OSC8: Final = "\033]8;;{url}\033\\{text}\033]8;;\033\\"
 
-_RESET = "\033[0m"
-_BOLD = "\033[1m"
-_DIM = "\033[2m"
-_UNDIM = "\033[22m"  # normal intensity (cancels an enclosing dim)
-_DARK_GREY = "\033[38;5;238m"  # faded foreground, for shipped (Done) titles
+_RESET: Final = "\033[0m"
+_BOLD: Final = "\033[1m"
+_DIM: Final = "\033[2m"
+_UNDIM: Final = "\033[22m"  # normal intensity (cancels an enclosing dim)
+_DARK_GREY: Final = "\033[38;5;238m"  # faded foreground, for shipped (Done) titles
+_YELLOW: Final = "\033[38;5;220m"  # yellow foreground
 
 # Priority text weight: P0 stands out (bold), P1 is normal, P2 recedes
 # (dim). Codes absent here render plain.
-_PRIORITY_WEIGHT = {"P0": _BOLD, "P2": _DIM}
+_PRIORITY_WEIGHT: Final = {"P0": _BOLD, "P2": _DIM}
 
 # Shorter display labels for some board statuses (display only; the
 # board's own names still drive sorting, colours, and emphasis).
-_STATUS_LABELS = {"in progress": "wip", "in review": "rvw"}
+_STATUS_LABELS: Final = {"in progress": "wip", "in review": "rvw"}
 
 # Signals shown next to a still-open PR's number.
-_REVIEW_GLYPH = {"changes_requested": "🚧", "approved": "✅"}
-_BEHIND_GLYPH = "🍂"  # head branch is out of date with its base
-_DRAFT_GLYPH = "📝"  # PR is still a draft
-_TEAM_GLYPH = "👥"  # issue assigned to more than one person
-_NO_REVIEWER_GLYPH = "🚨"  # ready PR (not draft) with no reviewer assigned
-_WIDE_GLYPHS = (
+_REVIEW_GLYPH: Final = {"changes_requested": "🚧", "approved": "✅"}
+_BEHIND_GLYPH: Final = "🍂"  # head branch is out of date with its base
+_DRAFT_GLYPH: Final = "📝"  # PR is still a draft
+_TEAM_GLYPH: Final = "👥"  # issue assigned to more than one person
+_NO_REVIEWER_GLYPH: Final = "🚨"  # ready PR (not draft) with no reviewer assigned
+_WIDE_GLYPHS: Final = (
     *_REVIEW_GLYPH.values(),
     _BEHIND_GLYPH,
     _DRAFT_GLYPH,
@@ -80,7 +87,7 @@ _WIDE_GLYPHS = (
 
 # Stand-in for a PR number that recurs brighter lower down: a down
 # arrowhead (U+2304) pointing at the leading (bottom-most) row.
-_DUP_PR = "⌄"
+_DUP_PR: Final = "⌄"
 
 
 def display_width(text: str) -> int:
@@ -103,6 +110,8 @@ class PullRequest:
         None  # head branch name (badge tooltip); default for old caches
     )
     has_reviewer: bool = True  # any requested/actual reviewer; True for old caches
+    reviewers: tuple[Login, ...] = ()  # logins that left an opinionated review
+    requested: tuple[Login, ...] = ()  # logins currently requested to review
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -122,13 +131,14 @@ class Issue:
     size: str | None
     estimate: float | None
     prs: list[PullRequest]
+    milestone: MilestoneTitle | None = None  # owning milestone (per-milestone rollups)
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class Milestone:
     """Milestone header metadata (counts are issues only, not PRs)."""
 
-    title: str
+    title: MilestoneTitle
     description: str | None
     html_url: str
     state: str
@@ -150,6 +160,10 @@ class Board:
     milestones: list[Milestone]
     """The milestones in view (one, or current + following), in time order
     (earliest first). Each renderer arranges its own display order."""
+    reverse: dict[Login, list[Issue]] = field(default_factory=dict)
+    """Each teammate (a reviewer of your PRs) → their own milestone issues
+    (lean), for the reverse review-relationship columns. Empty for old
+    caches; populated by a second targeted fetch."""
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -166,6 +180,35 @@ class Cell:
     size: str  # padded to 2
     est: str  # rendered, padded to 3
     issue: str  # rendered "#NNN title" hyperlink
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ReviewInvolvement:
+    """One person's review involvement over a set of PRs: distinct PRs
+    reviewed / requested on, and the summed ticket estimates of each."""
+
+    reviewed: int = 0
+    requested: int = 0
+    reviewed_points: float = 0.0
+    requested_points: float = 0.0
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ReviewerStats:
+    """A teammate's review relationship with you for one iteration."""
+
+    login: Login
+    mine: ReviewInvolvement  # their involvement in your PRs
+    theirs: ReviewInvolvement  # your involvement in their PRs
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class Highlights:
+    """Per-login "hot"/"cold" flags for the highlighted reviewer cells."""
+
+    load: dict[Login, str]  # requested (my points): vs an even split
+    against_me: dict[Login, str]  # reviewed (my points): their fulfilment of yours
+    favouritism: dict[Login, str]  # reviewed (their points): your fulfilment of theirs
 
 
 def weekdays_until(end_date: datetime.date) -> int:
@@ -366,7 +409,7 @@ def status_cell(
 
 # Estimate brightness on the xterm grayscale ramp:
 # 1 (grey) → 5+ (white).
-_ESTIMATE_GREY = {1: 246, 2: 249, 3: 251, 4: 253, 5: 255}
+_ESTIMATE_GREY: Final = {1: 246, 2: 249, 3: 251, 4: 253, 5: 255}
 
 
 def estimate_cell(estimate: float | None, *, use_colour: bool) -> str:
@@ -380,7 +423,7 @@ def estimate_cell(estimate: float | None, *, use_colour: bool) -> str:
 
 # GitHub single-select option colours → 256-colour code for
 # the status dot.
-_GH_DOT = {
+_GH_DOT: Final = {
     "GRAY": 245,
     "BLUE": 39,
     "GREEN": 40,
@@ -394,7 +437,7 @@ _GH_DOT = {
 # Board option colour → coloured-circle emoji, for markdown (which has
 # no ANSI colour). No pink circle exists, so PINK uses the pink flower
 # 💮 to stay distinct from both RED's 🔴 and PURPLE's 🟣.
-_MD_DOT = {
+_MD_DOT: Final = {
     "GRAY": "⚪",
     "BLUE": "🔵",
     "GREEN": "🟢",
@@ -582,16 +625,16 @@ def resolve_assignee_login(assignee: str) -> str | None:
 # (via fieldValueByName) rather than paging the whole fieldValues
 # connection — cheaper and order-proof.
 # (Indentation is cosmetic — GraphQL ignores whitespace.)
-_ISSUE_BOARD_FIELDS = f"""
+_ISSUE_BOARD_FIELDS: Final = f"""
   number title url state
   assignees(first: 1) {{ totalCount }}
-  closedByPullRequestsReferences(first: 5, includeClosedPrs: true) {{
+  closedByPullRequestsReferences(first: 3, includeClosedPrs: true) {{
     nodes {{
       number url state isDraft mergeStateStatus
       headRefName headRepository {{ url }}
-      reviewRequests {{ totalCount }}
+      reviewRequests(first: 5) {{ totalCount nodes {{ requestedReviewer {{ ... on User {{ login }} }} }} }}
       reviews {{ totalCount }}
-      latestOpinionatedReviews(first: 10) {{ nodes {{ state }} }}
+      latestOpinionatedReviews(first: 5) {{ nodes {{ state author {{ login }} }} }}
     }}
   }}
   projectItems(first: 3) {{
@@ -607,7 +650,85 @@ _ISSUE_BOARD_FIELDS = f"""
 """
 
 
-def extract_project_values(issue: dict, project: int) -> Issue:
+# Lean fragment for the reverse "their PRs" columns: only what
+# review_counts needs — each issue's iteration + estimate, and per
+# closing PR the requested-reviewer and opinionated-review logins (to
+# test your involvement). Small `first:` values keep the node cost low.
+_REVIEW_ONLY_FIELDS: Final = f"""
+  number
+  closedByPullRequestsReferences(first: 3, includeClosedPrs: true) {{
+    nodes {{
+      number
+      reviewRequests(first: 3) {{ nodes {{ requestedReviewer {{ ... on User {{ login }} }} }} }}
+      latestOpinionatedReviews(first: 3) {{ nodes {{ author {{ login }} }} }}
+    }}
+  }}
+  projectItems(first: 3) {{
+    nodes {{
+      project {{ number }}
+      estimate: fieldValueByName(name: "{ProjectField.ESTIMATE.value}") {{ ... on ProjectV2ItemFieldNumberValue {{ number }} }}
+      iteration: fieldValueByName(name: "{ProjectField.ITERATION.value}") {{ ... on ProjectV2ItemFieldIterationValue {{ title startDate duration }} }}
+    }}
+  }}
+"""
+
+
+def _logins(nodes: list[dict], key: str) -> tuple[Login, ...]:
+    """Sorted distinct logins from a list of review/request nodes."""
+    return tuple(
+        sorted(Login(login) for n in nodes if (login := (n[key] or {}).get("login")))
+    )
+
+
+def extract_review_only(issue: dict, project: int, milestone: MilestoneTitle) -> Issue:
+    """A lean Issue (iteration, estimate, and each PR's reviewer/requested
+    logins) for the reverse review columns. Other fields are placeholders;
+    only what review_counts reads is populated."""
+    iteration_title = iteration_start = iteration_duration = estimate = None
+    for item in issue["projectItems"]["nodes"]:
+        if item["project"]["number"] != project:
+            continue
+        estimate = (item["estimate"] or {}).get("number")
+        if it := item["iteration"]:
+            iteration_title = it.get("title")
+            iteration_start = it.get("startDate")
+            iteration_duration = it.get("duration")
+        break
+    prs = [
+        PullRequest(
+            number=pr["number"],
+            url="",
+            state="OPEN",
+            is_draft=False,
+            review=None,
+            behind=False,
+            branch_url=None,
+            reviewers=_logins(pr["latestOpinionatedReviews"]["nodes"], "author"),
+            requested=_logins(pr["reviewRequests"]["nodes"], "requestedReviewer"),
+        )
+        for pr in issue["closedByPullRequestsReferences"]["nodes"]
+    ]
+    return Issue(
+        number=issue["number"],
+        title="",
+        url="",
+        state="",
+        assignee_count=0,
+        status=None,
+        iteration=iteration_title,
+        iteration_start=iteration_start,
+        iteration_duration=iteration_duration,
+        priority=None,
+        size=None,
+        estimate=estimate,
+        prs=prs,
+        milestone=milestone,
+    )
+
+
+def extract_project_values(
+    issue: dict, project: int, milestone: MilestoneTitle
+) -> Issue:
     """Pull board fields + closing PRs from one GraphQL issue node."""
     iteration_title = iteration_start = iteration_duration = None
     priority = size = estimate = status = None
@@ -627,14 +748,28 @@ def extract_project_values(issue: dict, project: int) -> Issue:
         break  # at most one project item matches our project
     prs = []
     for pr in issue["closedByPullRequestsReferences"]["nodes"]:
-        # Each reviewer's latest opinionated (approve/changes) review.
-        states = {r["state"] for r in pr["latestOpinionatedReviews"]["nodes"]}
+        # Currently-requested reviewer logins (team requests carry no
+        # login, so they fall out).
+        requested = _logins(pr["reviewRequests"]["nodes"], "requestedReviewer")
+        # A re-requested reviewer (back in reviewRequests) supersedes their
+        # prior review, so drop their opinion: a changes-requested that's
+        # since been re-requested reads as pending, not blocking.
+        rerequested = set(requested)
+        states = {
+            r["state"]
+            for r in pr["latestOpinionatedReviews"]["nodes"]
+            if (r["author"] or {}).get("login") not in rerequested
+        }
         if "CHANGES_REQUESTED" in states:
             review = "changes_requested"
         elif "APPROVED" in states:
             review = "approved"
         else:
             review = None
+        # Everyone who left an opinionated review (one entry per person),
+        # for the reviewer tables. Includes re-requested reviewers — they
+        # did review, historically.
+        reviewers = _logins(pr["latestOpinionatedReviews"]["nodes"], "author")
         repo = pr["headRepository"]
         branch_url = f"{repo['url']}/tree/{pr['headRefName']}" if repo else None
         has_reviewer = (
@@ -651,6 +786,8 @@ def extract_project_values(issue: dict, project: int) -> Issue:
                 branch_url=branch_url,
                 branch=pr["headRefName"],
                 has_reviewer=has_reviewer,
+                reviewers=reviewers,
+                requested=requested,
             )
         )
     return Issue(
@@ -667,6 +804,7 @@ def extract_project_values(issue: dict, project: int) -> Issue:
         size=size,
         estimate=estimate,
         prs=prs,
+        milestone=milestone,
     )
 
 
@@ -674,11 +812,12 @@ def fetch_board(
     owner: str,
     name: str,
     project: int,
-    milestone_titles: list[str],
+    milestone_titles: list[MilestoneTitle],
     assignee_login: str | None,
     state: str,
+    me: Login | None = None,
 ) -> Board:
-    """One round-trip: issues, single-select options, and milestone(s).
+    """One main round-trip: issues, single-select options, milestone(s).
 
     Folds what used to be four `gh` calls (issue list, project fields,
     batched project values, milestone REST) into a single GraphQL
@@ -687,6 +826,10 @@ def fetch_board(
     connection (real-time, unlike the search index), filtered server-side
     by assignee/state, with board fields inline. Issues from every
     milestone are merged into one board.
+
+    A second, lean round-trip then fetches the reverse data (your
+    reviewers' own issues) for the reverse review columns; `me` is your
+    login, excluded from that set.
     """
     states = {"open": "[OPEN]", "closed": "[CLOSED]"}.get(state, "[OPEN, CLOSED]")
     if assignee_login:
@@ -757,7 +900,7 @@ def fetch_board(
             )
         milestones.append(
             Milestone(
-                title=ms_node["title"],
+                title=title,  # the matched title (a MilestoneTitle)
                 description=ms_node["description"],
                 html_url=ms_node["url"],
                 state=ms_node["state"],
@@ -767,12 +910,75 @@ def fetch_board(
             )
         )
         issues.extend(
-            extract_project_values(n, project) for n in ms_node["matched"]["nodes"]
+            extract_project_values(n, project, title)
+            for n in ms_node["matched"]["nodes"]
         )
-    return Board(issues=issues, options=options, milestones=milestones)
+    # Your reviewers (people involved with your PRs), minus yourself —
+    # the people the reverse columns are about.
+    reviewers = {
+        login
+        for issue in issues
+        for pr in issue.prs
+        for login in (*pr.reviewers, *pr.requested)
+    }
+    if me is not None:
+        reviewers.discard(me)
+    reverse = fetch_reverse(owner, name, project, milestone_titles, sorted(reviewers))
+    return Board(issues=issues, options=options, milestones=milestones, reverse=reverse)
 
 
-def fetch_milestone_window(owner: str, name: str) -> list[str]:
+def fetch_reverse(
+    owner: str,
+    name: str,
+    project: int,
+    milestone_titles: list[MilestoneTitle],
+    reviewers: list[Login],
+) -> dict[Login, list[Issue]]:
+    """Lean second round-trip: each reviewer's own issues in the milestone
+    window, with just iteration/estimate and per-PR reviewer/requested
+    logins. One request, aliased per (milestone × reviewer). Returns each
+    reviewer → their lean issues."""
+    if not reviewers:
+        return {}
+    decls = [f"$ms{i}: String!" for i in range(len(milestone_titles))]
+    decls += [f"$p{j}: String!" for j in range(len(reviewers))]
+    variables: dict[str, Any] = dict(owner=owner, name=name)
+    for i, title in enumerate(milestone_titles):
+        variables[f"ms{i}"] = title
+    for j, person in enumerate(reviewers):
+        variables[f"p{j}"] = person
+    blocks = [
+        f"m{i}_p{j}: milestones(query: $ms{i}, first: 1) {{ nodes {{ title "
+        f"issues(filterBy: {{assignee: $p{j}}}, first: 50) "
+        f"{{ nodes {{ {_REVIEW_ONLY_FIELDS} }} }} }} }}"
+        for i in range(len(milestone_titles))
+        for j in range(len(reviewers))
+    ]
+    data = graphql(
+        f"""
+        query($owner: String!, $name: String!, {", ".join(decls)}) {{
+          repository(owner: $owner, name: $name) {{
+            {chr(10).join(blocks)}
+          }}
+        }}
+        """,
+        **variables,
+    )
+    repo = data["data"]["repository"]
+    result: dict[Login, list[Issue]] = {p: [] for p in reviewers}
+    for i, title in enumerate(milestone_titles):
+        for j, person in enumerate(reviewers):
+            for ms_node in repo[f"m{i}_p{j}"]["nodes"]:
+                if ms_node["title"] != title:
+                    continue
+                result[person] += [
+                    extract_review_only(n, project, title)
+                    for n in ms_node["issues"]["nodes"]
+                ]
+    return result
+
+
+def fetch_milestone_window(owner: str, name: str) -> list[MilestoneTitle]:
     """Titles of the current open milestone and the one following it.
 
     "Current" is the open milestone whose due date is nearest today.
@@ -805,10 +1011,10 @@ def fetch_milestone_window(owner: str, name: str) -> list[str]:
     if not dated:
         return []
     current = min(dated)[1]
-    titles = [current["title"]]
+    titles = [MilestoneTitle(current["title"])]
     later = [m for m in nodes if m["number"] > current["number"]]
     if later:
-        titles.append(min(later, key=lambda m: m["number"])["title"])
+        titles.append(MilestoneTitle(min(later, key=lambda m: m["number"])["title"]))
     return titles
 
 
@@ -844,6 +1050,10 @@ def read_board_cache(key: str, ttl: int) -> Board | None:
             issues=[revive(issue) for issue in data["issues"]],
             options=data["options"],
             milestones=[Milestone(**m) for m in data["milestones"]],
+            reverse={
+                Login(p): [revive(i) for i in issues]
+                for p, issues in data.get("reverse", {}).items()
+            },
         )
     except (KeyError, TypeError):
         return None  # cache predates a schema change; treat as a miss
@@ -879,10 +1089,249 @@ def md_title(text: str) -> str:
     return text.replace("\\", "\\\\").replace('"', '\\"')
 
 
+def _involvement(issues: list[Issue]) -> dict[Login, ReviewInvolvement]:
+    """Per login, their review involvement over these issues' PRs.
+
+    Distinct PRs (a PR closing several of these issues counts once; an
+    opinionated review counts once per PR). Points sum the closed
+    tickets' estimates — each ticket once per login, a missing one as 0.
+    """
+    rev_prs: dict[Login, set[int]] = {}
+    req_prs: dict[Login, set[int]] = {}
+    rev_pts: dict[Login, float] = {}
+    req_pts: dict[Login, float] = {}
+    for issue in issues:
+        est = issue.estimate or 0.0
+        rev_here: set[Login] = set()
+        req_here: set[Login] = set()
+        for pr in issue.prs:
+            for login in pr.reviewers:
+                rev_prs.setdefault(login, set()).add(pr.number)
+                rev_here.add(login)
+            for login in pr.requested:
+                req_prs.setdefault(login, set()).add(pr.number)
+                req_here.add(login)
+        for login in rev_here:
+            rev_pts[login] = rev_pts.get(login, 0.0) + est
+        for login in req_here:
+            req_pts[login] = req_pts.get(login, 0.0) + est
+    return {
+        p: ReviewInvolvement(
+            reviewed=len(rev_prs.get(p, ())),
+            requested=len(req_prs.get(p, ())),
+            reviewed_points=rev_pts.get(p, 0.0),
+            requested_points=req_pts.get(p, 0.0),
+        )
+        for p in set(rev_prs) | set(req_prs)
+    }
+
+
+def reverse_for_milestone(
+    reverse: dict[Login, list[Issue]], milestone: MilestoneTitle
+) -> dict[Login, list[Issue]]:
+    """Restrict each teammate's reverse issues to one milestone."""
+    return {
+        p: [i for i in issues if i.milestone == milestone]
+        for p, issues in reverse.items()
+    }
+
+
+def review_stats(
+    my_issues: list[Issue],
+    reverse: dict[Login, list[Issue]],
+    me: Login | None,
+) -> list[ReviewerStats]:
+    """One row per teammate for an iteration: their involvement in your
+    PRs (`mine`) and your involvement in their PRs (`theirs`).
+
+    `reverse` maps each teammate to their own issues for this iteration;
+    `me` is your login (whose involvement in those issues becomes
+    `theirs`). Sorted by the PRs of yours they reviewed (desc), then
+    requested (desc), then login. Empty when there's no activity.
+    """
+    forward = _involvement(my_issues)
+    people = set(forward)
+    if me is not None:
+        people.discard(me)  # you are not your own reviewer row
+    theirs: dict[Login, ReviewInvolvement] = {}
+    for person, their_issues in reverse.items():
+        mine_in_theirs = _involvement(their_issues).get(me) if me else None
+        if mine_in_theirs:
+            theirs[person] = mine_in_theirs
+            people.add(person)
+    zero = ReviewInvolvement()
+    rows = [
+        ReviewerStats(login=p, mine=forward.get(p, zero), theirs=theirs.get(p, zero))
+        for p in people
+    ]
+    return sorted(rows, key=lambda s: (-s.mine.reviewed, -s.mine.requested, s.login))
+
+
+# Reviewer-table highlight thresholds (points-weighted). Below the
+# minimum column total there's too little to read into.
+_HL_MIN_POINTS: Final = 5.0
+_LOAD_HOT_SHARE: Final = 2.0  # ≥ 2× an even split of your review requests
+_LOAD_COLD_SHARE: Final = 0.25  # ≤ ¼ of an even split (including zero)
+_FAVOURITISM_DEV: Final = 0.2  # review-share minus request-share
+
+
+def _deviation_flags(
+    reviewed: dict[Login, float],
+    requested: dict[Login, float],
+    *,
+    cold_only: bool = False,
+) -> dict[Login, str]:
+    """Per login, hot/cold by (review share − request share): hot when
+    reviews outrun the request demand, cold when they fall short. Empty
+    below the volume floor — the reviewing side carries the signal. With
+    `cold_only`, the hot end is dropped (only the shortfall matters)."""
+    if (trev := sum(reviewed.values())) < _HL_MIN_POINTS:
+        return {}
+    treq = sum(requested.values())
+    flags: dict[Login, str] = {}
+    for login, rv in reviewed.items():
+        dev = rv / trev - (requested.get(login, 0.0) / treq if treq else 0.0)
+        if dev >= _FAVOURITISM_DEV and not cold_only:
+            flags[login] = "hot"
+        elif dev <= -_FAVOURITISM_DEV:
+            flags[login] = "cold"
+    return flags
+
+
+def review_highlights(stats: list[ReviewerStats]) -> Highlights:
+    """Hot/cold flags for the three highlighted reviewer cells.
+
+    `load` reads `requested (my points)` against an even split — don't
+    overload one reviewer. `against_me` reads `reviewed (my points)` vs
+    your request share — cold means a teammate under-reviews your PRs
+    relative to how much you ask (favouritism against you). `favouritism`
+    reads `reviewed (their points)` vs their request share — hot means
+    you over-review theirs. Empty with <2 people or below a volume floor.
+    """
+    if len(stats) < 2:
+        return Highlights(load={}, against_me={}, favouritism={})
+    load: dict[Login, str] = {}
+    req = {s.login: s.mine.requested_points for s in stats}
+    if (total := sum(req.values())) >= _HL_MIN_POINTS:
+        even = total / len(stats)
+        for login, v in req.items():
+            if v >= _LOAD_HOT_SHARE * even:
+                load[login] = "hot"
+            elif v <= _LOAD_COLD_SHARE * even:
+                load[login] = "cold"
+    return Highlights(
+        load=load,
+        against_me=_deviation_flags(
+            {s.login: s.mine.reviewed_points for s in stats}, req, cold_only=True
+        ),
+        favouritism=_deviation_flags(
+            {s.login: s.theirs.reviewed_points for s in stats},
+            {s.login: s.theirs.requested_points for s in stats},
+        ),
+    )
+
+
+def review_table(stats: list[ReviewerStats], *, use_colour: bool) -> list[str]:
+    """Plain-text reviewer table (header + a row per person), or [].
+
+    In `my points` (rev/req), the rev side carries the favouritism-
+    against-you highlight (yellow) and the req side the load highlight
+    (bold/dim); in `their points`, the rev side carries your favouritism
+    (bold hot, yellow cold). Other cells are plain.
+    """
+    if not stats:
+        return []
+    hl = review_highlights(stats)
+    headers = ["reviewer", "my PRs", "my points", "their PRs", "their points"]
+
+    def style(text: str, flag: str, hot: str, cold: str) -> str:
+        if not use_colour or not flag:
+            return text
+        code = hot if flag == "hot" else cold
+        return f"{code}{text}{_RESET}" if code else text
+
+    # Each cell is (plain, styled): plain drives column width (it's free
+    # of escape codes), styled is what prints. Yellow flags a favouritism
+    # shortfall (yours or against you); bold/dim track request load.
+    rows: list[list[tuple[str, str]]] = []
+    for s in stats:
+        am = hl.against_me.get(s.login, "")
+        ld = hl.load.get(s.login, "")
+        mf = hl.favouritism.get(s.login, "")
+        mrev, mreq = f"{s.mine.reviewed_points:g}", f"{s.mine.requested_points:g}"
+        trev, treq = f"{s.theirs.reviewed_points:g}", f"{s.theirs.requested_points:g}"
+        my_pr = f"{s.mine.reviewed}/{s.mine.requested}"
+        their_pr = f"{s.theirs.reviewed}/{s.theirs.requested}"
+        my_pts = f"{style(mrev, am, '', _YELLOW)}/{style(mreq, ld, _BOLD, _DIM)}"
+        their_pts = f"{style(trev, mf, _BOLD, _YELLOW)}/{treq}"
+        rows.append(
+            [
+                (s.login, s.login),
+                (my_pr, my_pr),
+                (f"{mrev}/{mreq}", my_pts),
+                (their_pr, their_pr),
+                (f"{trev}/{treq}", their_pts),
+            ]
+        )
+    widths = [max(len(headers[i]), *(len(r[i][0]) for r in rows)) for i in range(5)]
+
+    def fmt(cells: list[tuple[str, str]]) -> str:
+        parts = [cells[0][1].ljust(widths[0])]
+        for i in range(1, 5):
+            plain, styled = cells[i]
+            parts.append(" " * (widths[i] - len(plain)) + styled)
+        return "  ".join(parts)
+
+    return [fmt([(h, h) for h in headers])] + [fmt(r) for r in rows]
+
+
+def md_emphasis(text: str, flag: str) -> str:
+    """Markdown highlight: hot → bold, cold → italic (no dim in MD)."""
+    if flag == "hot":
+        return f"**{text}**"
+    if flag == "cold":
+        return f"*{text}*"
+    return text
+
+
+def review_table_md(stats: list[ReviewerStats]) -> list[str]:
+    """Markdown reviewer table rows (header + separator + a row each), or
+    []. Same highlights as the terminal: load on `requested (my points)`,
+    favouritism-against-you on `reviewed (my points)`, your favouritism on
+    `reviewed (their points)`."""
+    if not stats:
+        return []
+    hl = review_highlights(stats)
+    out = [
+        "| Reviewer "
+        "| requested (my PRs) | reviewed (my PRs) "
+        "| requested (their PRs) | reviewed (their PRs) "
+        "| requested (my points) | reviewed (my points) "
+        "| requested (their points) | reviewed (their points) |",
+        "|:--|--:|--:|--:|--:|--:|--:|--:|--:|",
+    ]
+    for s in stats:
+        am = hl.against_me.get(s.login, "")
+        ld = hl.load.get(s.login, "")
+        mf = hl.favouritism.get(s.login, "")
+        out.append(
+            f"| {md_escape(s.login)} "
+            f"| {s.mine.requested} | {s.mine.reviewed} "
+            f"| {s.theirs.requested} | {s.theirs.reviewed} "
+            f"| {md_emphasis(f'{s.mine.requested_points:g}', ld)} "
+            f"| {md_emphasis(f'{s.mine.reviewed_points:g}', am)} "
+            f"| {s.theirs.requested_points:g} "
+            f"| {md_emphasis(f'{s.theirs.reviewed_points:g}', mf)} |"
+        )
+    return out
+
+
 def render_markdown(
     milestones: list[Milestone],
     groups: list[list[Issue]],
     status_colours: dict[str, str],
+    reverse: dict[Login, list[Issue]],
+    me: Login | None,
 ) -> str:
     """Render the milestone(s) as a top-down GitHub-Flavored Markdown doc.
 
@@ -937,7 +1386,10 @@ def render_markdown(
         return f"| {prio_md} | {status} | {size} | {est} | {issue} |"
 
     out: list[str] = []
-    # Top-down: headers in time order, current milestone first.
+    all_my = [issue for g in groups for issue in g]
+    # Top-down: headers in time order, current milestone first. The
+    # reviewer table sits under each milestone, rolled up over the
+    # milestone for a steadier read than a single iteration.
     for ms in milestones:
         closed, total = ms.closed_issues, ms.open_issues + ms.closed_issues
         pct = f"{round(100 * closed / total)}%" if total else "—"
@@ -948,6 +1400,10 @@ def render_markdown(
         else:
             meta = f"No due date · {progress}"
         out += [f"## [{md_escape(ms.title)}]({ms.html_url})", "", meta, ""]
+        my_ms = [i for i in all_my if i.milestone == ms.title]
+        stats = review_stats(my_ms, reverse_for_milestone(reverse, ms.title), me)
+        if table := review_table_md(stats):
+            out += [*table, ""]
 
     for g in groups:
         head = g[0]
@@ -1032,12 +1488,16 @@ def main() -> None:
     # to do before the cache check; it also keeps the cache key
     # distinct per authenticated user.
     assignee_login = resolve_assignee_login(args.assignee)
+    # Your own login drives the reverse review columns (their PRs you're
+    # involved in); resolved locally, no network.
+    me = Login(login) if (login := resolve_assignee_login("@me")) else None
     cache_key = "|".join(
         [
             args.repo,
             str(args.project),
             args.milestone or "<current+following>",
             str(assignee_login),
+            str(me),
             args.state,
         ]
     )
@@ -1051,7 +1511,7 @@ def main() -> None:
         # milestone(s).
         try:
             if args.milestone:
-                titles = [args.milestone]
+                titles = [MilestoneTitle(args.milestone)]
             else:
                 titles = fetch_milestone_window(owner, name)
             if not titles:
@@ -1059,7 +1519,7 @@ def main() -> None:
                     "No --milestone given and no open milestone with a due date found."
                 )
             board = fetch_board(
-                owner, name, args.project, titles, assignee_login, args.state
+                owner, name, args.project, titles, assignee_login, args.state, me
             )
             write_board_cache(cache_key, board)
         except RateLimitError:
@@ -1213,7 +1673,10 @@ def main() -> None:
             + ([noiter_g] if noiter_g else [])
             + sorted(past, key=lambda g: g[0].iteration_start or "", reverse=True)
         )
-        print(render_markdown(milestones, md_groups, status_colours), end="")
+        print(
+            render_markdown(milestones, md_groups, status_colours, board.reverse, me),
+            end="",
+        )
         return
 
     # OSC 8 hyperlinks and ANSI colour render in supporting
@@ -1347,13 +1810,15 @@ def main() -> None:
     # milestone header. Quota footer follows via atexit. Read bottom-up to
     # recover the normal order.
     lines: list[str] = []
-    for g in ordered:
-        lines += [render_row(c) for c in reversed(g)]
-        lines += [section_label(g[0]), ""]
+    for cell_group in ordered:
+        lines += [render_row(c) for c in reversed(cell_group)]
+        lines += [section_label(cell_group[0]), ""]
     lines.append(column_header)
     # Bottom-up: milestone headers sit below the table in reverse time
     # order, so the current one lands closest to the prompt. Only the
-    # current milestone (earliest in time order) is bolded.
+    # current milestone (earliest in time order) is bolded. Each carries
+    # its reviewer table, rolled up over the milestone for a steadier
+    # read than a single iteration.
     for ms in reversed(milestones):
         block = format_milestone(
             ms,
@@ -1361,7 +1826,12 @@ def main() -> None:
             use_colour=use_colour,
             current=ms is milestones[0],
         )
-        lines += ["", *block.split("\n")]
+        my_ms = [i for i in board.issues if i.milestone == ms.title]
+        stats = review_stats(my_ms, reverse_for_milestone(board.reverse, ms.title), me)
+        table = review_table(stats, use_colour=use_colour)
+        if table and use_colour and ms is not milestones[0]:
+            table = [dim_all(t) for t in table]  # following milestone recedes
+        lines += ["", *block.split("\n"), *table]
     print("\n".join(lines))
 
 
