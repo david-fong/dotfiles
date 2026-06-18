@@ -18,6 +18,11 @@ Examples, run from inside the target repo:
     list_milestone_issues.py --assignee any --state all --json
 """
 
+# The embedded GraphQL fragment strings run past 88 columns; wrapping them
+# adds no clarity (whitespace is insignificant in GraphQL) and a `# noqa`
+# can't sit inside a triple-quoted string, so E501 is silenced file-wide.
+# flake8: noqa: E501
+
 import argparse
 import atexit
 import datetime
@@ -29,9 +34,12 @@ import subprocess
 import sys
 import tempfile
 import time
-from dataclasses import asdict, dataclass, field
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import asdict, dataclass, field, fields, replace
 from enum import StrEnum
 from typing import Any, Final, NewType
+
+# MARK: - Configuration & type aliases
 
 DEFAULT_REPO: Final = "detektra/detektra"  # fallback when not run inside a git repo
 DEFAULT_PROJECT: Final = 13  # "Detektra Product Development"
@@ -39,8 +47,15 @@ DEFAULT_PROJECT: Final = 13  # "Detektra Product Development"
 # A GitHub user login, distinguished from arbitrary strings.
 Login = NewType("Login", str)
 
-# A milestone title, used as its identity (filter/cache key).
+# A milestone's display title (shown in headers; the user's --milestone arg).
 MilestoneTitle = NewType("MilestoneTitle", str)
+
+# A milestone's stable repo-scoped number (the `/milestone/N` in its URL),
+# used as its identity — robust to title renames, unlike the title.
+MilestoneNumber = NewType("MilestoneNumber", int)
+
+# A JSON object decoded from a GraphQL/REST response (loosely shaped).
+Json = dict[str, Any]
 
 
 class ProjectField(StrEnum):
@@ -52,6 +67,8 @@ class ProjectField(StrEnum):
     ESTIMATE = "Estimate"
     STATUS = "Status"
 
+
+# MARK: - ANSI & display constants
 
 # OSC 8 terminal hyperlink: \033]8;;URL\033\\ TEXT \033]8;;\033\\
 _OSC8: Final = "\033]8;;{url}\033\\{text}\033]8;;\033\\"
@@ -90,28 +107,7 @@ _WIDE_GLYPHS: Final = (
 _DUP_PR: Final = "⌄"
 
 
-def display_width(text: str) -> int:
-    """Visible width, counting (double-wide) PR emojis as 2 cells."""
-    return len(text) + sum(text.count(glyph) for glyph in _WIDE_GLYPHS)
-
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class PullRequest:
-    """A PR that closes an issue, with the signals shown beside it."""
-
-    number: int
-    url: str
-    state: str  # OPEN / CLOSED / MERGED
-    is_draft: bool
-    review: str | None  # "changes_requested" / "approved" / None
-    behind: bool  # head branch is out of date with its base
-    branch_url: str | None  # link target for the status badge
-    branch: str | None = (
-        None  # head branch name (badge tooltip); default for old caches
-    )
-    has_reviewer: bool = True  # any requested/actual reviewer; True for old caches
-    reviewers: tuple[Login, ...] = ()  # logins that left an opinionated review
-    requested: tuple[Login, ...] = ()  # logins currently requested to review
+# MARK: - Domain models
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -130,14 +126,34 @@ class Issue:
     priority: str | None
     size: str | None
     estimate: float | None
-    prs: list[PullRequest]
-    milestone: MilestoneTitle | None = None  # owning milestone (per-milestone rollups)
+    prs: list["PullRequest"]
+    milestone: MilestoneNumber | None = None  # owning milestone (per-milestone rollups)
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class PullRequest:
+    """A PR that closes an issue, with the signals shown beside it."""
+
+    number: int
+    url: str
+    state: str  # OPEN / CLOSED / MERGED
+    is_draft: bool
+    review: str | None  # "changes_requested" / "approved" / None
+    behind: bool  # head branch is out of date with its base
+    branch_url: str | None  # link target for the status badge
+    branch: str | None = (
+        None  # head branch name (badge tooltip); default for old caches
+    )
+    has_reviewer: bool = True  # any requested/actual reviewer; True for old caches
+    reviewers: tuple[Login, ...] = ()  # logins that left an opinionated review
+    assigned: tuple[Login, ...] = ()  # logins ever assigned as a reviewer
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class Milestone:
     """Milestone header metadata (counts are issues only, not PRs)."""
 
+    number: MilestoneNumber
     title: MilestoneTitle
     description: str | None
     html_url: str
@@ -148,11 +164,27 @@ class Milestone:
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
+class TeammatePR:
+    """A teammate's PR within the window, with your involvement in it.
+
+    Sourced from search (their PRs often close no issue), so it carries only
+    what the reviewer stats need: which window milestone it falls in, its
+    estimate (points), and whether you reviewed it / were ever assigned to.
+    """
+
+    number: int
+    milestone: MilestoneNumber
+    estimate: float | None
+    you_reviewed: bool
+    you_assigned: bool
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
 class Board:
     """Everything one GraphQL round-trip returns for a milestone."""
 
     issues: list[Issue]
-    options: dict[str, list[dict]]
+    options: dict[str, list[Json]]
     """Each single-select field name → its options, in board order.
 
     Each option is a {"name", "color"} dict.
@@ -160,10 +192,10 @@ class Board:
     milestones: list[Milestone]
     """The milestones in view (one, or current + following), in time order
     (earliest first). Each renderer arranges its own display order."""
-    reverse: dict[Login, list[Issue]] = field(default_factory=dict)
-    """Each teammate (a reviewer of your PRs) → their own milestone issues
-    (lean), for the reverse review-relationship columns. Empty for old
-    caches; populated by a second targeted fetch."""
+    reverse: dict[Login, list[TeammatePR]] = field(default_factory=dict)
+    """Each teammate (a reviewer of your PRs) → their own window PRs, for the
+    reverse review-relationship columns. Empty for old caches; populated by a
+    second targeted fetch."""
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -185,12 +217,13 @@ class Cell:
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ReviewInvolvement:
     """One person's review involvement over a set of PRs: distinct PRs
-    reviewed / requested on, and the summed ticket estimates of each."""
+    reviewed / ever assigned to review, and the summed ticket estimates of
+    each."""
 
     reviewed: int = 0
-    requested: int = 0
+    assigned: int = 0
     reviewed_points: float = 0.0
-    requested_points: float = 0.0
+    assigned_points: float = 0.0
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -200,15 +233,62 @@ class ReviewerStats:
     login: Login
     mine: ReviewInvolvement  # their involvement in your PRs
     theirs: ReviewInvolvement  # your involvement in their PRs
+    their_total_prs: int = 0  # their PRs in the window (favouritism denominator)
+    their_total_points: float = 0.0  # summed estimate of those PRs
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class Highlights:
-    """Per-login "hot"/"cold" flags for the highlighted reviewer cells."""
+    """Reviewer cells to flag. `load` is the assignment-balance flag on the
+    assigned side ("hot"/"cold" → bold/dim). The rest are logins whose
+    reviewing falls below a fair share (yellow): under_mine on your PRs,
+    under_theirs on theirs; each split into the count and points cells."""
 
-    load: dict[Login, str]  # requested (my points): vs an even split
-    against_me: dict[Login, str]  # reviewed (my points): their fulfilment of yours
-    favouritism: dict[Login, str]  # reviewed (their points): your fulfilment of theirs
+    load: dict[Login, str]
+    under_mine_count: set[Login]
+    under_mine_points: set[Login]
+    under_theirs_count: set[Login]
+    under_theirs_points: set[Login]
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class Groups:
+    """Iteration groups classified relative to today.
+
+    `current` and `noiter` (the unscheduled group) are at most one group
+    each; `future` and `past` are lists of groups. The ordering methods
+    arrange them for each view's reading direction.
+    """
+
+    current: list[Issue] | None
+    noiter: list[Issue] | None
+    future: list[list[Issue]]
+    past: list[list[Issue]]
+
+    def top_down(self) -> list[list[Issue]]:
+        """Markdown order: current first, then upcoming iterations (soonest
+        first), unscheduled, then past (most recent first)."""
+        return (
+            ([self.current] if self.current else [])
+            + sorted(self.future, key=lambda g: g[0].iteration_start or "")
+            + ([self.noiter] if self.noiter else [])
+            + sorted(self.past, key=lambda g: g[0].iteration_start or "", reverse=True)
+        )
+
+    def bottom_up(self) -> list[list[Issue]]:
+        """Terminal order (printed then read upward): future iterations
+        (latest start on top, so the soonest-ahead sits lowest), unscheduled,
+        current, then past at the very bottom (newest higher) — so the
+        most-relevant work lands closest to the prompt."""
+        return (
+            sorted(self.future, key=lambda g: g[0].iteration_start or "", reverse=True)
+            + ([self.noiter] if self.noiter else [])
+            + ([self.current] if self.current else [])
+            + sorted(self.past, key=lambda g: g[0].iteration_start or "", reverse=True)
+        )
+
+
+# MARK: - Date & iteration helpers
 
 
 def weekdays_until(end_date: datetime.date) -> int:
@@ -221,6 +301,16 @@ def weekdays_until(end_date: datetime.date) -> int:
     return count
 
 
+def iteration_span(
+    start: str | None, duration: int | None
+) -> tuple[datetime.date, datetime.date] | None:
+    """An iteration's inclusive (start, end) dates, or None if unscheduled."""
+    if not start or not duration:
+        return None
+    start_date = datetime.date.fromisoformat(start)
+    return start_date, start_date + datetime.timedelta(days=duration - 1)
+
+
 def iteration_date_range(
     start: str | None, duration: int | None, *, current: bool = False
 ) -> str | None:
@@ -229,10 +319,10 @@ def iteration_date_range(
     E.g. "2026-05-25 – 2026-06-07, ends in 4 days" (end inclusive). For
     the current iteration, the tail is weekdays remaining instead.
     """
-    if not start or not duration:
+    span = iteration_span(start, duration)
+    if span is None:
         return None
-    start_date = datetime.date.fromisoformat(start)
-    end_date = start_date + datetime.timedelta(days=duration - 1)
+    start_date, end_date = span
     if current:
         n = weekdays_until(end_date)
         ends = f"{n} weekday{'' if n == 1 else 's'} remain{'s' if n == 1 else ''}"
@@ -249,20 +339,14 @@ def iteration_date_range(
 
 def is_current_iteration(start: str | None, duration: int | None) -> bool:
     """True when today is within the iteration's [start, end] span."""
-    if not start or not duration:
-        return False
-    start_date = datetime.date.fromisoformat(start)
-    end_date = start_date + datetime.timedelta(days=duration - 1)
-    return start_date <= datetime.date.today() <= end_date
+    span = iteration_span(start, duration)
+    return span is not None and span[0] <= datetime.date.today() <= span[1]
 
 
 def is_past_iteration(start: str | None, duration: int | None) -> bool:
     """True when the iteration's (inclusive) end date is before today."""
-    if not start or not duration:
-        return False
-    start_date = datetime.date.fromisoformat(start)
-    end_date = start_date + datetime.timedelta(days=duration - 1)
-    return end_date < datetime.date.today()
+    span = iteration_span(start, duration)
+    return span is not None and span[1] < datetime.date.today()
 
 
 def relative_day_phrase(target: datetime.date) -> str:
@@ -277,6 +361,26 @@ def relative_day_phrase(target: datetime.date) -> str:
     return f"in {days} days" if days > 0 else f"{-days} days ago"
 
 
+# MARK: - Display & formatting helpers
+
+
+def display_width(text: str) -> int:
+    """Visible width, counting (double-wide) PR emojis as 2 cells."""
+    return len(text) + sum(text.count(glyph) for glyph in _WIDE_GLYPHS)
+
+
+def milestone_meta(ms: Milestone, *, sep: str = "  ·  ") -> str:
+    """A milestone's 'Due <date> (<phrase>) · <closed>/<total> closed (<pct>)'
+    line (or 'No due date · …' when undated); `sep` joins the two halves."""
+    closed, total = ms.closed_issues, ms.open_issues + ms.closed_issues
+    pct = f"{round(100 * closed / total)}%" if total else "—"
+    progress = f"{closed}/{total} closed ({pct})"
+    if ms.due_on:
+        due = datetime.datetime.fromisoformat(ms.due_on).date()
+        return f"Due {due.isoformat()} ({relative_day_phrase(due)}){sep}{progress}"
+    return f"No due date{sep}{progress}"
+
+
 def format_milestone(
     ms: Milestone, *, use_links: bool, use_colour: bool, current: bool = True
 ) -> str:
@@ -285,14 +389,7 @@ def format_milestone(
     Bolded only when `current`, so a following milestone reads quieter.
     """
     title = hyperlink(ms.title, ms.html_url, enabled=use_links)
-    closed, total = ms.closed_issues, ms.open_issues + ms.closed_issues
-    pct = f"{round(100 * closed / total)}%" if total else "—"
-    progress = f"{closed}/{total} closed ({pct})"
-    if ms.due_on:
-        due = datetime.datetime.fromisoformat(ms.due_on).date()
-        meta = f"Due {due.isoformat()} ({relative_day_phrase(due)})  ·  {progress}"
-    else:
-        meta = f"No due date  ·  {progress}"
+    meta = milestone_meta(ms)
     if use_colour and current:
         title, meta = f"{_BOLD}{title}{_RESET}", f"{_BOLD}{meta}{_RESET}"
     return f"{title}\n{meta}"
@@ -456,7 +553,10 @@ def hyperlink(text: str, url: str, *, enabled: bool) -> str:
     return f"{text}  {url}"
 
 
-def _reset_phrase(info: dict) -> str:
+# MARK: - GitHub I/O — gh, GraphQL, rate limits
+
+
+def _reset_phrase(info: Json) -> str:
     """'resets at HH:MM:SS (in 3m 20s)' for a rate-limit resource."""
     reset = datetime.datetime.fromtimestamp(info["reset"], datetime.timezone.utc)
     secs = max(
@@ -467,18 +567,27 @@ def _reset_phrase(info: dict) -> str:
     return f"resets at {local} (in {mins}m {rem}s)"
 
 
-def rate_limit_hint(args: list[str]) -> str | None:
-    """A 'resets at ...' hint for a rate-limited request, or None.
+def _rate_limit_resources() -> Json | None:
+    """The `resources` map from the free `rate_limit` endpoint, or None.
 
-    Reads the free `rate_limit` endpoint (which doesn't count against
-    any limit) for the resource that the failing request used.
+    Reads `gh api rate_limit`, which doesn't count against any limit.
     """
     probe = subprocess.run(
         ["gh", "api", "rate_limit"], capture_output=True, text=True, check=False
     )
     try:
-        resources = json.loads(probe.stdout)["resources"]
+        return json.loads(probe.stdout)["resources"]
     except (json.JSONDecodeError, KeyError):
+        return None
+
+
+def rate_limit_hint(args: list[str]) -> str | None:
+    """A 'resets at ...' hint for a rate-limited request, or None.
+
+    For the resource (graphql/core) that the failing request used.
+    """
+    resources = _rate_limit_resources()
+    if resources is None:
         return None
     info = resources.get("graphql" if "graphql" in args else "core")
     if not info:
@@ -495,12 +604,8 @@ def report_rate_limit() -> None:
     Reads the free `rate_limit` endpoint (no quota cost). GraphQL bills in
     points, REST (core) in requests; both show remaining/limit and used.
     """
-    probe = subprocess.run(
-        ["gh", "api", "rate_limit"], capture_output=True, text=True, check=False
-    )
-    try:
-        resources = json.loads(probe.stdout)["resources"]
-    except (json.JSONDecodeError, KeyError):
+    resources = _rate_limit_resources()
+    if resources is None:
         return
     parts = []
     for name in ("graphql", "core"):
@@ -543,7 +648,7 @@ def gh(args: list[str]) -> str:
     return proc.stdout
 
 
-def graphql(query: str, **variables: Any) -> dict[str, Any]:
+def graphql(query: str, **variables: Any) -> Json:
     # -F coerces ints/bools (needed for Int! vars); -f keeps
     # strings verbatim so a search query or milestone title isn't
     # reinterpreted.
@@ -552,6 +657,9 @@ def graphql(query: str, **variables: Any) -> dict[str, Any]:
         flag = "-F" if isinstance(value, int) else "-f"
         args += [flag, f"{key}={value}"]
     return json.loads(gh(args))
+
+
+# MARK: - Environment resolution
 
 
 def local_gh_login(host: str = "github.com") -> str | None:
@@ -620,6 +728,8 @@ def resolve_assignee_login(assignee: str) -> str | None:
     return assignee
 
 
+# MARK: - GraphQL fragments & node parsing
+
 # GraphQL fragment: an issue's board field values + the PRs that
 # close it. We pull exactly the five board fields we need by name
 # (via fieldValueByName) rather than paging the whole fieldValues
@@ -635,6 +745,8 @@ _ISSUE_BOARD_FIELDS: Final = f"""
       reviewRequests(first: 5) {{ totalCount nodes {{ requestedReviewer {{ ... on User {{ login }} }} }} }}
       reviews {{ totalCount }}
       latestOpinionatedReviews(first: 5) {{ nodes {{ state author {{ login }} }} }}
+      latestReviews(first: 5) {{ nodes {{ state author {{ login }} }} }}
+      timelineItems(itemTypes: [REVIEW_REQUESTED_EVENT], first: 10) {{ nodes {{ ... on ReviewRequestedEvent {{ requestedReviewer {{ ... on User {{ login }} }} }} }} }}
     }}
   }}
   projectItems(first: 3) {{
@@ -650,85 +762,53 @@ _ISSUE_BOARD_FIELDS: Final = f"""
 """
 
 
-# Lean fragment for the reverse "their PRs" columns: only what
-# review_counts needs — each issue's iteration + estimate, and per
-# closing PR the requested-reviewer and opinionated-review logins (to
-# test your involvement). Small `first:` values keep the node cost low.
-_REVIEW_ONLY_FIELDS: Final = f"""
+# Per-PR fields for the search-sourced reverse ("their PRs"): the author,
+# the review-request timeline (your assignment), merge/open dates (to place
+# an issue-less PR by time window), the PR's own project estimate (points
+# for such a PR), and each closing issue's milestone + estimate (placement
+# and points for a PR that closes one).
+_REVERSE_PR_FIELDS: Final = f"""
   number
-  closedByPullRequestsReferences(first: 3, includeClosedPrs: true) {{
-    nodes {{
-      number
-      reviewRequests(first: 3) {{ nodes {{ requestedReviewer {{ ... on User {{ login }} }} }} }}
-      latestOpinionatedReviews(first: 3) {{ nodes {{ author {{ login }} }} }}
-    }}
-  }}
+  author {{ login }}
+  mergedAt
+  createdAt
+  timelineItems(itemTypes: [REVIEW_REQUESTED_EVENT], first: 10) {{ nodes {{ ... on ReviewRequestedEvent {{ requestedReviewer {{ ... on User {{ login }} }} }} }} }}
   projectItems(first: 3) {{
     nodes {{
       project {{ number }}
       estimate: fieldValueByName(name: "{ProjectField.ESTIMATE.value}") {{ ... on ProjectV2ItemFieldNumberValue {{ number }} }}
-      iteration: fieldValueByName(name: "{ProjectField.ITERATION.value}") {{ ... on ProjectV2ItemFieldIterationValue {{ title startDate duration }} }}
+    }}
+  }}
+  closingIssuesReferences(first: 3) {{
+    nodes {{
+      milestone {{ number }}
+      projectItems(first: 3) {{
+        nodes {{
+          project {{ number }}
+          estimate: fieldValueByName(name: "{ProjectField.ESTIMATE.value}") {{ ... on ProjectV2ItemFieldNumberValue {{ number }} }}
+        }}
+      }}
     }}
   }}
 """
 
 
-def _logins(nodes: list[dict], key: str) -> tuple[Login, ...]:
+def _logins(nodes: list[Json], key: str) -> tuple[Login, ...]:
     """Sorted distinct logins from a list of review/request nodes."""
     return tuple(
         sorted(Login(login) for n in nodes if (login := (n[key] or {}).get("login")))
     )
 
 
-def extract_review_only(issue: dict, project: int, milestone: MilestoneTitle) -> Issue:
-    """A lean Issue (iteration, estimate, and each PR's reviewer/requested
-    logins) for the reverse review columns. Other fields are placeholders;
-    only what review_counts reads is populated."""
-    iteration_title = iteration_start = iteration_duration = estimate = None
-    for item in issue["projectItems"]["nodes"]:
-        if item["project"]["number"] != project:
-            continue
-        estimate = (item["estimate"] or {}).get("number")
-        if it := item["iteration"]:
-            iteration_title = it.get("title")
-            iteration_start = it.get("startDate")
-            iteration_duration = it.get("duration")
-        break
-    prs = [
-        PullRequest(
-            number=pr["number"],
-            url="",
-            state="OPEN",
-            is_draft=False,
-            review=None,
-            behind=False,
-            branch_url=None,
-            reviewers=_logins(pr["latestOpinionatedReviews"]["nodes"], "author"),
-            requested=_logins(pr["reviewRequests"]["nodes"], "requestedReviewer"),
-        )
-        for pr in issue["closedByPullRequestsReferences"]["nodes"]
-    ]
-    return Issue(
-        number=issue["number"],
-        title="",
-        url="",
-        state="",
-        assignee_count=0,
-        status=None,
-        iteration=iteration_title,
-        iteration_start=iteration_start,
-        iteration_duration=iteration_duration,
-        priority=None,
-        size=None,
-        estimate=estimate,
-        prs=prs,
-        milestone=milestone,
-    )
+def _project_estimate(node: Json, project: int) -> float | None:
+    """The Estimate project-field value for an issue/PR node, or None."""
+    for item in (node.get("projectItems") or {}).get("nodes", []):
+        if item["project"]["number"] == project:
+            return (item.get("estimate") or {}).get("number")
+    return None
 
 
-def extract_project_values(
-    issue: dict, project: int, milestone: MilestoneTitle
-) -> Issue:
+def parse_board_issue(issue: Json, project: int, milestone: MilestoneNumber) -> Issue:
     """Pull board fields + closing PRs from one GraphQL issue node."""
     iteration_title = iteration_start = iteration_duration = None
     priority = size = estimate = status = None
@@ -748,13 +828,14 @@ def extract_project_values(
         break  # at most one project item matches our project
     prs = []
     for pr in issue["closedByPullRequestsReferences"]["nodes"]:
-        # Currently-requested reviewer logins (team requests carry no
-        # login, so they fall out).
-        requested = _logins(pr["reviewRequests"]["nodes"], "requestedReviewer")
-        # A re-requested reviewer (back in reviewRequests) supersedes their
-        # prior review, so drop their opinion: a changes-requested that's
+        # Everyone ever assigned as a reviewer, for the reviewer stats —
+        # from the timeline, since GitHub clears a request once reviewed.
+        # (Team requests carry no login, so they fall out.)
+        assigned = _logins(pr["timelineItems"]["nodes"], "requestedReviewer")
+        # A re-requested reviewer (back in the live reviewRequests) supersedes
+        # their prior review, so drop their opinion: a changes-requested that's
         # since been re-requested reads as pending, not blocking.
-        rerequested = set(requested)
+        rerequested = set(_logins(pr["reviewRequests"]["nodes"], "requestedReviewer"))
         states = {
             r["state"]
             for r in pr["latestOpinionatedReviews"]["nodes"]
@@ -766,10 +847,21 @@ def extract_project_values(
             review = "approved"
         else:
             review = None
-        # Everyone who left an opinionated review (one entry per person),
-        # for the reviewer tables. Includes re-requested reviewers — they
-        # did review, historically.
-        reviewers = _logins(pr["latestOpinionatedReviews"]["nodes"], "author")
+        # Everyone who substantively reviewed (one entry per person), for
+        # the reviewer tables: opinionated reviewers, plus anyone whose
+        # review you later dismissed (state DISMISSED — they did review).
+        # Includes re-requested reviewers; they reviewed, historically.
+        dismissed = {
+            login
+            for r in pr["latestReviews"]["nodes"]
+            if r["state"] == "DISMISSED" and (login := (r["author"] or {}).get("login"))
+        }
+        reviewers = tuple(
+            sorted(
+                set(_logins(pr["latestOpinionatedReviews"]["nodes"], "author"))
+                | dismissed
+            )
+        )
         repo = pr["headRepository"]
         branch_url = f"{repo['url']}/tree/{pr['headRefName']}" if repo else None
         has_reviewer = (
@@ -787,7 +879,7 @@ def extract_project_values(
                 branch=pr["headRefName"],
                 has_reviewer=has_reviewer,
                 reviewers=reviewers,
-                requested=requested,
+                assigned=assigned,
             )
         )
     return Issue(
@@ -808,28 +900,28 @@ def extract_project_values(
     )
 
 
+# MARK: - Fetching
+
+
 def fetch_board(
     owner: str,
     name: str,
     project: int,
-    milestone_titles: list[MilestoneTitle],
+    milestone_numbers: list[MilestoneNumber],
     assignee_login: str | None,
     state: str,
-    me: Login | None = None,
 ) -> Board:
     """One main round-trip: issues, single-select options, milestone(s).
 
     Folds what used to be four `gh` calls (issue list, project fields,
-    batched project values, milestone REST) into a single GraphQL
-    request. Each milestone is looked up by exact title via its own
-    aliased connection; issues come from the milestone's live `issues`
-    connection (real-time, unlike the search index), filtered server-side
-    by assignee/state, with board fields inline. Issues from every
-    milestone are merged into one board.
+    batched project values, milestone REST) into a single GraphQL request.
+    Each milestone is looked up directly by its stable `number`; issues
+    come from the milestone's live `issues` connection (real-time, unlike
+    the search index), filtered server-side by assignee/state, with board
+    fields inline. Issues from every milestone are merged into one board.
 
-    A second, lean round-trip then fetches the reverse data (your
-    reviewers' own issues) for the reverse review columns; `me` is your
-    login, excluded from that set.
+    The forward board only; the reverse review data is fetched separately
+    (concurrently by the caller) and merged into `Board.reverse`.
     """
     states = {"open": "[OPEN]", "closed": "[CLOSED]"}.get(state, "[OPEN, CLOSED]")
     if assignee_login:
@@ -839,11 +931,10 @@ def fetch_board(
         login_decl = ""
         issue_args = f"first: 100, states: {states}"
 
-    # One aliased milestone lookup per title. `first: 3` leaves room for
-    # the title search to return near-matches we filter out client-side,
-    # while keeping the node-cost budget safe for up to a couple of them.
+    # One aliased milestone lookup per id — an exact `milestone(number:)`,
+    # so no fuzzy title search and no near-match filtering.
     ms_fields = f"""
-        title description url state dueOn
+        number title description url state dueOn
         openIssues: issues(states: OPEN) {{ totalCount }}
         closedIssues: issues(states: CLOSED) {{ totalCount }}
         matched: issues({issue_args}) {{
@@ -851,16 +942,16 @@ def fetch_board(
           nodes {{ {_ISSUE_BOARD_FIELDS} }}
         }}
     """
-    ms_var_decls = "".join(f", $ms{i}: String!" for i in range(len(milestone_titles)))
+    ms_var_decls = "".join(f", $ms{i}: Int!" for i in range(len(milestone_numbers)))
     ms_blocks = "\n".join(
-        f"m{i}: milestones(query: $ms{i}, first: 3) {{ nodes {{ {ms_fields} }} }}"
-        for i in range(len(milestone_titles))
+        f"m{i}: milestone(number: $ms{i}) {{ {ms_fields} }}"
+        for i in range(len(milestone_numbers))
     )
     variables: dict[str, Any] = dict(owner=owner, name=name, project=project)
     if assignee_login:
         variables["login"] = assignee_login
-    for i, title in enumerate(milestone_titles):
-        variables[f"ms{i}"] = title
+    for i, ms_number in enumerate(milestone_numbers):
+        variables[f"ms{i}"] = ms_number
 
     data = graphql(
         f"""
@@ -888,19 +979,20 @@ def fetch_board(
     repo = root["repository"]
     milestones: list[Milestone] = []
     issues: list[Issue] = []
-    for i, title in enumerate(milestone_titles):
-        ms_node = next((m for m in repo[f"m{i}"]["nodes"] if m["title"] == title), None)
+    for i, ms_number in enumerate(milestone_numbers):
+        ms_node = repo[f"m{i}"]  # milestone(number:) — a single node or null
         if ms_node is None:
             continue
         if ms_node["matched"]["pageInfo"]["hasNextPage"]:
             print(
-                f"warning: milestone {title!r} has more than 100 matching issues; "
-                "only the first 100 were fetched.",
+                f"warning: milestone {ms_node['title']!r} has more than 100 matching "
+                "issues; only the first 100 were fetched.",
                 file=sys.stderr,
             )
         milestones.append(
             Milestone(
-                title=title,  # the matched title (a MilestoneTitle)
+                number=ms_number,
+                title=MilestoneTitle(ms_node["title"]),
                 description=ms_node["description"],
                 html_url=ms_node["url"],
                 state=ms_node["state"],
@@ -910,112 +1002,205 @@ def fetch_board(
             )
         )
         issues.extend(
-            extract_project_values(n, project, title)
+            parse_board_issue(n, project, ms_number)
             for n in ms_node["matched"]["nodes"]
         )
-    # Your reviewers (people involved with your PRs), minus yourself —
-    # the people the reverse columns are about.
-    reviewers = {
-        login
-        for issue in issues
-        for pr in issue.prs
-        for login in (*pr.reviewers, *pr.requested)
-    }
-    if me is not None:
-        reviewers.discard(me)
-    reverse = fetch_reverse(owner, name, project, milestone_titles, sorted(reviewers))
-    return Board(issues=issues, options=options, milestones=milestones, reverse=reverse)
+    return Board(issues=issues, options=options, milestones=milestones)
+
+
+def parse_reverse_pr(
+    pr: Json,
+    project: int,
+    ranges: list[tuple[MilestoneNumber, str | None, str | None]],
+    window_set: set[MilestoneNumber],
+    reviewed: set[int],
+    me: Login,
+) -> tuple[Login, TeammatePR] | None:
+    """Place one search-sourced PR into its milestone as a TeammatePR.
+
+    Returns `(author, TeammatePR)` with your involvement (reviewed / ever
+    assigned) layered on, or None to skip a PR that is yours, authorless,
+    or lands outside every milestone span. A PR closing an in-window issue
+    takes that issue's milestone and estimate; an issue-less PR is placed by
+    when it landed (merged date, else open date) with its own estimate.
+    """
+    number = pr["number"]
+    author = (pr["author"] or {}).get("login")
+    if not author or author == me:
+        return None
+    closing = pr["closingIssuesReferences"]["nodes"]
+    in_window = next(
+        (c for c in closing if (c.get("milestone") or {}).get("number") in window_set),
+        None,
+    )
+    if in_window:
+        # Closes an in-window issue: that issue's milestone and estimate.
+        ms_number = MilestoneNumber(in_window["milestone"]["number"])
+        estimate = _project_estimate(in_window, project)
+    elif not closing:
+        # Issue-less PR: place by when it landed (merged date, else open
+        # date) into the milestone span covering it; its own estimate.
+        when = (pr.get("mergedAt") or pr.get("createdAt") or "")[:10]
+        span = next(
+            (
+                num
+                for num, start, end in ranges
+                if when
+                and (not start or start[:10] <= when)
+                and (not end or when <= end[:10])
+            ),
+            None,
+        )
+        if span is None:
+            return None  # landed outside every milestone span
+        ms_number = span
+        estimate = _project_estimate(pr, project)
+    else:
+        return None  # closes only out-of-window / unmilestoned issues
+    teammate_pr = TeammatePR(
+        number=number,
+        milestone=ms_number,
+        estimate=estimate,
+        you_reviewed=number in reviewed,
+        you_assigned=me in _logins(pr["timelineItems"]["nodes"], "requestedReviewer"),
+    )
+    return Login(author), teammate_pr
 
 
 def fetch_reverse(
     owner: str,
     name: str,
     project: int,
-    milestone_titles: list[MilestoneTitle],
-    reviewers: list[Login],
-) -> dict[Login, list[Issue]]:
-    """Lean second round-trip: each reviewer's own issues in the milestone
-    window, with just iteration/estimate and per-PR reviewer/requested
-    logins. One request, aliased per (milestone × reviewer). Returns each
-    reviewer → their lean issues."""
-    if not reviewers:
+    ranges: list[tuple[MilestoneNumber, str | None, str | None]],
+    me: Login | None,
+) -> dict[Login, list[TeammatePR]]:
+    """Everyone's PRs in the window, by author, with your involvement.
+
+    The fair-share review flags need each teammate's *total* PRs (the
+    denominator), so this fetches every window PR — not just ones you
+    touched — via a broad `is:pr` search, scoped to PRs updated since the
+    window's start and paged. (PRs here carry no milestone of their own, so
+    the search can't filter by it; placement is client-side.) Your own
+    involvement on each is layered on: reviewed from a single
+    `reviewed-by:@me` set, assigned (ever asked to review) from the PR's
+    timeline. `ranges` gives each window milestone its `(title, start,
+    end)` span. A PR that closes an in-window milestone issue is placed in
+    that issue's milestone with its estimate; an issue-less PR is placed by
+    when it landed (merged date, or open date if still open) into the
+    milestone span covering it, with the PR's own estimate; anything else
+    (only out-of-window issues, or landed outside every span) is skipped.
+    Returns each author → their TeammatePRs (one per PR). Reads the (slightly
+    stale) search index, unlike the live forward path.
+    """
+    start = ranges[0][1] if ranges else None
+    if me is None or start is None:
         return {}
-    decls = [f"$ms{i}: String!" for i in range(len(milestone_titles))]
-    decls += [f"$p{j}: String!" for j in range(len(reviewers))]
-    variables: dict[str, Any] = dict(owner=owner, name=name)
-    for i, title in enumerate(milestone_titles):
-        variables[f"ms{i}"] = title
-    for j, person in enumerate(reviewers):
-        variables[f"p{j}"] = person
-    blocks = [
-        f"m{i}_p{j}: milestones(query: $ms{i}, first: 1) {{ nodes {{ title "
-        f"issues(filterBy: {{assignee: $p{j}}}, first: 50) "
-        f"{{ nodes {{ {_REVIEW_ONLY_FIELDS} }} }} }} }}"
-        for i in range(len(milestone_titles))
-        for j in range(len(reviewers))
-    ]
-    data = graphql(
-        f"""
-        query($owner: String!, $name: String!, {", ".join(decls)}) {{
-          repository(owner: $owner, name: $name) {{
-            {chr(10).join(blocks)}
-          }}
-        }}
-        """,
-        **variables,
-    )
-    repo = data["data"]["repository"]
-    result: dict[Login, list[Issue]] = {p: [] for p in reviewers}
-    for i, title in enumerate(milestone_titles):
-        for j, person in enumerate(reviewers):
-            for ms_node in repo[f"m{i}_p{j}"]["nodes"]:
-                if ms_node["title"] != title:
-                    continue
-                result[person] += [
-                    extract_review_only(n, project, title)
-                    for n in ms_node["issues"]["nodes"]
-                ]
+    since = start[:10]  # the window start as a plain date, for `updated:>=`
+    window_set = {t for t, _, _ in ranges}
+
+    def paged_search(scope: str, fields: str) -> list[Json]:
+        """All PR nodes matching `scope`, paging until the index is
+        exhausted (search caps each page at 100)."""
+        nodes: list[Json] = []
+        cursor: str | None = None
+        while True:
+            kwargs: dict[str, Any] = {"q": scope}
+            if cursor:
+                kwargs["after"] = cursor
+            page = graphql(
+                f"""
+                query($q: String!, $after: String) {{
+                  search(query: $q, type: ISSUE, first: 100, after: $after) {{
+                    pageInfo {{ hasNextPage endCursor }}
+                    nodes {{ ... on PullRequest {{ {fields} }} }}
+                  }}
+                }}
+                """,
+                **kwargs,
+            )["data"]["search"]
+            nodes.extend(p for p in page["nodes"] if p)
+            if not page["pageInfo"]["hasNextPage"]:
+                return nodes
+            cursor = page["pageInfo"]["endCursor"]
+
+    base = f"repo:{owner}/{name} is:pr updated:>={since}"
+    # The two searches are independent — overlap the (small) reviewed-by
+    # lookup with the (large, paged) all-PRs fetch instead of serialising.
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        reviewed_future = pool.submit(
+            lambda: {
+                n["number"] for n in paged_search(f"{base} reviewed-by:{me}", "number")
+            }
+        )
+        all_prs = paged_search(base, _REVERSE_PR_FIELDS)
+        reviewed = reviewed_future.result()
+    result: dict[Login, list[TeammatePR]] = {}
+    for pr in all_prs:
+        placed = parse_reverse_pr(pr, project, ranges, window_set, reviewed, me)
+        if placed is not None:
+            author, teammate_pr = placed
+            result.setdefault(author, []).append(teammate_pr)
     return result
 
 
-def fetch_milestone_window(owner: str, name: str) -> list[MilestoneTitle]:
-    """Titles of the current open milestone and the one following it.
+def resolve_window(
+    owner: str, name: str, explicit: str | None
+) -> list[tuple[MilestoneNumber, str | None, str | None]]:
+    """The window milestones as `(id, start, end)` spans, by due date.
 
-    "Current" is the open milestone whose due date is nearest today.
-    "Following" is the next one by milestone number (creation order),
-    since the upcoming milestone often has no due date yet — ordering by
-    due date alone would miss it. Returns `[current, following]`,
-    `[current]` if current is the last, or `[]` if none have a due date.
-    GitHub can't surface the active milestone server-side (null due dates
-    sort first, no due-date predicate), so we choose client-side. Cheap —
-    no issue/project traversal.
+    Each milestone ends at its own due date and starts at the previous
+    milestone's — so the reverse fetch can derive its date window without
+    waiting on the board (letting the two run concurrently). `explicit`
+    pins the current milestone by title; otherwise it's the open milestone
+    whose due date is nearest today, plus the one following it by number
+    (the upcoming milestone often has no due date, so number — not due
+    date — orders it). Identity is the milestone `number`, not the title.
+    `[]` when no current milestone can be determined (incl. an explicit
+    title that matches none). Cheap: no issue/project traversal.
     """
-    data = graphql(
+    # ~1 GraphQL point, 0 REST/core: milestone metadata only (no issues/PRs).
+    nodes = graphql(
         """
         query($owner: String!, $name: String!) {
           repository(owner: $owner, name: $name) {
-            milestones(first: 100, states: OPEN) { nodes { number title dueOn } }
+            milestones(first: 100, states: [OPEN, CLOSED]) {
+              nodes { number title dueOn state }
+            }
           }
         }
         """,
         owner=owner,
         name=name,
-    )
-    today = datetime.date.today()
-    nodes = data["data"]["repository"]["milestones"]["nodes"]
-    dated = [
-        (abs((datetime.datetime.fromisoformat(m["dueOn"]).date() - today).days), m)
-        for m in nodes
-        if m["dueOn"]
-    ]
-    if not dated:
-        return []
-    current = min(dated)[1]
-    titles = [MilestoneTitle(current["title"])]
+    )["data"]["repository"]["milestones"]["nodes"]
+    if explicit:
+        current = next((m for m in nodes if m["title"] == explicit), None)
+        if current is None:
+            return []  # unknown title — caller reports "not found"
+    else:
+        today = datetime.date.today()
+        dated = [
+            (abs((datetime.datetime.fromisoformat(m["dueOn"]).date() - today).days), m)
+            for m in nodes
+            if m["dueOn"] and m["state"] == "OPEN"
+        ]
+        if not dated:
+            return []
+        current = min(dated, key=lambda d: d[0])[1]
+    earlier = [m for m in nodes if m["number"] < current["number"] and m["dueOn"]]
+    start = max(earlier, key=lambda m: m["number"])["dueOn"] if earlier else None
+    ranges = [(MilestoneNumber(current["number"]), start, current["dueOn"])]
+    # An explicit --milestone means just that one; the window's "following"
+    # milestone is only added when picking the current one automatically.
     later = [m for m in nodes if m["number"] > current["number"]]
-    if later:
-        titles.append(MilestoneTitle(min(later, key=lambda m: m["number"])["title"]))
-    return titles
+    if not explicit and later:
+        following = min(later, key=lambda m: m["number"])
+        ranges.append(
+            (MilestoneNumber(following["number"]), current["dueOn"], following["dueOn"])
+        )
+    return ranges
+
+
+# MARK: - Caching
 
 
 def _cache_path(key: str) -> str:
@@ -1041,9 +1226,22 @@ def read_board_cache(key: str, ttl: int) -> Board | None:
     except (OSError, json.JSONDecodeError):
         return None
 
-    def revive(issue: dict) -> Issue:
-        prs = [PullRequest(**pr) for pr in issue.pop("prs", [])]
+    pr_keys = {f.name for f in fields(PullRequest)}
+    tpr_keys = {f.name for f in fields(TeammatePR)}
+
+    def revive(issue: Json) -> Issue:
+        # Drop keys an older cache schema may carry (e.g. the renamed
+        # `requested`); missing new fields fall back to their defaults.
+        prs = [
+            PullRequest(**{k: v for k, v in pr.items() if k in pr_keys})
+            for pr in issue.pop("prs", [])
+        ]
         return Issue(**issue, prs=prs)
+
+    def revive_teammate_pr(pr: Json) -> TeammatePR:
+        # An older reverse cache (lean Issues) lacks you_reviewed/you_assigned,
+        # so TeammatePR(**…) raises TypeError below → treated as a cache miss.
+        return TeammatePR(**{k: v for k, v in pr.items() if k in tpr_keys})
 
     try:
         return Board(
@@ -1051,8 +1249,8 @@ def read_board_cache(key: str, ttl: int) -> Board | None:
             options=data["options"],
             milestones=[Milestone(**m) for m in data["milestones"]],
             reverse={
-                Login(p): [revive(i) for i in issues]
-                for p, issues in data.get("reverse", {}).items()
+                Login(p): [revive_teammate_pr(pr) for pr in prs]
+                for p, prs in data.get("reverse", {}).items()
             },
         )
     except (KeyError, TypeError):
@@ -1068,6 +1266,9 @@ def write_board_cache(key: str, board: Board) -> None:
             json.dump(asdict(board), fh)
     except OSError:
         pass  # caching is best-effort; never fail the run over it
+
+
+# MARK: - Markdown helpers
 
 
 def md_escape(text: str) -> str:
@@ -1089,6 +1290,9 @@ def md_title(text: str) -> str:
     return text.replace("\\", "\\\\").replace('"', '\\"')
 
 
+# MARK: - Review analytics
+
+
 def _involvement(issues: list[Issue]) -> dict[Login, ReviewInvolvement]:
     """Per login, their review involvement over these issues' PRs.
 
@@ -1097,183 +1301,238 @@ def _involvement(issues: list[Issue]) -> dict[Login, ReviewInvolvement]:
     tickets' estimates — each ticket once per login, a missing one as 0.
     """
     rev_prs: dict[Login, set[int]] = {}
-    req_prs: dict[Login, set[int]] = {}
+    asg_prs: dict[Login, set[int]] = {}
     rev_pts: dict[Login, float] = {}
-    req_pts: dict[Login, float] = {}
+    asg_pts: dict[Login, float] = {}
     for issue in issues:
         est = issue.estimate or 0.0
         rev_here: set[Login] = set()
-        req_here: set[Login] = set()
+        asg_here: set[Login] = set()
         for pr in issue.prs:
             for login in pr.reviewers:
                 rev_prs.setdefault(login, set()).add(pr.number)
                 rev_here.add(login)
-            for login in pr.requested:
-                req_prs.setdefault(login, set()).add(pr.number)
-                req_here.add(login)
+            for login in pr.assigned:
+                asg_prs.setdefault(login, set()).add(pr.number)
+                asg_here.add(login)
         for login in rev_here:
             rev_pts[login] = rev_pts.get(login, 0.0) + est
-        for login in req_here:
-            req_pts[login] = req_pts.get(login, 0.0) + est
+        for login in asg_here:
+            asg_pts[login] = asg_pts.get(login, 0.0) + est
     return {
         p: ReviewInvolvement(
             reviewed=len(rev_prs.get(p, ())),
-            requested=len(req_prs.get(p, ())),
+            assigned=len(asg_prs.get(p, ())),
             reviewed_points=rev_pts.get(p, 0.0),
-            requested_points=req_pts.get(p, 0.0),
+            assigned_points=asg_pts.get(p, 0.0),
         )
-        for p in set(rev_prs) | set(req_prs)
+        for p in set(rev_prs) | set(asg_prs)
     }
 
 
 def reverse_for_milestone(
-    reverse: dict[Login, list[Issue]], milestone: MilestoneTitle
-) -> dict[Login, list[Issue]]:
-    """Restrict each teammate's reverse issues to one milestone."""
+    reverse: dict[Login, list[TeammatePR]], milestone: MilestoneNumber
+) -> dict[Login, list[TeammatePR]]:
+    """Restrict each teammate's reverse PRs to one milestone."""
     return {
-        p: [i for i in issues if i.milestone == milestone]
-        for p, issues in reverse.items()
+        p: [pr for pr in prs if pr.milestone == milestone] for p, prs in reverse.items()
     }
+
+
+def _pr_totals(prs: list[TeammatePR]) -> tuple[int, float]:
+    """Distinct-PR count and summed estimate of a teammate's window PRs."""
+    return len({pr.number for pr in prs}), sum(pr.estimate or 0.0 for pr in prs)
+
+
+def _my_involvement(prs: list[TeammatePR]) -> ReviewInvolvement | None:
+    """Your distinct-PR involvement (reviewed / assigned + points) over a
+    teammate's window PRs, or None if you neither reviewed nor were assigned
+    to any of them (so they earn no `theirs` entry)."""
+    reviewed = [pr for pr in prs if pr.you_reviewed]
+    assigned = [pr for pr in prs if pr.you_assigned]
+    if not reviewed and not assigned:
+        return None
+    return ReviewInvolvement(
+        reviewed=len({pr.number for pr in reviewed}),
+        assigned=len({pr.number for pr in assigned}),
+        reviewed_points=sum(pr.estimate or 0.0 for pr in reviewed),
+        assigned_points=sum(pr.estimate or 0.0 for pr in assigned),
+    )
 
 
 def review_stats(
     my_issues: list[Issue],
-    reverse: dict[Login, list[Issue]],
+    reverse: dict[Login, list[TeammatePR]],
     me: Login | None,
 ) -> list[ReviewerStats]:
-    """One row per teammate for an iteration: their involvement in your
-    PRs (`mine`) and your involvement in their PRs (`theirs`).
+    """Reviewer rows for an iteration: each teammate's involvement in your
+    PRs (`mine`) and yours in theirs (`theirs`), plus each teammate's own
+    PR total (the favouritism denominator).
 
-    `reverse` maps each teammate to their own issues for this iteration;
-    `me` is your login (whose involvement in those issues becomes
-    `theirs`). Sorted by the PRs of yours they reviewed (desc), then
-    requested (desc), then login. Empty when there's no activity.
+    `reverse` maps each teammate to their own PRs for this iteration; your
+    involvement in those (recorded per TeammatePR) becomes `theirs`. Rows
+    are people involved with your PRs or whose PRs you touched, sorted by
+    your-PRs reviewed (desc), assigned (desc), login.
     """
     forward = _involvement(my_issues)
+    # `my_issues` is issue-anchored, so reviewers of your PRs that close no
+    # issue aren't counted in `mine` (left as-is: you nearly always link an
+    # issue, so the gap is tiny — unlike the reverse path, where teammates
+    # often don't, which is why that side is sourced from search instead).
     people = set(forward)
     if me is not None:
         people.discard(me)  # you are not your own reviewer row
     theirs: dict[Login, ReviewInvolvement] = {}
-    for person, their_issues in reverse.items():
-        mine_in_theirs = _involvement(their_issues).get(me) if me else None
+    for person, their_prs in reverse.items():
+        mine_in_theirs = _my_involvement(their_prs) if me else None
         if mine_in_theirs:
             theirs[person] = mine_in_theirs
             people.add(person)
     zero = ReviewInvolvement()
-    rows = [
-        ReviewerStats(login=p, mine=forward.get(p, zero), theirs=theirs.get(p, zero))
-        for p in people
-    ]
-    return sorted(rows, key=lambda s: (-s.mine.reviewed, -s.mine.requested, s.login))
+    rows = []
+    for p in people:
+        total_prs, total_points = _pr_totals(reverse.get(p, []))
+        rows.append(
+            ReviewerStats(
+                login=p,
+                mine=forward.get(p, zero),
+                theirs=theirs.get(p, zero),
+                their_total_prs=total_prs,
+                their_total_points=total_points,
+            )
+        )
+    rows.sort(key=lambda s: (-s.mine.reviewed, -s.mine.assigned, s.login))
+    return rows
 
 
-# Reviewer-table highlight thresholds (points-weighted). Below the
-# minimum column total there's too little to read into.
+# Reviewer-table flag thresholds. Reviewing should spread evenly: with the
+# table's N reviewers each fair share is total/N, and reviewing below a
+# fraction of that share is flagged. Points need a minimum to read into.
 _HL_MIN_POINTS: Final = 5.0
-_LOAD_HOT_SHARE: Final = 2.0  # ≥ 2× an even split of your review requests
+_LOAD_HOT_SHARE: Final = 2.0  # ≥ 2× an even split of your review assignments
 _LOAD_COLD_SHARE: Final = 0.25  # ≤ ¼ of an even split (including zero)
-_FAVOURITISM_DEV: Final = 0.2  # review-share minus request-share
+_FAIR_SHARE_FLOOR: Final = 0.75  # flag reviewing below ¾ of an even share
 
 
-def _deviation_flags(
-    reviewed: dict[Login, float],
-    requested: dict[Login, float],
-    *,
-    cold_only: bool = False,
-) -> dict[Login, str]:
-    """Per login, hot/cold by (review share − request share): hot when
-    reviews outrun the request demand, cold when they fall short. Empty
-    below the volume floor — the reviewing side carries the signal. With
-    `cold_only`, the hot end is dropped (only the shortfall matters)."""
-    if (trev := sum(reviewed.values())) < _HL_MIN_POINTS:
-        return {}
-    treq = sum(requested.values())
-    flags: dict[Login, str] = {}
-    for login, rv in reviewed.items():
-        dev = rv / trev - (requested.get(login, 0.0) / treq if treq else 0.0)
-        if dev >= _FAVOURITISM_DEV and not cold_only:
-            flags[login] = "hot"
-        elif dev <= -_FAVOURITISM_DEV:
-            flags[login] = "cold"
-    return flags
+def review_highlights(rows: list[ReviewerStats]) -> Highlights:
+    """Reviewer cells to flag for one milestone.
 
-
-def review_highlights(stats: list[ReviewerStats]) -> Highlights:
-    """Hot/cold flags for the three highlighted reviewer cells.
-
-    `load` reads `requested (my points)` against an even split — don't
-    overload one reviewer. `against_me` reads `reviewed (my points)` vs
-    your request share — cold means a teammate under-reviews your PRs
-    relative to how much you ask (favouritism against you). `favouritism`
-    reads `reviewed (their points)` vs their request share — hot means
-    you over-review theirs. Empty with <2 people or below a volume floor.
+    `load` marks an uneven assignment split on the assigned (my points)
+    side. The `under_*` sets mark reviewing below `_FAIR_SHARE_FLOOR` of a
+    fair share among the table's N reviewers, computed per count and points
+    cell. The two sides use different baselines: `under_mine` (teammates
+    reviewing your PRs) splits the review work *actually done* on your PRs,
+    so a busy reviewer isn't flagged just because your PRs are broadly
+    under-reviewed; `under_theirs` (you reviewing theirs) is a fair fraction
+    of each teammate's *own* PR total, so neglecting a low-volume author
+    still shows. Needs ≥2 reviewers; points flags also need volume.
     """
-    if len(stats) < 2:
-        return Highlights(load={}, against_me={}, favouritism={})
+    n = len(rows)
+    if n < 2:
+        return Highlights(
+            load={},
+            under_mine_count=set(),
+            under_mine_points=set(),
+            under_theirs_count=set(),
+            under_theirs_points=set(),
+        )
     load: dict[Login, str] = {}
-    req = {s.login: s.mine.requested_points for s in stats}
-    if (total := sum(req.values())) >= _HL_MIN_POINTS:
-        even = total / len(stats)
-        for login, v in req.items():
+    asg = {s.login: s.mine.assigned_points for s in rows}
+    if (total := sum(asg.values())) >= _HL_MIN_POINTS:
+        even = total / n
+        for login, v in asg.items():
             if v >= _LOAD_HOT_SHARE * even:
                 load[login] = "hot"
             elif v <= _LOAD_COLD_SHARE * even:
                 load[login] = "cold"
+
+    def under_count(reviewed: int, total_prs: int) -> bool:
+        # The fair share must be at least one whole PR to read into.
+        share = total_prs / n
+        return share >= 1 and reviewed < _FAIR_SHARE_FLOOR * share
+
+    def under_points(reviewed_pts: float, total_pts: float) -> bool:
+        return total_pts >= _HL_MIN_POINTS and reviewed_pts < _FAIR_SHARE_FLOOR * (
+            total_pts / n
+        )
+
+    mine_reviewed = sum(s.mine.reviewed for s in rows)
+    mine_reviewed_pts = sum(s.mine.reviewed_points for s in rows)
     return Highlights(
         load=load,
-        against_me=_deviation_flags(
-            {s.login: s.mine.reviewed_points for s in stats}, req, cold_only=True
-        ),
-        favouritism=_deviation_flags(
-            {s.login: s.theirs.reviewed_points for s in stats},
-            {s.login: s.theirs.requested_points for s in stats},
-        ),
+        under_mine_count={
+            s.login for s in rows if under_count(s.mine.reviewed, mine_reviewed)
+        },
+        under_mine_points={
+            s.login
+            for s in rows
+            if under_points(s.mine.reviewed_points, mine_reviewed_pts)
+        },
+        under_theirs_count={
+            s.login for s in rows if under_count(s.theirs.reviewed, s.their_total_prs)
+        },
+        under_theirs_points={
+            s.login
+            for s in rows
+            if under_points(s.theirs.reviewed_points, s.their_total_points)
+        },
     )
 
 
-def review_table(stats: list[ReviewerStats], *, use_colour: bool) -> list[str]:
+# MARK: - Rendering
+
+
+def review_table_terminal(rows: list[ReviewerStats], *, use_colour: bool) -> list[str]:
     """Plain-text reviewer table (header + a row per person), or [].
 
-    In `my points` (rev/req), the rev side carries the favouritism-
-    against-you highlight (yellow) and the req side the load highlight
-    (bold/dim); in `their points`, the rev side carries your favouritism
-    (bold hot, yellow cold). Other cells are plain.
+    The reviewed side of each column pair (counts and points) goes yellow
+    when that reviewing is below a fair share: `my PRs`/`my points` for a
+    teammate under-reviewing your PRs, `their PRs`/`their points` for one
+    whose PRs you under-review. The assigned side of `my points` carries
+    the assignment-load flag (bold/dim). Other cells are plain.
     """
-    if not stats:
+    if not rows:
         return []
-    hl = review_highlights(stats)
+    hl = review_highlights(rows)
     headers = ["reviewer", "my PRs", "my points", "their PRs", "their points"]
 
-    def style(text: str, flag: str, hot: str, cold: str) -> str:
+    def yellow(text: str, flagged: bool) -> str:
+        return f"{_YELLOW}{text}{_RESET}" if use_colour and flagged else text
+
+    def load_style(text: str, flag: str) -> str:
         if not use_colour or not flag:
             return text
-        code = hot if flag == "hot" else cold
-        return f"{code}{text}{_RESET}" if code else text
+        return f"{_BOLD if flag == 'hot' else _DIM}{text}{_RESET}"
 
-    # Each cell is (plain, styled): plain drives column width (it's free
-    # of escape codes), styled is what prints. Yellow flags a favouritism
-    # shortfall (yours or against you); bold/dim track request load.
-    rows: list[list[tuple[str, str]]] = []
-    for s in stats:
-        am = hl.against_me.get(s.login, "")
-        ld = hl.load.get(s.login, "")
-        mf = hl.favouritism.get(s.login, "")
-        mrev, mreq = f"{s.mine.reviewed_points:g}", f"{s.mine.requested_points:g}"
-        trev, treq = f"{s.theirs.reviewed_points:g}", f"{s.theirs.requested_points:g}"
-        my_pr = f"{s.mine.reviewed}/{s.mine.requested}"
-        their_pr = f"{s.theirs.reviewed}/{s.theirs.requested}"
-        my_pts = f"{style(mrev, am, '', _YELLOW)}/{style(mreq, ld, _BOLD, _DIM)}"
-        their_pts = f"{style(trev, mf, _BOLD, _YELLOW)}/{treq}"
-        rows.append(
+    # Each cell is (plain, styled): plain (escape-free) drives column width,
+    # styled is what prints.
+    table: list[list[tuple[str, str]]] = []
+    for s in rows:
+        lg = s.login
+        mrev_c, masg_c = str(s.mine.reviewed), str(s.mine.assigned)
+        trev_c, tasg_c = str(s.theirs.reviewed), str(s.theirs.assigned)
+        mrev_p, masg_p = f"{s.mine.reviewed_points:g}", f"{s.mine.assigned_points:g}"
+        trev_p, tasg_p = (
+            f"{s.theirs.reviewed_points:g}",
+            f"{s.theirs.assigned_points:g}",
+        )
+        ld = hl.load.get(lg, "")
+        my_pr = f"{yellow(mrev_c, lg in hl.under_mine_count)}/{masg_c}"
+        my_pts = (
+            f"{yellow(mrev_p, lg in hl.under_mine_points)}/{load_style(masg_p, ld)}"
+        )
+        their_pr = f"{yellow(trev_c, lg in hl.under_theirs_count)}/{tasg_c}"
+        their_pts = f"{yellow(trev_p, lg in hl.under_theirs_points)}/{tasg_p}"
+        table.append(
             [
-                (s.login, s.login),
-                (my_pr, my_pr),
-                (f"{mrev}/{mreq}", my_pts),
-                (their_pr, their_pr),
-                (f"{trev}/{treq}", their_pts),
+                (lg, lg),
+                (f"{mrev_c}/{masg_c}", my_pr),
+                (f"{mrev_p}/{masg_p}", my_pts),
+                (f"{trev_c}/{tasg_c}", their_pr),
+                (f"{trev_p}/{tasg_p}", their_pts),
             ]
         )
-    widths = [max(len(headers[i]), *(len(r[i][0]) for r in rows)) for i in range(5)]
+    widths = [max(len(headers[i]), *(len(r[i][0]) for r in table)) for i in range(5)]
 
     def fmt(cells: list[tuple[str, str]]) -> str:
         parts = [cells[0][1].ljust(widths[0])]
@@ -1282,46 +1541,51 @@ def review_table(stats: list[ReviewerStats], *, use_colour: bool) -> list[str]:
             parts.append(" " * (widths[i] - len(plain)) + styled)
         return "  ".join(parts)
 
-    return [fmt([(h, h) for h in headers])] + [fmt(r) for r in rows]
+    return [fmt([(h, h) for h in headers])] + [fmt(r) for r in table]
 
 
-def md_emphasis(text: str, flag: str) -> str:
-    """Markdown highlight: hot → bold, cold → italic (no dim in MD)."""
-    if flag == "hot":
-        return f"**{text}**"
-    if flag == "cold":
-        return f"*{text}*"
-    return text
-
-
-def review_table_md(stats: list[ReviewerStats]) -> list[str]:
+def review_table_markdown(rows: list[ReviewerStats]) -> list[str]:
     """Markdown reviewer table rows (header + separator + a row each), or
-    []. Same highlights as the terminal: load on `requested (my points)`,
-    favouritism-against-you on `reviewed (my points)`, your favouritism on
-    `reviewed (their points)`."""
-    if not stats:
+    []. Same flags as the terminal: the fair-share shortfall italicises the
+    reviewed cells (counts and points), assignment load bolds/italicises the
+    assigned (my points) cell."""
+    if not rows:
         return []
-    hl = review_highlights(stats)
+    hl = review_highlights(rows)
     out = [
         "| Reviewer "
-        "| requested (my PRs) | reviewed (my PRs) "
-        "| requested (their PRs) | reviewed (their PRs) "
-        "| requested (my points) | reviewed (my points) "
-        "| requested (their points) | reviewed (their points) |",
+        "| assigned (my PRs) | reviewed (my PRs) "
+        "| assigned (their PRs) | reviewed (their PRs) "
+        "| assigned (my points) | reviewed (my points) "
+        "| assigned (their points) | reviewed (their points) |",
         "|:--|--:|--:|--:|--:|--:|--:|--:|--:|",
     ]
-    for s in stats:
-        am = hl.against_me.get(s.login, "")
-        ld = hl.load.get(s.login, "")
-        mf = hl.favouritism.get(s.login, "")
+
+    def under(text: str, flagged: bool) -> str:
+        return f"*{text}*" if flagged else text
+
+    def md_emphasis(text: str, flag: str) -> str:
+        """Markdown highlight: hot → bold, cold → italic (no dim in MD)."""
+        if flag == "hot":
+            return f"**{text}**"
+        if flag == "cold":
+            return f"*{text}*"
+        return text
+
+    for s in rows:
+        lg = s.login
+        ld = hl.load.get(lg, "")
         out.append(
-            f"| {md_escape(s.login)} "
-            f"| {s.mine.requested} | {s.mine.reviewed} "
-            f"| {s.theirs.requested} | {s.theirs.reviewed} "
-            f"| {md_emphasis(f'{s.mine.requested_points:g}', ld)} "
-            f"| {md_emphasis(f'{s.mine.reviewed_points:g}', am)} "
-            f"| {s.theirs.requested_points:g} "
-            f"| {md_emphasis(f'{s.theirs.reviewed_points:g}', mf)} |"
+            f"| {md_escape(lg)} "
+            f"| {s.mine.assigned} "
+            f"| {under(str(s.mine.reviewed), lg in hl.under_mine_count)} "
+            f"| {s.theirs.assigned} "
+            f"| {under(str(s.theirs.reviewed), lg in hl.under_theirs_count)} "
+            f"| {md_emphasis(f'{s.mine.assigned_points:g}', ld)} "
+            f"| {under(f'{s.mine.reviewed_points:g}', lg in hl.under_mine_points)} "
+            f"| {s.theirs.assigned_points:g} "
+            f"| {under(f'{s.theirs.reviewed_points:g}', lg in hl.under_theirs_points)} "
+            "|"
         )
     return out
 
@@ -1330,7 +1594,7 @@ def render_markdown(
     milestones: list[Milestone],
     groups: list[list[Issue]],
     status_colours: dict[str, str],
-    reverse: dict[Login, list[Issue]],
+    reverse: dict[Login, list[TeammatePR]],
     me: Login | None,
 ) -> str:
     """Render the milestone(s) as a top-down GitHub-Flavored Markdown doc.
@@ -1391,18 +1655,11 @@ def render_markdown(
     # reviewer table sits under each milestone, rolled up over the
     # milestone for a steadier read than a single iteration.
     for ms in milestones:
-        closed, total = ms.closed_issues, ms.open_issues + ms.closed_issues
-        pct = f"{round(100 * closed / total)}%" if total else "—"
-        progress = f"{closed}/{total} closed ({pct})"
-        if ms.due_on:
-            due = datetime.datetime.fromisoformat(ms.due_on).date()
-            meta = f"Due {due.isoformat()} ({relative_day_phrase(due)}) · {progress}"
-        else:
-            meta = f"No due date · {progress}"
+        meta = milestone_meta(ms, sep=" · ")
         out += [f"## [{md_escape(ms.title)}]({ms.html_url})", "", meta, ""]
-        my_ms = [i for i in all_my if i.milestone == ms.title]
-        stats = review_stats(my_ms, reverse_for_milestone(reverse, ms.title), me)
-        if table := review_table_md(stats):
+        my_ms = [i for i in all_my if i.milestone == ms.number]
+        stats = review_stats(my_ms, reverse_for_milestone(reverse, ms.number), me)
+        if table := review_table_markdown(stats):
             out += [*table, ""]
 
     for g in groups:
@@ -1423,270 +1680,23 @@ def render_markdown(
     return "\n".join(out).rstrip() + "\n"
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
-    parser.add_argument(
-        "--milestone",
-        help="Exact milestone title; if omitted, the current open milestone "
-        "(the one whose due date is closest to today) is used",
-    )
-    parser.add_argument(
-        "--assignee",
-        default="@me",
-        help='GitHub login, "@me" (default), or "any" for unfiltered',
-    )
-    parser.add_argument(
-        "--state",
-        default="all",
-        choices=["open", "closed", "all"],
-        help='Issue state filter (default "all", so done/closed issues are shown)',
-    )
-    parser.add_argument(
-        "--repo",
-        default=git_remote_repo() or DEFAULT_REPO,
-        help="owner/name (defaults to the origin remote of the current repo)",
-    )
-    parser.add_argument(
-        "--project",
-        type=int,
-        default=DEFAULT_PROJECT,
-        help="ProjectV2 number to read Iteration/Priority from",
-    )
-    parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Emit the full result as JSON instead of a table",
-    )
-    parser.add_argument(
-        "--markdown",
-        action="store_true",
-        help="Emit a top-down Markdown report instead of a terminal table",
-    )
-    parser.add_argument(
-        "--no-hyperlink",
-        action="store_true",
-        help="Print bare URLs instead of OSC 8 terminal hyperlinks",
-    )
-    parser.add_argument(
-        "--cache-ttl",
-        type=int,
-        default=60,
-        metavar="SECONDS",
-        help="Reuse a cached result newer than this many seconds (0 disables; default 60)",
-    )
-    args = parser.parse_args()
-    # Always report quota on exit (but not for --help / arg errors,
-    # which exit inside parse_args above, before this registration).
-    atexit.register(report_rate_limit)
+def render_terminal(
+    rows: list[Issue],
+    groups: Groups,
+    status_colours: dict[str, str],
+    board: Board,
+    me: Login | None,
+    *,
+    use_links: bool,
+    use_colour: bool,
+) -> str:
+    """Render the board as the bottom-up ANSI terminal view (header, rows,
+    iteration sections, milestone footers + reviewer tables), as one string.
 
-    owner, _, name = args.repo.partition("/")
-
-    # Resolving "@me" is a local file read (no network), so it's safe
-    # to do before the cache check; it also keeps the cache key
-    # distinct per authenticated user.
-    assignee_login = resolve_assignee_login(args.assignee)
-    # Your own login drives the reverse review columns (their PRs you're
-    # involved in); resolved locally, no network.
-    me = Login(login) if (login := resolve_assignee_login("@me")) else None
-    cache_key = "|".join(
-        [
-            args.repo,
-            str(args.project),
-            args.milestone or "<current+following>",
-            str(assignee_login),
-            str(me),
-            args.state,
-        ]
-    )
-
-    board = read_board_cache(cache_key, args.cache_ttl)
-    if board is None:
-        # With an explicit --milestone, fetch just that one; otherwise a
-        # cheap lookup picks the current open milestone and the one
-        # following it. A single GraphQL round-trip then fetches the
-        # matching issues (board fields inline), project options, and the
-        # milestone(s).
-        try:
-            if args.milestone:
-                titles = [MilestoneTitle(args.milestone)]
-            else:
-                titles = fetch_milestone_window(owner, name)
-            if not titles:
-                sys.exit(
-                    "No --milestone given and no open milestone with a due date found."
-                )
-            board = fetch_board(
-                owner, name, args.project, titles, assignee_login, args.state, me
-            )
-            write_board_cache(cache_key, board)
-        except RateLimitError:
-            cached = _cache_path(cache_key)
-            if os.path.exists(cached):
-                age = int(time.time() - os.path.getmtime(cached))
-                sys.stderr.write(
-                    f"cached result from {age}s ago: {cached}\n"
-                    f"  reuse it with: --cache-ttl {age + 60}\n"
-                )
-            else:
-                sys.stderr.write(
-                    "no cached result for this query yet — retry after the reset.\n"
-                )
-            sys.exit(1)
-    options, milestones = board.options, board.milestones
-
-    priority_rank = {
-        o["name"]: i for i, o in enumerate(options.get(ProjectField.PRIORITY, []))
-    }
-    status_order = [o["name"] for o in options.get(ProjectField.STATUS, [])]
-    status_rank = {name: i for i, name in enumerate(status_order)}
-    status_colours = {
-        o["name"]: o["color"] for o in options.get(ProjectField.STATUS, [])
-    }
-
-    n_prio = len(priority_rank)
-    no_prio = n_prio + 1
-
-    def own_prio(row: Issue) -> int:
-        return priority_rank.get(row.priority or "", no_prio)
-
-    def pr_number(row: Issue) -> float:
-        return min((pr.number for pr in row.prs), default=float("inf"))
-
-    def magnitude(counts: list[int]) -> tuple[int, ...]:
-        # Negated per-rank counts: more high-priority tickets sort first,
-        # ties broken by the next rank down (a single P0 still beats any
-        # number of P1s).
-        return tuple(-c for c in counts)
-
-    # Per-(iteration, status, PR) tallies of how many tickets sit at each
-    # priority rank, so a block of issues closed by one PR is weighed by
-    # its whole priority profile rather than by PR number.
-    group_counts: dict[tuple, list[int]] = {}
-    for row in board.issues:
-        pr = pr_number(row)
-        if pr == float("inf"):
-            continue
-        counts = group_counts.setdefault(
-            (row.iteration_start, row.status, pr), [0] * n_prio
-        )
-        rank = priority_rank.get(row.priority or "")
-        if rank is not None:
-            counts[rank] += 1
-
-    def sort_key(row: Issue) -> tuple:
-        # Iteration first (unscheduled last). Within an iteration, by
-        # status (Backlog > Todo > In progress > In Review > Done, board
-        # order). Within a status:
-        #
-        #   - Done rows order by priority *profile*, keeping a PR's issues
-        #     together as one block (a PR-less issue is its own singleton),
-        #     then by PR number, then own priority within the block — so
-        #     shipped work scans by importance without scattering a PR's
-        #     issues across tiers.
-        #   - Not-yet-done rows put PR-less issues first (the table prints
-        #     bottom-up, so PR-less work — what still needs a PR — lands
-        #     most visible near the prompt), each by its own priority (not
-        #     a group); then PR'd blocks by priority profile, PR number,
-        #     and own priority within the block.
-        #
-        # Every tail ends with estimate (descending; none last) then number.
-        start = row.iteration_start or "9999-99-99"
-        status_key = status_rank.get(row.status or "", len(status_rank) + 1)
-        tail = (-row.estimate if row.estimate is not None else float("inf"), row.number)
-        pr_key = pr_number(row)
-        has_pr = pr_key != float("inf")
-        if has_pr:
-            mag = magnitude(group_counts[(row.iteration_start, row.status, pr_key)])
-        else:
-            # Singleton so a PR-less Done row interleaves with PR blocks by
-            # priority (Done groups by PR; other statuses keep PR-less first).
-            single = [0] * n_prio
-            if (rank := priority_rank.get(row.priority or "")) is not None:
-                single[rank] = 1
-            mag = magnitude(single)
-        if row.status == "Done":
-            return (start, status_key, mag, pr_key, own_prio(row), *tail)
-        if has_pr:
-            return (start, status_key, 1, mag, pr_key, own_prio(row), *tail)
-        return (start, status_key, 0, own_prio(row), *tail)
-
-    rows = sorted(board.issues, key=sort_key)
-
-    if args.json:
-        # JSON is the raw fetched set (it already honours --state); no extra
-        # filtering so it stays a faithful export.
-        payload = {
-            "milestones": [asdict(m) for m in milestones],
-            "issues": [asdict(row) for row in rows],
-        }
-        print(json.dumps(payload, indent=2))
-        return
-
-    # Table view only: a past iteration contributes just its unfinished work.
-    rows = [
-        r
-        for r in rows
-        if not (
-            r.status == "Done"
-            and is_past_iteration(r.iteration_start, r.iteration_duration)
-        )
-    ]
-
-    if not rows:
-        print("No matching issues.")
-        return
-
-    # Group rows into contiguous iterations (rows are already start-sorted)
-    # and classify each group relative to today; both the table and the
-    # Markdown renderer order their output from this.
-    row_groups: list[list[Issue]] = []
-    for row in rows:
-        if not row_groups or row_groups[-1][0].iteration_start != row.iteration_start:
-            row_groups.append([])
-        row_groups[-1].append(row)
-
-    current_g = noiter_g = None
-    future: list[list[Issue]] = []
-    past: list[list[Issue]] = []
-    for g in row_groups:
-        head_row = g[0]
-        if head_row.iteration_start is None:
-            noiter_g = g
-        elif is_current_iteration(
-            head_row.iteration_start, head_row.iteration_duration
-        ):
-            current_g = g
-        elif is_past_iteration(head_row.iteration_start, head_row.iteration_duration):
-            past.append(g)
-        else:
-            future.append(g)
-
-    if args.markdown:
-        # Top-down reading order: current first, then upcoming iterations
-        # (soonest first), unscheduled, then past (most recent first).
-        md_groups = (
-            ([current_g] if current_g else [])
-            + sorted(future, key=lambda g: g[0].iteration_start or "")
-            + ([noiter_g] if noiter_g else [])
-            + sorted(past, key=lambda g: g[0].iteration_start or "", reverse=True)
-        )
-        print(
-            render_markdown(milestones, md_groups, status_colours, board.reverse, me),
-            end="",
-        )
-        return
-
-    # OSC 8 hyperlinks and ANSI colour render in supporting
-    # terminals; both degrade to plain text when piped/redirected.
-    # NO_COLOR disables colour (https://no-color.org); --no-hyperlink
-    # disables links.
-    is_tty = sys.stdout.isatty()
-    use_links = is_tty and not args.no_hyperlink
-    use_colour = is_tty and "NO_COLOR" not in os.environ
-
+    `groups` arrives pre-classified; `rows` is the flat filtered set (for
+    column widths) and `board` carries the full issues + reverse data for
+    the per-milestone reviewer tables.
+    """
     num_width = max(len(str(r.number)) for r in rows) + 1  # "#NNN" column
 
     def build_cell(row: "Issue", dim_prs: frozenset[int]) -> Cell:
@@ -1731,19 +1741,9 @@ def main() -> None:
             issue=hyperlink(label, row.url, enabled=use_links),
         )
 
-    # Order the groups top→bottom: future iterations (latest start on top,
-    # so the soonest-ahead sits lowest), then no-iteration, then the
-    # current iteration, then past iterations at the very bottom (newest
-    # higher, oldest lowest). Most-relevant work ends up most visible when
-    # reading up from the prompt.
-    future.sort(key=lambda g: g[0].iteration_start or "", reverse=True)
-    past.sort(key=lambda g: g[0].iteration_start or "", reverse=True)
-    ordered_rows = (
-        future
-        + ([noiter_g] if noiter_g else [])
-        + ([current_g] if current_g else [])
-        + past
-    )
+    # Order the groups top→bottom so the most-relevant work ends up most
+    # visible when reading up from the prompt (see Groups.bottom_up).
+    ordered_rows = groups.bottom_up()
 
     # Walk the final visual order bottom→top. A PR shows its real number
     # at the bottom of each *contiguous* run of rows sharing it; rows
@@ -1819,20 +1819,324 @@ def main() -> None:
     # current milestone (earliest in time order) is bolded. Each carries
     # its reviewer table, rolled up over the milestone for a steadier
     # read than a single iteration.
-    for ms in reversed(milestones):
+    for ms in reversed(board.milestones):
         block = format_milestone(
             ms,
             use_links=use_links,
             use_colour=use_colour,
-            current=ms is milestones[0],
+            current=ms is board.milestones[0],
         )
-        my_ms = [i for i in board.issues if i.milestone == ms.title]
-        stats = review_stats(my_ms, reverse_for_milestone(board.reverse, ms.title), me)
-        table = review_table(stats, use_colour=use_colour)
-        if table and use_colour and ms is not milestones[0]:
+        my_ms = [i for i in board.issues if i.milestone == ms.number]
+        stats = review_stats(my_ms, reverse_for_milestone(board.reverse, ms.number), me)
+        table = review_table_terminal(stats, use_colour=use_colour)
+        if table and use_colour and ms is not board.milestones[0]:
             table = [dim_all(t) for t in table]  # following milestone recedes
         lines += ["", *block.split("\n"), *table]
-    print("\n".join(lines))
+    return "\n".join(lines)
+
+
+# MARK: - Sorting, classification & entry point
+
+
+def sort_issues(
+    issues: list[Issue],
+    priority_rank: dict[str, int],
+    status_rank: dict[str, int],
+) -> list[Issue]:
+    """Sort issues for display: iteration first (unscheduled last), then
+    status (board order), then a priority-aware ordering that keeps a PR's
+    issues together as one block. See `sort_key` for per-status tie-breaks.
+    """
+    n_prio = len(priority_rank)
+    no_prio = n_prio + 1
+
+    def own_prio(row: Issue) -> int:
+        return priority_rank.get(row.priority or "", no_prio)
+
+    def pr_number(row: Issue) -> float:
+        return min((pr.number for pr in row.prs), default=float("inf"))
+
+    def magnitude(counts: list[int]) -> tuple[int, ...]:
+        # Negated per-rank counts: more high-priority tickets sort first,
+        # ties broken by the next rank down (a single P0 still beats any
+        # number of P1s).
+        return tuple(-c for c in counts)
+
+    # Per-(iteration, status, PR) tallies of how many tickets sit at each
+    # priority rank, so a block of issues closed by one PR is weighed by
+    # its whole priority profile rather than by PR number.
+    group_counts: dict[tuple, list[int]] = {}
+    for row in issues:
+        pr = pr_number(row)
+        if pr == float("inf"):
+            continue
+        counts = group_counts.setdefault(
+            (row.iteration_start, row.status, pr), [0] * n_prio
+        )
+        rank = priority_rank.get(row.priority or "")
+        if rank is not None:
+            counts[rank] += 1
+
+    def sort_key(row: Issue) -> tuple:
+        # Iteration first (unscheduled last). Within an iteration, by
+        # status (Backlog > Todo > In progress > In Review > Done, board
+        # order). Within a status:
+        #
+        #   - Done rows order by priority *profile*, keeping a PR's issues
+        #     together as one block (a PR-less issue is its own singleton),
+        #     then by PR number, then own priority within the block — so
+        #     shipped work scans by importance without scattering a PR's
+        #     issues across tiers.
+        #   - Not-yet-done rows put PR-less issues first (the table prints
+        #     bottom-up, so PR-less work — what still needs a PR — lands
+        #     most visible near the prompt), each by its own priority (not
+        #     a group); then PR'd blocks by priority profile, PR number,
+        #     and own priority within the block.
+        #
+        # Every tail ends with estimate (descending; none last) then number.
+        start = row.iteration_start or "9999-99-99"
+        status_key = status_rank.get(row.status or "", len(status_rank) + 1)
+        tail = (-row.estimate if row.estimate is not None else float("inf"), row.number)
+        pr_key = pr_number(row)
+        has_pr = pr_key != float("inf")
+        if has_pr:
+            mag = magnitude(group_counts[(row.iteration_start, row.status, pr_key)])
+        else:
+            # Singleton so a PR-less Done row interleaves with PR blocks by
+            # priority (Done groups by PR; other statuses keep PR-less first).
+            single = [0] * n_prio
+            if (rank := priority_rank.get(row.priority or "")) is not None:
+                single[rank] = 1
+            mag = magnitude(single)
+        if row.status == "Done":
+            return (start, status_key, mag, pr_key, own_prio(row), *tail)
+        if has_pr:
+            return (start, status_key, 1, mag, pr_key, own_prio(row), *tail)
+        return (start, status_key, 0, own_prio(row), *tail)
+
+    return sorted(issues, key=sort_key)
+
+
+def classify_groups(rows: list[Issue]) -> Groups:
+    """Group start-sorted rows into contiguous iterations and classify each
+    relative to today (current / unscheduled / future / past)."""
+    row_groups: list[list[Issue]] = []
+    for row in rows:
+        if not row_groups or row_groups[-1][0].iteration_start != row.iteration_start:
+            row_groups.append([])
+        row_groups[-1].append(row)
+
+    current = noiter = None
+    future: list[list[Issue]] = []
+    past: list[list[Issue]] = []
+    for g in row_groups:
+        head = g[0]
+        if head.iteration_start is None:
+            noiter = g
+        elif is_current_iteration(head.iteration_start, head.iteration_duration):
+            current = g
+        elif is_past_iteration(head.iteration_start, head.iteration_duration):
+            past.append(g)
+        else:
+            future.append(g)
+    return Groups(current=current, noiter=noiter, future=future, past=past)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        "--milestone",
+        help="Exact milestone title; if omitted, the current open milestone "
+        "(the one whose due date is closest to today) is used",
+    )
+    parser.add_argument(
+        "--assignee",
+        default="@me",
+        help='GitHub login, "@me" (default), or "any" for unfiltered',
+    )
+    parser.add_argument(
+        "--state",
+        default="all",
+        choices=["open", "closed", "all"],
+        help='Issue state filter (default "all", so done/closed issues are shown)',
+    )
+    parser.add_argument(
+        "--repo",
+        default=git_remote_repo() or DEFAULT_REPO,
+        help="owner/name (defaults to the origin remote of the current repo)",
+    )
+    parser.add_argument(
+        "--project",
+        type=int,
+        default=DEFAULT_PROJECT,
+        help="ProjectV2 number to read Iteration/Priority from",
+    )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Emit the full result as JSON instead of a table",
+    )
+    parser.add_argument(
+        "--markdown",
+        action="store_true",
+        help="Emit a top-down Markdown report instead of a terminal table",
+    )
+    parser.add_argument(
+        "--no-hyperlink",
+        action="store_true",
+        help="Print bare URLs instead of OSC 8 terminal hyperlinks",
+    )
+    parser.add_argument(
+        "--cache-ttl",
+        type=int,
+        default=60,
+        metavar="SECONDS",
+        help="Reuse a cached result newer than this many seconds "
+        "(0 disables; default 60)",
+    )
+    args = parser.parse_args()
+    # Always report quota on exit (but not for --help / arg errors,
+    # which exit inside parse_args above, before this registration).
+    atexit.register(report_rate_limit)
+
+    owner, _, name = args.repo.partition("/")
+
+    # Resolving "@me" is a local file read (no network), so it's safe
+    # to do before the cache check; it also keeps the cache key
+    # distinct per authenticated user.
+    assignee_login = resolve_assignee_login(args.assignee)
+    # Your own login drives the reverse review columns (their PRs you're
+    # involved in); resolved locally, no network.
+    me = Login(login) if (login := resolve_assignee_login("@me")) else None
+    cache_key = "|".join(
+        [
+            args.repo,
+            str(args.project),
+            args.milestone or "<current+following>",
+            str(assignee_login),
+            str(me),
+            args.state,
+        ]
+    )
+
+    board = read_board_cache(cache_key, args.cache_ttl)
+    if board is None:
+        # A cheap lookup resolves the milestone window (the explicit
+        # --milestone, or the current open milestone + the one following)
+        # into dated spans. The forward board and the reverse review data
+        # are independent given those spans, so fetch them concurrently.
+        try:
+            ranges = resolve_window(owner, name, args.milestone)
+            if not ranges:
+                sys.exit(
+                    f"milestone {args.milestone!r} not found."
+                    if args.milestone
+                    else "No open milestone with a due date found."
+                )
+            milestone_numbers = [number for number, _, _ in ranges]
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                reverse_future = pool.submit(
+                    fetch_reverse, owner, name, args.project, ranges, me
+                )
+                board = fetch_board(
+                    owner,
+                    name,
+                    args.project,
+                    milestone_numbers,
+                    assignee_login,
+                    args.state,
+                )
+                board = replace(board, reverse=reverse_future.result())
+            write_board_cache(cache_key, board)
+        except RateLimitError:
+            cached = _cache_path(cache_key)
+            if os.path.exists(cached):
+                age = int(time.time() - os.path.getmtime(cached))
+                sys.stderr.write(
+                    f"cached result from {age}s ago: {cached}\n"
+                    f"  reuse it with: --cache-ttl {age + 60}\n"
+                )
+            else:
+                sys.stderr.write(
+                    "no cached result for this query yet — retry after the reset.\n"
+                )
+            sys.exit(1)
+    options, milestones = board.options, board.milestones
+
+    priority_rank = {
+        o["name"]: i for i, o in enumerate(options.get(ProjectField.PRIORITY, []))
+    }
+    status_order = [o["name"] for o in options.get(ProjectField.STATUS, [])]
+    status_rank = {name: i for i, name in enumerate(status_order)}
+    status_colours = {
+        o["name"]: o["color"] for o in options.get(ProjectField.STATUS, [])
+    }
+
+    rows = sort_issues(board.issues, priority_rank, status_rank)
+
+    if args.json:
+        # JSON is the raw fetched set (it already honours --state); no extra
+        # filtering so it stays a faithful export. `reverse` is each teammate's
+        # window PRs with your involvement (the reviewer tables' raw input).
+        payload = {
+            "milestones": [asdict(m) for m in milestones],
+            "issues": [asdict(row) for row in rows],
+            "reverse": {
+                login: [asdict(pr) for pr in prs]
+                for login, prs in board.reverse.items()
+            },
+        }
+        print(json.dumps(payload, indent=2))
+        return
+
+    # Table view only: a past iteration contributes just its unfinished work.
+    rows = [
+        r
+        for r in rows
+        if not (
+            r.status == "Done"
+            and is_past_iteration(r.iteration_start, r.iteration_duration)
+        )
+    ]
+
+    if not rows:
+        print("No matching issues.", file=sys.stderr)
+        return
+
+    # Group rows into contiguous iterations and classify each relative to
+    # today; both the table and the Markdown renderer order their output
+    # from this.
+    groups = classify_groups(rows)
+
+    if args.markdown:
+        print(
+            render_markdown(
+                milestones, groups.top_down(), status_colours, board.reverse, me
+            ),
+            end="",
+        )
+        return
+
+    # OSC 8 hyperlinks and ANSI colour render in supporting terminals; both
+    # degrade to plain text when piped/redirected. NO_COLOR disables colour
+    # (https://no-color.org); --no-hyperlink disables links.
+    is_tty = sys.stdout.isatty()
+    use_links = is_tty and not args.no_hyperlink
+    use_colour = is_tty and "NO_COLOR" not in os.environ
+    print(
+        render_terminal(
+            rows,
+            groups,
+            status_colours,
+            board,
+            me,
+            use_links=use_links,
+            use_colour=use_colour,
+        )
+    )
 
 
 if __name__ == "__main__":
