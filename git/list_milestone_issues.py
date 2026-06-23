@@ -97,6 +97,7 @@ _BEHIND_GLYPH: Final = "🍂"  # head branch is out of date with its base
 _DRAFT_GLYPH: Final = "📝"  # PR is still a draft
 _TEAM_GLYPH: Final = "👥"  # issue assigned to more than one person
 _NO_REVIEWER_GLYPH: Final = "🚨"  # ready PR (not draft) with no reviewer assigned
+_AWAIT_REVIEW_GLYPH: Final = "👀"  # their PR awaiting your (first or re-)review
 
 # Stand-in for a PR number that recurs brighter lower down: a down
 # arrowhead (U+2304) pointing at the leading (bottom-most) row.
@@ -179,7 +180,10 @@ class TeammatePR:
 
     Sourced from search (their PRs often close no issue), so it carries only
     what the reviewer stats need: which window milestone it falls in, its
-    estimate (points), and whether you reviewed it / were ever assigned to.
+    estimate (points), whether you reviewed it / were ever assigned to, and
+    whether it's currently awaiting your review (an open PR where you're a live
+    requested reviewer — a first review or a re-request you haven't acted on
+    yet). `url` links the PR in that awaiting-review list.
     """
 
     number: int
@@ -187,6 +191,8 @@ class TeammatePR:
     estimate: float | None
     you_reviewed: bool
     you_assigned: bool
+    review_pending: bool = False  # default for caches predating this field
+    url: str = ""
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -239,6 +245,15 @@ class ReviewInvolvement:
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
+class PendingReview:
+    """A teammate's PR awaiting your (first or re-)review, for the trailing
+    list on their reviewer-table row."""
+
+    number: int
+    url: str
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
 class ReviewerStats:
     """A teammate's review relationship with you for one milestone."""
 
@@ -247,6 +262,7 @@ class ReviewerStats:
     theirs: ReviewInvolvement  # your involvement in their PRs
     their_total_prs: int = 0  # their PRs in the window (favouritism denominator)
     their_total_points: float = 0.0  # summed estimate of those PRs
+    review_pending: tuple[PendingReview, ...] = ()  # their PRs awaiting your review
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -844,16 +860,20 @@ _ISSUE_BOARD_FIELDS: Final = f"""
 """
 
 
-# Per-PR fields for the search-sourced reverse ("their PRs"): the author,
-# the review-request timeline (your assignment), merge/open dates (to place
-# an issue-less PR by time window), the PR's own project estimate (points
-# for such a PR), and each closing issue's milestone + estimate (placement
-# and points for a PR that closes one).
+# Per-PR fields for the search-sourced reverse ("their PRs"): the author and
+# url, the review-request timeline (your assignment) and live review requests
+# (whether your review is still pending), merge/open dates (to place an
+# issue-less PR by time window), the PR's own project estimate (points for such
+# a PR), and each closing issue's milestone + estimate (placement and points
+# for a PR that closes one).
 _REVERSE_PR_FIELDS: Final = f"""
   number
+  url
+  state
   author {{ login }}
   mergedAt
   createdAt
+  reviewRequests(first: 20) {{ nodes {{ requestedReviewer {{ ... on User {{ login }} }} }} }}
   timelineItems(itemTypes: [REVIEW_REQUESTED_EVENT], first: 10) {{ nodes {{ ... on ReviewRequestedEvent {{ requestedReviewer {{ ... on User {{ login }} }} }} }} }}
   projectItems(first: 3) {{
     nodes {{
@@ -1166,6 +1186,14 @@ def parse_reverse_pr(
         you_reviewed=number in reviewed,
         you_assigned=me
         in parse_logins(pr["timelineItems"]["nodes"], "requestedReviewer"),
+        # A live review request for you means your (first or re-)review is still
+        # pending — GitHub drops you from it once you submit, re-adds on a
+        # re-request. Independent of you_reviewed (a re-request follows a review).
+        # Only open PRs count: a merged/closed one is moot, even if you linger
+        # in its requests.
+        review_pending=pr["state"] == "OPEN"
+        and me in parse_logins(pr["reviewRequests"]["nodes"], "requestedReviewer"),
+        url=pr["url"],
     )
     return Login(author), teammate_pr
 
@@ -1530,7 +1558,14 @@ def review_stats(
     zero = ReviewInvolvement()
     rows = []
     for p in people:
-        total_prs, total_points = _pr_totals(reverse.get(p, []))
+        their_prs = reverse.get(p, [])
+        total_prs, total_points = _pr_totals(their_prs)
+        # PRs of theirs where your review is still pending (deduped, by number).
+        awaiting = {
+            pr.number: PendingReview(number=pr.number, url=pr.url)
+            for pr in their_prs
+            if pr.review_pending
+        }
         rows.append(
             ReviewerStats(
                 login=p,
@@ -1538,6 +1573,7 @@ def review_stats(
                 theirs=theirs.get(p, zero),
                 their_total_prs=total_prs,
                 their_total_points=total_points,
+                review_pending=tuple(awaiting[n] for n in sorted(awaiting)),
             )
         )
     rows.sort(key=lambda s: (-s.mine.reviewed, -s.mine.assigned, s.login))
@@ -1672,7 +1708,9 @@ def review_highlights(rows: list[ReviewerStats]) -> Highlights:
 # MARK: - Rendering
 
 
-def review_table_terminal(rows: list[ReviewerStats], *, use_colour: bool) -> list[str]:
+def review_table_terminal(
+    rows: list[ReviewerStats], *, use_colour: bool, use_links: bool
+) -> list[str]:
     """Plain-text reviewer table (header + a row per person), or [].
 
     The reviewed side of each column pair (counts and points) goes yellow
@@ -1681,7 +1719,8 @@ def review_table_terminal(rows: list[ReviewerStats], *, use_colour: bool) -> lis
     `their PRs`/`their points` for one whose PRs you (under-/over-)review. The
     assigned side of `my points` carries the assignment-load flag (bold/dim);
     the assigned side of `my PRs`/`my points` goes cyan for the reviewer you've
-    assigned the fewest of (assign next). Other cells are plain.
+    assigned the fewest of (assign next). Other cells are plain. A row ends with
+    a 👀 list of that teammate's PRs awaiting your (first or re-)review.
     """
     if not rows:
         return []
@@ -1757,7 +1796,18 @@ def review_table_terminal(rows: list[ReviewerStats], *, use_colour: bool) -> lis
             parts.append(" " * (widths[i] - len(plain)) + styled)
         return "  ".join(parts)
 
-    return [fmt([(h, h) for h in headers])] + [fmt(r) for r in table]
+    def awaiting(s: ReviewerStats) -> str:
+        # Trailing, free-form (past the fixed columns, so alignment is unaffected).
+        if not s.review_pending:
+            return ""
+        refs = " ".join(
+            hyperlink(f"#{p.number}", p.url, enabled=use_links)
+            for p in s.review_pending
+        )
+        return f"  {_AWAIT_REVIEW_GLYPH} {refs}"
+
+    body = [fmt(r) + awaiting(s) for s, r in zip(rows, table)]
+    return [fmt([(h, h) for h in headers])] + body
 
 
 def review_table_markdown(rows: list[ReviewerStats]) -> list[str]:
@@ -1823,6 +1873,45 @@ def review_table_markdown(rows: list[ReviewerStats]) -> list[str]:
     return out
 
 
+def iteration_milestone(
+    group: Group, milestones: tuple[Milestone, ...]
+) -> MilestoneNumber | None:
+    """The milestone an iteration group belongs under, so its header and
+    reviewer table can sit beside the iteration.
+
+    Direct signal first: the milestone owning the most of the group's issues.
+    When that's absent or tied, fall back to time bounds — placing the
+    iteration's midpoint in the first milestone whose due date it precedes; an
+    undated (open-ended) milestone, else the latest, catches anything past
+    every due date.
+    """
+    tally: dict[MilestoneNumber, int] = {}
+    for issue in group:
+        if issue.milestone is not None:
+            tally[issue.milestone] = tally.get(issue.milestone, 0) + 1
+    if tally:
+        most = max(tally.values())
+        leaders = [num for num, count in tally.items() if count == most]
+        if len(leaders) == 1:
+            return leaders[0]
+
+    span = iteration_span(group[0].iteration_start, group[0].iteration_duration)
+    dated: list[tuple[datetime.date, MilestoneNumber]] = []
+    for m in milestones:
+        if m.due_on:
+            dated.append((datetime.datetime.fromisoformat(m.due_on).date(), m.number))
+    dated.sort()
+    if span and dated:
+        midpoint = span[0] + (span[1] - span[0]) / 2
+        for due, num in dated:
+            if midpoint <= due:
+                return num
+    undated = [m for m in milestones if not m.due_on]
+    if undated:
+        return undated[-1].number
+    return milestones[-1].number if milestones else None
+
+
 def render_markdown(
     milestones: tuple[Milestone, ...],
     groups: list[Group],
@@ -1832,10 +1921,10 @@ def render_markdown(
 ) -> str:
     """Render the milestone(s) as a top-down GitHub-Flavored Markdown doc.
 
-    A `##` header per milestone, then a `###` heading + table per
-    iteration group (already in display order). Unlike the terminal view
-    there's no dim/arrow dedup: every row carries its full, self-contained
-    PR links.
+    Each milestone heads its own block: a `##` title + reviewer table, then a
+    `###` heading + table for each of its iterations (in the given top-down
+    order). Unlike the terminal view there's no dim/arrow dedup: every row
+    carries its full, self-contained PR links.
     """
 
     def pr_refs(row: Issue) -> str:
@@ -1882,27 +1971,14 @@ def render_markdown(
         issue = f"[#{row.number} {title}]({row.url})"
         return f"| {prio_md} | {status} | {size} | {est} | {issue} |"
 
-    out: list[str] = []
-    all_my = [issue for g in groups for issue in g]
-    # Top-down: headers in time order, current milestone first. The
-    # reviewer table sits under each milestone, rolled up over the
-    # milestone for a steadier read than a single iteration.
-    for ms in milestones:
-        meta = milestone_meta(ms, sep=" · ")
-        out += [f"## [{md_escape(ms.title)}]({ms.html_url})", "", meta, ""]
-        my_ms = [i for i in all_my if i.milestone == ms.number]
-        stats = review_stats(my_ms, reverse_for_milestone(reverse, ms.number), me)
-        if table := review_table_markdown(stats):
-            out += [*table, ""]
-
-    for g in groups:
+    def iteration_block(g: Group) -> list[str]:
         head = g[0]
         current = is_current_iteration(head.iteration_start, head.iteration_duration)
         span = iteration_date_range(
             head.iteration_start, head.iteration_duration, current=current
         )
         name = head.iteration or "No iteration"
-        out += [
+        return [
             f"### {name}" + (f" ({span})" if span else ""),
             "",
             "| Prio | Status | Sz | Est | Issue |",
@@ -1910,6 +1986,28 @@ def render_markdown(
             *(row_line(row) for row in g),
             "",
         ]
+
+    all_my = [issue for g in groups for issue in g]
+    # Partition the iterations under their owning milestone, preserving the
+    # given top-down order. Each milestone then heads its block (title +
+    # reviewer table, rolled up over the milestone) followed by its iterations.
+    by_ms: dict[MilestoneNumber, list[Group]] = {m.number: [] for m in milestones}
+    for g in groups:
+        num = iteration_milestone(g, milestones)
+        if num is None or num not in by_ms:
+            num = milestones[-1].number
+        by_ms[num].append(g)
+
+    out: list[str] = []
+    for ms in milestones:
+        meta = milestone_meta(ms, sep=" · ")
+        out += [f"## [{md_escape(ms.title)}]({ms.html_url})", "", meta, ""]
+        my_ms = [i for i in all_my if i.milestone == ms.number]
+        stats = review_stats(my_ms, reverse_for_milestone(reverse, ms.number), me)
+        if table := review_table_markdown(stats):
+            out += [*table, ""]
+        for g in by_ms[ms.number]:
+            out += iteration_block(g)
     return "\n".join(out).rstrip() + "\n"
 
 
@@ -1923,8 +2021,12 @@ def render_terminal(
     use_links: bool,
     use_colour: bool,
 ) -> str:
-    """Render the board as the bottom-up ANSI terminal view (header, rows,
-    iteration sections, milestone footers + reviewer tables), as one string.
+    """Render the board as the bottom-up ANSI terminal view, as one string.
+
+    Each milestone prints its iterations (rows then the iteration label)
+    followed by its header + reviewer table beneath them, milestones in reverse
+    time order so the current one lands closest to the prompt; the column header
+    is the very last line, nearest the prompt, as the table legend.
 
     `groups` arrives pre-classified; `rows` is the flat filtered set (for
     column widths) and `board` carries the full issues + reverse data for
@@ -2041,21 +2143,28 @@ def render_terminal(
         label = head + "=" * max(3, width - display_width(head))
         return f"{_BOLD}{label}{_RESET}" if use_colour else label
 
-    # Each group prints its rows reversed with the iteration header beneath
-    # them; the column header sits at the bottom of the table, then the
-    # milestone header. Quota footer follows via atexit. Read bottom-up to
-    # recover the normal order.
+    # Associate each iteration group with the milestone it mostly belongs to,
+    # so the milestone header + reviewer table can sit beneath its iterations.
+    valid = {m.number for m in board.milestones}
+    group_ms: list[MilestoneNumber] = []
+    for g in ordered_rows:
+        num = iteration_milestone(g, board.milestones)
+        if num is None or num not in valid:
+            num = board.milestones[-1].number
+        group_ms.append(num)
+
+    # Walk milestones in reverse time order so the current one lands closest to
+    # the prompt. Each prints its iterations (rows reversed, then the iteration
+    # label beneath) followed by its header + reviewer table — only the current
+    # milestone bolded, a following one's table dimmed. The column header is the
+    # last line, nearest the prompt. Read bottom-up to recover the normal order.
     lines: list[str] = []
-    for cell_group in ordered:
-        lines += [render_row(c) for c in reversed(cell_group)]
-        lines += [section_label(cell_group[0]), ""]
-    lines.append(column_header)
-    # Bottom-up: milestone headers sit below the table in reverse time
-    # order, so the current one lands closest to the prompt. Only the
-    # current milestone (earliest in time order) is bolded. Each carries
-    # its reviewer table, rolled up over the milestone for a steadier
-    # read than a single iteration.
     for ms in reversed(board.milestones):
+        for idx, cell_group in enumerate(ordered):
+            if group_ms[idx] != ms.number:
+                continue
+            lines += [render_row(c) for c in reversed(cell_group)]
+            lines += [section_label(cell_group[0]), ""]
         block = format_milestone(
             ms,
             use_links=use_links,
@@ -2064,10 +2173,11 @@ def render_terminal(
         )
         my_ms = [i for i in board.issues if i.milestone == ms.number]
         stats = review_stats(my_ms, reverse_for_milestone(board.reverse, ms.number), me)
-        table = review_table_terminal(stats, use_colour=use_colour)
+        table = review_table_terminal(stats, use_colour=use_colour, use_links=use_links)
         if table and use_colour and ms is not board.milestones[0]:
             table = [dim_all(t) for t in table]  # following milestone recedes
-        lines += ["", *block.split("\n"), *table]
+        lines += [*block.split("\n"), *table, ""]
+    lines.append(column_header)
     return "\n".join(lines)
 
 

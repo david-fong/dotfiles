@@ -5,7 +5,9 @@ General practice:
 - Cite sources for factual claims
 - Be thorough when refactoring. Use tools like grep to search for things that need updating, or language specific code parsing tools / ad-hoc scripts.
 - Read permissions and common, allowed commands from `<project-root>/.claude/settings.local.json`.
+
 - Several `gh` subcommands break on the deprecated classic-Projects `projectCards` GraphQL field: `gh pr edit` (leaves PR unchanged), `gh pr view`, and `gh issue view` (return no data). Workarounds via REST: view a PR with `gh api repos/<owner>/<repo>/pulls/<n>`; edit a PR title/body with `gh api -X PATCH repos/<owner>/<repo>/pulls/<n> -F body=@file.md` / `-f title=...`; view an issue with `gh api repos/<owner>/<repo>/issues/<n>`. `gh pr create` and `gh issue create/edit` are fine.
+- When passing a file ref to `gh api`, `-F` (like `gh api -X POST ... -F body=@/tmp/claude/abc123/comment.md ...`) is usually the correct flag (instead of `f`). When in doubt, check the manpage.
 - In a git repo, run `git update-index --chmod=+x` for new executable scripts.
 
 ## Bash: long-output commands
